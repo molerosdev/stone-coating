@@ -38,7 +38,7 @@ export type Service = {
 };
 
 // Hero background image (full-bleed). Replace with a real Stone Coating photo when available.
-export const heroImage: string | undefined = '/images/hero.avif';
+export const heroImage: string | undefined = '/images/hero2.avif';
 
 // Pool of stock flooring photos (currently temporary stand-ins until real Stone Coating photos arrive).
 // To rearrange which photo appears under which service or project, reorder the entries below
