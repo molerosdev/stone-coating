@@ -34,7 +34,11 @@ export type Service = {
   short: string;
   useCases: string[];
   benefits: string[];
+  image?: string;
 };
+
+// Drop a photo into public/images/hero.jpg (or .webp) and set the path here.
+export const heroImage: string | undefined = undefined;
 
 export const services: Service[] = [
   {
@@ -224,6 +228,7 @@ export type Project = {
   service: string;
   location: string;
   type: 'Residential' | 'Commercial' | 'Industrial';
+  image?: string;
 };
 
 export const projectPlaceholders: Project[] = [

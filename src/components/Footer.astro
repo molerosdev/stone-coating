@@ -7,11 +7,16 @@ const year = new Date().getFullYear();
 <footer class="bg-deep-gray border-t border-charcoal/40">
   <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20 grid gap-12 lg:grid-cols-12">
     <div class="lg:col-span-5">
-      <div class="flex items-center gap-3">
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-sm bg-bronze text-charcoal font-heading font-bold tracking-wider">SC</span>
-        <span class="font-heading font-semibold text-off-white text-lg">{site.name}</span>
-      </div>
-      <p class="mt-6 text-concrete-gray leading-relaxed max-w-md">
+      <img
+        src="/logo-white-wide.png"
+        alt={site.name}
+        width="2648"
+        height="709"
+        class="h-12 w-auto"
+        loading="lazy"
+        decoding="async"
+      />
+      <p class="mt-7 text-concrete-gray leading-relaxed max-w-md">
         Professional flooring renovation systems for residential, commercial, and industrial spaces across {site.serviceArea}. Durable surfaces. Professional installation. Clean finishes built for long-term performance.
       </p>
     </div>

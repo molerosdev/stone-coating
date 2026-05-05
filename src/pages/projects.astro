@@ -47,24 +47,38 @@ import { projectCategories, projectPlaceholders } from '../data/site';
         {
           projectPlaceholders.map((p) => (
             <article
-              class="project-card group bg-deep-gray border border-deep-gray hover:border-bronze/60 transition-colors flex flex-col cursor-pointer"
+              class="project-card group bg-deep-gray border border-deep-gray hover:border-bronze/60 transition-colors duration-300 flex flex-col cursor-pointer"
               data-category={p.category}
               data-type={p.type}
               data-title={p.title}
               data-service={p.service}
               data-location={p.location}
+              data-image={p.image ?? ''}
             >
-              <div class="aspect-[4/3] bg-gradient-to-br from-charcoal via-deep-gray to-charcoal flex items-center justify-center text-bronze/30 font-heading text-xs tracking-widest uppercase">
-                Photo Coming Soon
+              <div class="relative aspect-[4/3] overflow-hidden bg-charcoal">
+                {p.image ? (
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <div class="absolute inset-0 bg-gradient-to-br from-charcoal via-deep-gray to-charcoal flex items-end p-5">
+                    <span class="text-bronze/40 font-heading text-[10px] tracking-[0.28em] uppercase">Photo Coming Soon</span>
+                  </div>
+                )}
+                <div class="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/0 to-charcoal/0"></div>
               </div>
               <div class="p-6 flex-1 flex flex-col">
-                <p class="text-bronze text-[11px] font-semibold uppercase tracking-[0.22em]">{p.type}</p>
-                <h3 class="mt-2 font-heading font-semibold text-off-white text-lg leading-snug">{p.title}</h3>
+                <p class="text-bronze text-[10px] font-semibold uppercase tracking-[0.28em]">{p.type}</p>
+                <h3 class="mt-3 font-heading font-semibold text-off-white text-lg leading-snug">{p.title}</h3>
                 <p class="mt-2 text-concrete-gray text-sm flex-1">
                   {p.service} &middot; {p.location}
                 </p>
-                <span class="mt-4 inline-flex items-center text-bronze text-xs font-semibold uppercase tracking-[0.22em]">
-                  View Details <span class="ml-2" aria-hidden="true">&rarr;</span>
+                <span class="mt-4 inline-flex items-center text-bronze text-[11px] font-semibold uppercase tracking-[0.24em]">
+                  View Details <span class="ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
                 </span>
               </div>
             </article>
@@ -107,8 +121,11 @@ import { projectCategories, projectPlaceholders } from '../data/site';
       <p id="project-modal-eyebrow" class="text-bronze text-[11px] font-semibold uppercase tracking-[0.22em]"></p>
       <h2 id="project-modal-title" class="mt-2 font-heading font-semibold text-off-white text-2xl md:text-3xl leading-tight"></h2>
       <p id="project-modal-meta" class="mt-3 text-concrete-gray text-sm"></p>
-      <div class="mt-8 aspect-video bg-gradient-to-br from-charcoal via-deep-gray to-charcoal flex items-center justify-center text-bronze/30 font-heading text-xs tracking-widest uppercase">
-        Photo Coming Soon
+      <div id="project-modal-image" class="mt-8 relative aspect-video overflow-hidden bg-charcoal">
+        <div class="modal-empty absolute inset-0 bg-gradient-to-br from-charcoal via-deep-gray to-charcoal flex items-end p-5">
+          <span class="text-bronze/40 font-heading text-[10px] tracking-[0.28em] uppercase">Photo Coming Soon</span>
+        </div>
+        <img class="modal-photo hidden absolute inset-0 w-full h-full object-cover" alt="" />
       </div>
       <p class="mt-6 text-concrete-gray text-sm leading-relaxed">
         Detailed project photos, videos, and before-and-after views will be added soon. To inquire about a similar project for your space, request a quote.
@@ -168,6 +185,21 @@ import { projectCategories, projectPlaceholders } from '../data/site';
     modalEyebrow.textContent = card.dataset.type ?? '';
     modalTitle.textContent = card.dataset.title ?? '';
     modalMeta.textContent = `${card.dataset.service} · ${card.dataset.location}`;
+    const photo = modal.querySelector<HTMLImageElement>('.modal-photo');
+    const empty = modal.querySelector<HTMLElement>('.modal-empty');
+    const src = card.dataset.image;
+    if (photo && empty) {
+      if (src) {
+        photo.src = src;
+        photo.alt = card.dataset.title ?? '';
+        photo.classList.remove('hidden');
+        empty.classList.add('hidden');
+      } else {
+        photo.removeAttribute('src');
+        photo.classList.add('hidden');
+        empty.classList.remove('hidden');
+      }
+    }
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     document.body.style.overflow = 'hidden';

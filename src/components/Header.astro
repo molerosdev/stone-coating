@@ -2,32 +2,47 @@
 import { nav, site } from '../data/site';
 
 const path = Astro.url.pathname;
-const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path === `${href}/` || path.startsWith(`${href}/`);
 ---
 
 <header
   id="site-header"
-  class="fixed top-0 inset-x-0 z-50 transition-colors duration-300 bg-transparent"
+  class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-transparent"
   data-state="top"
 >
-  <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-3 group">
-      <span class="inline-flex items-center justify-center w-9 h-9 rounded-sm bg-bronze text-charcoal font-heading font-bold text-sm tracking-wider">SC</span>
-      <span class="font-heading font-semibold text-off-white text-base md:text-lg leading-tight hidden sm:block">
-        {site.name}
-      </span>
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 md:h-24 flex items-center justify-between gap-6">
+    <a href="/" class="flex items-center shrink-0" aria-label={site.name}>
+      <img
+        src="/logo-white-wide.png"
+        alt={site.name}
+        width="2648"
+        height="709"
+        class="hidden md:block h-9 lg:h-10 w-auto"
+        loading="eager"
+        decoding="sync"
+      />
+      <img
+        src="/logo-white-scr.png"
+        alt={site.name}
+        width="1024"
+        height="1024"
+        class="md:hidden h-11 w-auto"
+        loading="eager"
+        decoding="sync"
+      />
     </a>
 
-    <nav class="hidden lg:flex items-center gap-10" aria-label="Primary">
+    <nav class="hidden lg:flex items-center gap-9 ml-auto" aria-label="Primary">
       {
         nav.map((item) => (
           <a
             href={item.href}
             class:list={[
-              'text-sm uppercase tracking-[0.18em] font-medium transition-colors',
+              'text-[11px] uppercase tracking-[0.22em] font-semibold transition-colors py-2',
               isActive(item.href)
                 ? 'text-bronze'
-                : 'text-off-white/80 hover:text-off-white',
+                : 'text-off-white/85 hover:text-off-white',
             ]}
           >
             {item.label}
@@ -36,10 +51,10 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       }
     </nav>
 
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-3 lg:gap-4">
       <a
         href="/contact"
-        class="hidden md:inline-flex items-center px-5 py-2.5 bg-bronze text-charcoal text-xs font-semibold uppercase tracking-[0.18em] hover:bg-stone-beige transition-colors"
+        class="hidden md:inline-flex items-center px-5 py-3 bg-bronze text-charcoal text-[11px] font-semibold uppercase tracking-[0.22em] hover:bg-stone-beige transition-colors"
       >
         Request a Quote
       </a>
@@ -68,7 +83,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
           <a
             href={item.href}
             class:list={[
-              'py-3 text-base uppercase tracking-[0.18em] font-medium border-b border-deep-gray/60',
+              'py-3 text-base uppercase tracking-[0.22em] font-semibold border-b border-deep-gray/60',
               isActive(item.href) ? 'text-bronze' : 'text-off-white/90',
             ]}
           >
@@ -78,7 +93,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       }
       <a
         href="/contact"
-        class="mt-4 inline-flex items-center justify-center px-5 py-3 bg-bronze text-charcoal text-xs font-semibold uppercase tracking-[0.18em]"
+        class="mt-4 inline-flex items-center justify-center px-5 py-3 bg-bronze text-charcoal text-xs font-semibold uppercase tracking-[0.22em]"
       >
         Request a Quote
       </a>
@@ -91,28 +106,27 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
   const toggle = document.getElementById('mobile-menu-toggle');
   const menu = document.getElementById('mobile-menu');
 
-  const updateState = () => {
-    if (!header) return;
-    if (window.scrollY > 8) {
-      header.classList.add('bg-charcoal/95', 'backdrop-blur-sm', 'border-b', 'border-deep-gray');
-      header.classList.remove('bg-transparent');
-      header.dataset.state = 'scrolled';
-    } else {
-      header.classList.remove('bg-charcoal/95', 'backdrop-blur-sm', 'border-b', 'border-deep-gray');
-      header.classList.add('bg-transparent');
-      header.dataset.state = 'top';
-    }
+  const setSolid = () => {
+    header?.classList.add('bg-charcoal/95', 'backdrop-blur-sm', 'border-b', 'border-deep-gray/60');
+    header?.classList.remove('bg-transparent');
+    if (header) header.dataset.state = 'scrolled';
+  };
+  const setTransparent = () => {
+    header?.classList.remove('bg-charcoal/95', 'backdrop-blur-sm', 'border-b', 'border-deep-gray/60');
+    header?.classList.add('bg-transparent');
+    if (header) header.dataset.state = 'top';
   };
 
-  // Pages other than the home hero start with a solid background.
-  const isHome = window.location.pathname === '/';
-  if (!isHome && header) {
-    header.classList.remove('bg-transparent');
-    header.classList.add('bg-charcoal/95', 'backdrop-blur-sm', 'border-b', 'border-deep-gray');
-  }
+  // Pages other than home start solid (no hero overlap).
+  const isHome = window.location.pathname === '/' || window.location.pathname === '';
+  if (!isHome) setSolid();
 
-  updateState();
-  window.addEventListener('scroll', updateState, { passive: true });
+  const onScroll = () => {
+    if (window.scrollY > 8) setSolid();
+    else if (isHome) setTransparent();
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   toggle?.addEventListener('click', () => {
     if (!menu) return;
