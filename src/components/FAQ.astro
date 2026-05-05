@@ -1,0 +1,26 @@
+---
+import { faqs } from '../data/site';
+---
+
+<div class="divide-y divide-deep-gray border-t border-b border-deep-gray">
+  {
+    faqs.map((item) => (
+      <details class="group">
+        <summary class="cursor-pointer list-none flex items-start justify-between gap-6 py-6 px-2 hover:bg-deep-gray/40 transition-colors">
+          <h3 class="font-heading font-semibold text-off-white text-lg leading-snug">
+            {item.question}
+          </h3>
+          <span
+            class="shrink-0 mt-1 w-6 h-6 inline-flex items-center justify-center text-bronze transition-transform group-open:rotate-45"
+            aria-hidden="true"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 5v14M5 12h14" stroke-linecap="square" />
+            </svg>
+          </span>
+        </summary>
+        <div class="px-2 pb-6 text-concrete-gray leading-relaxed">{item.answer}</div>
+      </details>
+    ))
+  }
+</div>

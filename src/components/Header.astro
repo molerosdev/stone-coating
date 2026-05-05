@@ -1,0 +1,123 @@
+---
+import { nav, site } from '../data/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 inset-x-0 z-50 transition-colors duration-300 bg-transparent"
+  data-state="top"
+>
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3 group">
+      <span class="inline-flex items-center justify-center w-9 h-9 rounded-sm bg-bronze text-charcoal font-heading font-bold text-sm tracking-wider">SC</span>
+      <span class="font-heading font-semibold text-off-white text-base md:text-lg leading-tight hidden sm:block">
+        {site.name}
+      </span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-10" aria-label="Primary">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'text-sm uppercase tracking-[0.18em] font-medium transition-colors',
+              isActive(item.href)
+                ? 'text-bronze'
+                : 'text-off-white/80 hover:text-off-white',
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <a
+        href="/contact"
+        class="hidden md:inline-flex items-center px-5 py-2.5 bg-bronze text-charcoal text-xs font-semibold uppercase tracking-[0.18em] hover:bg-stone-beige transition-colors"
+      >
+        Request a Quote
+      </a>
+      <button
+        type="button"
+        id="mobile-menu-toggle"
+        class="lg:hidden inline-flex items-center justify-center w-10 h-10 text-off-white"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="square" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="lg:hidden hidden bg-charcoal border-t border-deep-gray"
+  >
+    <nav class="flex flex-col px-6 py-6 gap-1" aria-label="Mobile">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'py-3 text-base uppercase tracking-[0.18em] font-medium border-b border-deep-gray/60',
+              isActive(item.href) ? 'text-bronze' : 'text-off-white/90',
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href="/contact"
+        class="mt-4 inline-flex items-center justify-center px-5 py-3 bg-bronze text-charcoal text-xs font-semibold uppercase tracking-[0.18em]"
+      >
+        Request a Quote
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header');
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  const updateState = () => {
+    if (!header) return;
+    if (window.scrollY > 8) {
+      header.classList.add('bg-charcoal/95', 'backdrop-blur-sm', 'border-b', 'border-deep-gray');
+      header.classList.remove('bg-transparent');
+      header.dataset.state = 'scrolled';
+    } else {
+      header.classList.remove('bg-charcoal/95', 'backdrop-blur-sm', 'border-b', 'border-deep-gray');
+      header.classList.add('bg-transparent');
+      header.dataset.state = 'top';
+    }
+  };
+
+  // Pages other than the home hero start with a solid background.
+  const isHome = window.location.pathname === '/';
+  if (!isHome && header) {
+    header.classList.remove('bg-transparent');
+    header.classList.add('bg-charcoal/95', 'backdrop-blur-sm', 'border-b', 'border-deep-gray');
+  }
+
+  updateState();
+  window.addEventListener('scroll', updateState, { passive: true });
+
+  toggle?.addEventListener('click', () => {
+    if (!menu) return;
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    menu.classList.toggle('hidden');
+  });
+</script>

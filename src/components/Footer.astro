@@ -1,0 +1,74 @@
+---
+import { nav, services, site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-deep-gray border-t border-charcoal/40">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20 grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-sm bg-bronze text-charcoal font-heading font-bold tracking-wider">SC</span>
+        <span class="font-heading font-semibold text-off-white text-lg">{site.name}</span>
+      </div>
+      <p class="mt-6 text-concrete-gray leading-relaxed max-w-md">
+        Professional flooring renovation systems for residential, commercial, and industrial spaces across {site.serviceArea}. Durable surfaces. Professional installation. Clean finishes built for long-term performance.
+      </p>
+    </div>
+
+    <div class="lg:col-span-2">
+      <h3 class="font-heading text-off-white text-sm uppercase tracking-[0.22em] font-semibold">Navigation</h3>
+      <ul class="mt-5 space-y-3">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} class="text-concrete-gray hover:text-off-white transition-colors text-sm">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="lg:col-span-3">
+      <h3 class="font-heading text-off-white text-sm uppercase tracking-[0.22em] font-semibold">Services</h3>
+      <ul class="mt-5 space-y-3">
+        {services.slice(0, 6).map((s) => (
+          <li>
+            <a href={`/services#${s.slug}`} class="text-concrete-gray hover:text-off-white transition-colors text-sm">
+              {s.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="lg:col-span-2">
+      <h3 class="font-heading text-off-white text-sm uppercase tracking-[0.22em] font-semibold">Contact</h3>
+      <ul class="mt-5 space-y-3 text-sm text-concrete-gray">
+        <li>
+          <span class="block text-off-white/60 text-xs uppercase tracking-widest mb-1">Phone</span>
+          {site.contact.phone}
+        </li>
+        <li>
+          <span class="block text-off-white/60 text-xs uppercase tracking-widest mb-1">Email</span>
+          {site.contact.email}
+        </li>
+        <li>
+          <span class="block text-off-white/60 text-xs uppercase tracking-widest mb-1">Service Area</span>
+          {site.serviceArea}
+        </li>
+        <li>
+          <span class="block text-off-white/60 text-xs uppercase tracking-widest mb-1">Hours</span>
+          {site.contact.hours}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-charcoal/40">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-concrete-gray">
+      <p>&copy; {year} {site.name}. All rights reserved.</p>
+      <p>Serving {site.serviceArea}</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,30 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  short: string;
+  href?: string;
+}
+
+const { slug, title, short, href } = Astro.props;
+const target = href ?? `/services#${slug}`;
+---
+
+<article class="group relative bg-deep-gray border border-deep-gray hover:border-bronze/60 transition-colors p-8 flex flex-col h-full">
+  <div class="aspect-[4/3] -mx-8 -mt-8 mb-7 overflow-hidden bg-charcoal">
+    <div
+      class="w-full h-full bg-gradient-to-br from-charcoal via-deep-gray to-charcoal flex items-center justify-center text-bronze/40 font-heading font-semibold text-sm tracking-widest uppercase"
+    >
+      Image Placeholder
+    </div>
+  </div>
+  <h3 class="font-heading font-semibold text-xl text-off-white leading-snug">{title}</h3>
+  <p class="mt-3 text-concrete-gray text-sm leading-relaxed flex-1">{short}</p>
+  <a
+    href={target}
+    class="mt-6 inline-flex items-center text-bronze text-xs font-semibold uppercase tracking-[0.22em] hover:text-stone-beige transition-colors"
+  >
+    Learn More
+    <span class="ml-2" aria-hidden="true">&rarr;</span>
+  </a>
+</article>

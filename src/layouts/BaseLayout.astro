@@ -1,13 +1,23 @@
 ---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
 interface Props {
   title: string;
   description?: string;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
 }
 
 const {
   title,
-  description = 'Premium flooring renovation across Oklahoma — epoxy, resinous, polished concrete, stone coating, sealing, and concrete repair for residential, commercial, and industrial spaces.',
+  description = site.description,
+  hideHeader = false,
+  hideFooter = false,
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).toString();
 ---
 
 <!doctype html>
@@ -17,9 +27,15 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="theme-color" content="#111111" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,7 +45,11 @@ const {
     />
     <title>{title}</title>
   </head>
-  <body class="bg-charcoal text-off-white font-body antialiased">
-    <slot />
+  <body class="bg-charcoal text-off-white font-body antialiased min-h-screen flex flex-col">
+    {!hideHeader && <Header />}
+    <main class="flex-1">
+      <slot />
+    </main>
+    {!hideFooter && <Footer />}
   </body>
 </html>

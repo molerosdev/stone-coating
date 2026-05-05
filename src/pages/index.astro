@@ -1,17 +1,213 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CTASection from '../components/CTASection.astro';
+import FAQ from '../components/FAQ.astro';
+import {
+  customers,
+  differentiators,
+  heroTrustPoints,
+  processSteps,
+  projectCategories,
+  projectPlaceholders,
+  services,
+} from '../data/site';
 ---
 
-<BaseLayout title="Stone Coating & Resinous | Flooring Renovation in Oklahoma">
-  <main class="min-h-screen flex items-center justify-center px-6">
-    <div class="text-center max-w-3xl">
-      <p class="text-bronze tracking-[0.3em] uppercase text-xs mb-6">Coming Soon</p>
-      <h1 class="font-heading font-semibold text-4xl md:text-6xl mb-6 leading-tight">
-        Stone Coating &amp; Resinous
-      </h1>
-      <p class="text-concrete-gray text-lg md:text-xl leading-relaxed">
-        Premium flooring renovation for residential, commercial, and industrial spaces across Oklahoma.
-      </p>
+<BaseLayout
+  title="Stone Coating & Resinous | Flooring Renovation in Oklahoma"
+  description="Stone Coating & Resinous provides professional flooring renovation services across Oklahoma, including epoxy flooring, resinous flooring, polished concrete, stone coating, sealing, garage floors, patios, driveways, and concrete repair."
+>
+  <!-- Hero -->
+  <section class="relative min-h-[92vh] flex items-center overflow-hidden bg-charcoal">
+    <div class="absolute inset-0" aria-hidden="true">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(182,138,76,0.12),transparent_55%)]"></div>
+      <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,17,0.4)_0%,rgba(17,17,17,0.95)_100%)]"></div>
+      <div
+        class="absolute inset-0 opacity-[0.04] mix-blend-screen"
+        style="background-image: radial-gradient(circle at 1px 1px, #F5F3EF 1px, transparent 0); background-size: 32px 32px;"
+      ></div>
     </div>
-  </main>
+
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 w-full">
+      <p class="text-bronze text-xs font-semibold uppercase tracking-[0.32em] mb-6">
+        Oklahoma Flooring Specialists
+      </p>
+      <h1 class="font-heading font-semibold text-4xl md:text-6xl lg:text-7xl text-off-white max-w-5xl leading-[1.04]">
+        Premium Flooring Renovation Across Oklahoma
+      </h1>
+      <p class="mt-7 text-concrete-gray text-lg md:text-xl max-w-2xl leading-relaxed">
+        Stone Coating &amp; Resinous provides professional flooring systems for residential, commercial, and industrial spaces — including epoxy coatings, resinous flooring, polished concrete, stone finishes, and concrete repair.
+      </p>
+      <div class="mt-10 flex flex-col sm:flex-row gap-4">
+        <Button href="/contact">Request a Quote</Button>
+        <Button href="/services" variant="secondary">View Services</Button>
+      </div>
+
+      <ul class="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl">
+        {heroTrustPoints.map((point) => (
+          <li class="border-l border-bronze/60 pl-4">
+            <span class="block text-off-white text-sm md:text-base font-medium leading-snug">{point}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- What We Do -->
+  <section class="py-20 md:py-28 bg-charcoal">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <SectionHeading
+        eyebrow="What We Do"
+        title="Flooring Systems Built for Performance and Appearance"
+        description="We renovate and upgrade concrete surfaces with professional-grade coatings and finishing systems. Every project is evaluated for surface condition, traffic, exposure, appearance, and long-term maintenance — then matched to the right system for the space."
+      />
+
+      <ul class="mt-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-deep-gray border border-deep-gray">
+        {services.slice(0, 10).map((s) => (
+          <li class="bg-charcoal p-6 text-off-white text-sm md:text-base font-heading font-medium hover:bg-deep-gray transition-colors">
+            <a href={`/services#${s.slug}`} class="block">{s.title}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- What Makes Us Different -->
+  <section class="py-20 md:py-28 bg-deep-gray">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-5">
+        <SectionHeading
+          eyebrow="Our Approach"
+          title="A Professional Flooring Partner, Not Just an Installer"
+          description="Flooring renovation requires more than applying a coating. Every project must be evaluated for surface condition, durability requirements, moisture exposure, foot traffic, safety, appearance, and long-term maintenance. We approach every project with a professional process designed to deliver clean finishes, durable results, and clear communication from start to completion."
+        />
+      </div>
+      <div class="lg:col-span-7 grid sm:grid-cols-2 gap-px bg-charcoal/40 border border-charcoal/40">
+        {differentiators.map((d) => (
+          <div class="bg-deep-gray p-7">
+            <h3 class="font-heading font-semibold text-off-white text-lg leading-snug">{d.title}</h3>
+            <p class="mt-3 text-concrete-gray text-sm leading-relaxed">{d.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Serve -->
+  <section class="py-20 md:py-28 bg-charcoal">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <SectionHeading
+        eyebrow="Who We Serve"
+        title="Flooring Solutions for Every Type of Property"
+        description="From single-car garages to multi-thousand-square-foot industrial facilities, we deliver flooring systems matched to the demands of each environment."
+      />
+      <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-deep-gray border border-deep-gray">
+        {customers.map((c) => (
+          <article class="bg-charcoal p-7 hover:bg-deep-gray/60 transition-colors">
+            <h3 class="font-heading font-semibold text-off-white text-base leading-snug">{c.title}</h3>
+            <p class="mt-3 text-concrete-gray text-sm leading-relaxed">{c.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Preview -->
+  <section class="py-20 md:py-28 bg-deep-gray">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <SectionHeading
+          eyebrow="Services"
+          title="Our Flooring Renovation Services"
+          description="Professional-grade systems for residential, commercial, and industrial properties across Oklahoma."
+        />
+        <Button href="/services" variant="secondary" class="self-start">View All Services</Button>
+      </div>
+
+      <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.slice(0, 9).map((s) => (
+          <ServiceCard slug={s.slug} title={s.title} short={s.short} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="py-20 md:py-28 bg-charcoal">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <SectionHeading
+        eyebrow="Process"
+        title="Our Flooring Renovation Process"
+        description="A structured, step-by-step approach from consultation through final review."
+      />
+      <ol class="mt-16 grid md:grid-cols-2 lg:grid-cols-5 gap-px bg-deep-gray border border-deep-gray">
+        {processSteps.map((step) => (
+          <li class="bg-charcoal p-7 flex flex-col">
+            <span class="font-heading font-bold text-bronze text-3xl tracking-tight">{step.num}</span>
+            <h3 class="mt-5 font-heading font-semibold text-off-white text-lg leading-snug">{step.title}</h3>
+            <p class="mt-3 text-concrete-gray text-sm leading-relaxed">{step.description}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  <section class="py-20 md:py-28 bg-deep-gray">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <SectionHeading
+          eyebrow="Project Gallery"
+          title="Recent Flooring Projects"
+          description="Real project photos and videos coming soon. Below is a preview of the type of work we deliver."
+        />
+        <Button href="/projects" variant="secondary" class="self-start">View Gallery</Button>
+      </div>
+
+      <ul class="mt-10 flex flex-wrap gap-2">
+        {projectCategories.slice(0, 7).map((c) => (
+          <li class="px-4 py-2 border border-deep-gray text-xs uppercase tracking-[0.18em] text-concrete-gray">
+            {c}
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projectPlaceholders.slice(0, 6).map((p) => (
+          <article class="group bg-charcoal border border-deep-gray hover:border-bronze/60 transition-colors">
+            <div class="aspect-[4/3] bg-gradient-to-br from-charcoal via-deep-gray to-charcoal flex items-center justify-center text-bronze/30 font-heading text-xs tracking-widest uppercase">
+              Photo Coming Soon
+            </div>
+            <div class="p-6">
+              <p class="text-bronze text-[11px] font-semibold uppercase tracking-[0.22em]">{p.type}</p>
+              <h3 class="mt-2 font-heading font-semibold text-off-white text-lg leading-snug">{p.title}</h3>
+              <p class="mt-2 text-concrete-gray text-sm">{p.service} &middot; {p.location}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p class="mt-10 text-concrete-gray text-sm italic">Real project photos and videos coming soon.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 md:py-28 bg-charcoal">
+    <div class="max-w-4xl mx-auto px-6 lg:px-10">
+      <SectionHeading
+        eyebrow="FAQ"
+        title="Frequently Asked Questions"
+        description="Common questions about our flooring renovation services."
+      />
+      <div class="mt-12">
+        <FAQ />
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <CTASection />
 </BaseLayout>

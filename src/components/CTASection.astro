@@ -1,0 +1,30 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Ready to Upgrade Your Floors?',
+  description = 'Request a professional flooring renovation estimate for your residential, commercial, or industrial space.',
+} = Astro.props;
+---
+
+<section class="relative py-20 md:py-28 bg-deep-gray border-y border-charcoal/40">
+  <div
+    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(182,138,76,0.08),transparent_60%)]"
+    aria-hidden="true"
+  ></div>
+  <div class="relative max-w-4xl mx-auto px-6 text-center">
+    <h2 class="font-heading font-semibold text-3xl md:text-4xl lg:text-5xl text-off-white leading-tight">
+      {title}
+    </h2>
+    <p class="mt-5 text-concrete-gray text-lg leading-relaxed max-w-2xl mx-auto">{description}</p>
+    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+      <Button href="/contact">Request a Quote</Button>
+      <Button href="/services" variant="secondary">View Services</Button>
+    </div>
+  </div>
+</section>
