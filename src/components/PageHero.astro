@@ -8,23 +8,35 @@ interface Props {
 const { eyebrow, title, subtitle } = Astro.props;
 ---
 
-<section class="relative pt-40 pb-20 md:pt-48 md:pb-28 bg-charcoal overflow-hidden">
+<section class="relative pt-40 pb-20 md:pt-48 md:pb-28 bg-hero-gradient overflow-hidden">
+  <!-- Glossy ambient lighting -->
   <div
-    class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(182,138,76,0.08),transparent_60%)]"
+    class="absolute inset-0 pointer-events-none"
+    aria-hidden="true"
+    style="background: radial-gradient(ellipse at 20% 0%, rgba(77,184,255,0.30), transparent 50%), radial-gradient(ellipse at 80% 100%, rgba(20,92,255,0.30), transparent 55%);"
+  ></div>
+  <!-- Polished concrete grain -->
+  <div
+    class="absolute inset-0 opacity-[0.06] mix-blend-screen pointer-events-none"
+    style="background-image: radial-gradient(circle at 1px 1px, #FFFFFF 1px, transparent 0); background-size: 22px 22px;"
     aria-hidden="true"
   ></div>
-  <div class="absolute inset-0 opacity-20" aria-hidden="true">
-    <div class="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.4)_100%)]"></div>
-  </div>
+  <!-- Top metallic divider hint -->
+  <div class="absolute inset-x-0 top-0 metallic-divider opacity-50" aria-hidden="true"></div>
+
   <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
     {eyebrow && (
-      <p class="text-bronze text-xs font-semibold uppercase tracking-[0.3em] mb-5">{eyebrow}</p>
+      <div class="flex items-center gap-3 mb-5">
+        <span class="block w-12 h-px bg-gradient-to-r from-sky-blue to-royal-blue"></span>
+        <p class="text-sky-blue text-xs font-semibold uppercase tracking-[0.3em]">{eyebrow}</p>
+      </div>
     )}
-    <h1 class="font-heading font-semibold text-4xl md:text-5xl lg:text-6xl text-off-white max-w-4xl leading-[1.05]">
+    <h1 class="font-heading font-semibold text-4xl md:text-5xl lg:text-6xl text-off-white max-w-4xl leading-[1.05] tracking-tight">
       {title}
     </h1>
     {subtitle && (
-      <p class="mt-6 text-concrete-gray text-lg md:text-xl max-w-2xl leading-relaxed">{subtitle}</p>
+      <p class="mt-6 text-ice-gray/85 text-lg md:text-xl max-w-2xl leading-relaxed">{subtitle}</p>
     )}
+    <span class="mt-8 block h-px w-32 bg-gloss-accent" aria-hidden="true"></span>
   </div>
 </section>

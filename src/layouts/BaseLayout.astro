@@ -35,7 +35,7 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="theme-color" content="#111111" />
+    <meta name="theme-color" content="#0B1F3A" />
     <link rel="icon" type="image/png" sizes="any" href="/logo-white-scr.png" />
     <link rel="apple-touch-icon" href="/logo-white-scr.png" />
     <meta property="og:image" content={new URL('/logo3.jpg', site.url).toString()} />
@@ -44,11 +44,11 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700;800&family=Poppins:wght@500;600;700&display=swap"
     />
     <title>{title}</title>
   </head>
-  <body class="bg-charcoal text-off-white font-body antialiased min-h-screen flex flex-col">
+  <body class="bg-navy text-off-white font-body antialiased min-h-screen flex flex-col">
     {!hideHeader && <Header />}
     <main class="flex-1">
       <slot />
@@ -56,8 +56,20 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     {!hideFooter && <Footer />}
 
     <style is:global>
+      :root {
+        --color-navy: #0B1F3A;
+        --color-deep-blue: #123C69;
+        --color-royal-blue: #145CFF;
+        --color-sky-blue: #4DB8FF;
+        --color-ice-gray: #F3F8FC;
+        --color-concrete-gray: #B7C0C8;
+        --color-silver: #D8E2EA;
+        --color-charcoal: #101820;
+        --color-white: #FFFFFF;
+      }
       html { scroll-behavior: smooth; }
-      ::selection { background-color: #B68A4C; color: #111111; }
+      ::selection { background-color: #145CFF; color: #FFFFFF; }
+
       [data-reveal] {
         opacity: 0;
         transform: translateY(24px);
@@ -65,9 +77,47 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
         will-change: opacity, transform;
       }
       [data-reveal].is-visible { opacity: 1; transform: none; }
+
+      /* Glossy reflection sweep used on hero and feature visuals */
+      @keyframes shineSweep {
+        0% { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+        25% { opacity: 0.7; }
+        60% { opacity: 0.7; }
+        100% { transform: translateX(220%) skewX(-18deg); opacity: 0; }
+      }
+      .shine-sweep::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.18) 50%, transparent 65%);
+        pointer-events: none;
+        animation: shineSweep 6.5s ease-in-out infinite;
+      }
+
+      /* Subtle resin-shine card overlay applied via utility class */
+      .gloss-overlay {
+        position: relative;
+      }
+      .gloss-overlay::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.10) 100%);
+        pointer-events: none;
+        border-radius: inherit;
+      }
+
+      /* Thin metallic gradient divider */
+      .metallic-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, #4DB8FF 25%, #D8E2EA 50%, #4DB8FF 75%, transparent 100%);
+        opacity: 0.65;
+      }
+
       @media (prefers-reduced-motion: reduce) {
         html { scroll-behavior: auto; }
         [data-reveal] { opacity: 1; transform: none; transition: none; }
+        .shine-sweep::after { animation: none; opacity: 0; }
       }
     </style>
 

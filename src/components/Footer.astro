@@ -4,8 +4,15 @@ import { nav, services, site } from '../data/site';
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-deep-gray border-t border-charcoal/40">
-  <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20 grid gap-12 lg:grid-cols-12">
+<footer class="relative bg-navy overflow-hidden">
+  <div class="metallic-divider" aria-hidden="true"></div>
+  <div
+    class="absolute inset-0 opacity-50 pointer-events-none"
+    aria-hidden="true"
+    style="background: radial-gradient(ellipse at top right, rgba(77,184,255,0.18), transparent 55%), radial-gradient(ellipse at bottom left, rgba(20,92,255,0.18), transparent 55%);"
+  ></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20 grid gap-12 lg:grid-cols-12">
     <div class="lg:col-span-5">
       <img
         src="/logo-white-wide.png"
@@ -16,8 +23,8 @@ const year = new Date().getFullYear();
         loading="lazy"
         decoding="async"
       />
-      <p class="mt-7 text-concrete-gray leading-relaxed max-w-md">
-        Professional flooring renovation systems for residential, commercial, and industrial spaces across {site.serviceArea}. Durable surfaces. Professional installation. Clean finishes built for long-term performance.
+      <p class="mt-7 text-ice-gray/80 leading-relaxed max-w-md">
+        Professional flooring renovation systems for residential, commercial, and industrial spaces across {site.serviceArea}. Premium epoxy, resinous, and polished concrete finishes engineered for durability and a high-performance shine.
       </p>
     </div>
 
@@ -26,7 +33,7 @@ const year = new Date().getFullYear();
       <ul class="mt-5 space-y-3">
         {nav.map((item) => (
           <li>
-            <a href={item.href} class="text-concrete-gray hover:text-off-white transition-colors text-sm">
+            <a href={item.href} class="text-ice-gray/75 hover:text-sky-blue transition-colors text-sm">
               {item.label}
             </a>
           </li>
@@ -39,7 +46,7 @@ const year = new Date().getFullYear();
       <ul class="mt-5 space-y-3">
         {services.slice(0, 6).map((s) => (
           <li>
-            <a href={`/services#${s.slug}`} class="text-concrete-gray hover:text-off-white transition-colors text-sm">
+            <a href={`/services#${s.slug}`} class="text-ice-gray/75 hover:text-sky-blue transition-colors text-sm">
               {s.title}
             </a>
           </li>
@@ -49,29 +56,30 @@ const year = new Date().getFullYear();
 
     <div class="lg:col-span-2">
       <h3 class="font-heading text-off-white text-sm uppercase tracking-[0.22em] font-semibold">Contact</h3>
-      <ul class="mt-5 space-y-3 text-sm text-concrete-gray">
+      <ul class="mt-5 space-y-3 text-sm text-ice-gray/80">
         <li>
-          <span class="block text-off-white/60 text-xs uppercase tracking-widest mb-1">Phone</span>
+          <span class="block text-silver/70 text-xs uppercase tracking-widest mb-1">Phone</span>
           {site.contact.phone}
         </li>
         <li>
-          <span class="block text-off-white/60 text-xs uppercase tracking-widest mb-1">Email</span>
+          <span class="block text-silver/70 text-xs uppercase tracking-widest mb-1">Email</span>
           {site.contact.email}
         </li>
         <li>
-          <span class="block text-off-white/60 text-xs uppercase tracking-widest mb-1">Service Area</span>
+          <span class="block text-silver/70 text-xs uppercase tracking-widest mb-1">Service Area</span>
           {site.serviceArea}
         </li>
         <li>
-          <span class="block text-off-white/60 text-xs uppercase tracking-widest mb-1">Hours</span>
+          <span class="block text-silver/70 text-xs uppercase tracking-widest mb-1">Hours</span>
           {site.contact.hours}
         </li>
       </ul>
     </div>
   </div>
 
-  <div class="border-t border-charcoal/40">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-concrete-gray">
+  <div class="metallic-divider" aria-hidden="true"></div>
+  <div class="relative">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-ice-gray/70">
       <p>&copy; {year} {site.name}. All rights reserved.</p>
       <p>Serving {site.serviceArea}</p>
     </div>

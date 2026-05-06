@@ -18,82 +18,119 @@ import {
 ---
 
 <BaseLayout
-  title="Stone Coating & Resinous | Flooring Renovation in Oklahoma"
-  description="Stone Coating & Resinous provides professional flooring renovation services across Oklahoma, including epoxy flooring, resinous flooring, polished concrete, stone coating, sealing, garage floors, patios, driveways, and concrete repair."
+  title="Stone Coating & Resinous | Premium Flooring Renovation in Oklahoma"
+  description="Stone Coating & Resinous provides professional flooring renovation across Oklahoma, including epoxy coatings, resinous flooring, polished concrete, concrete sealing, stone finishes, garage floors, patios, driveways, and concrete repair."
 >
-  <!-- Hero -->
-  <section class="relative min-h-[100vh] flex items-end overflow-hidden bg-charcoal">
-    {heroImage && (
-      <img
-        src={heroImage}
-        alt=""
-        aria-hidden="true"
-        class="absolute inset-0 w-full h-full object-cover"
-        loading="eager"
-        decoding="sync"
-      />
-    )}
-    <div class="absolute inset-0" aria-hidden="true">
-      {!heroImage && (
-        <div
-          class="absolute inset-0 opacity-30 mix-blend-screen"
-          style="background-image: radial-gradient(circle at 25% 15%, rgba(182,138,76,0.4), transparent 45%), radial-gradient(circle at 80% 80%, rgba(216,199,163,0.18), transparent 55%);"
-        ></div>
-      )}
-      <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,17,0.15)_0%,rgba(17,17,17,0.55)_60%,rgba(17,17,17,0.92)_100%)]"></div>
-    </div>
+  <!-- Hero — Option C Split: navy gradient left + glossy floor image right -->
+  <section class="relative min-h-[100vh] flex items-center overflow-hidden bg-hero-gradient">
+    <!-- Ambient blue glow -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      aria-hidden="true"
+      style="background: radial-gradient(ellipse at 0% 30%, rgba(77,184,255,0.30), transparent 55%), radial-gradient(ellipse at 100% 80%, rgba(20,92,255,0.40), transparent 55%);"
+    ></div>
+    <!-- Polished concrete grain -->
+    <div
+      class="absolute inset-0 opacity-[0.05] mix-blend-screen pointer-events-none"
+      style="background-image: radial-gradient(circle at 1px 1px, #FFFFFF 1px, transparent 0); background-size: 22px 22px;"
+      aria-hidden="true"
+    ></div>
 
-    <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-40 pb-16 lg:pb-24 w-full">
-      <div class="flex items-center gap-3 mb-7">
-        <span class="block w-12 h-px bg-bronze"></span>
-        <p class="text-bronze text-[11px] font-semibold uppercase tracking-[0.32em]">
-          Oklahoma Flooring Specialists
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-16 lg:pt-40 lg:pb-24 w-full grid lg:grid-cols-12 gap-12 items-center">
+      <!-- Left: copy -->
+      <div class="lg:col-span-6 xl:col-span-7" data-reveal>
+        <div class="flex items-center gap-3 mb-7">
+          <span class="block w-12 h-px bg-gradient-to-r from-sky-blue to-royal-blue"></span>
+          <p class="text-sky-blue text-[11px] font-semibold uppercase tracking-[0.32em]">
+            Oklahoma Flooring Specialists
+          </p>
+        </div>
+        <h1 class="font-heading font-semibold text-4xl md:text-5xl lg:text-6xl xl:text-[64px] text-off-white max-w-3xl leading-[1.04] tracking-tight">
+          Premium Flooring Systems with a
+          <span class="relative inline-block">
+            <span class="bg-gradient-to-r from-sky-blue via-royal-blue to-sky-blue bg-clip-text text-transparent">Polished, High-Performance Finish</span>
+            <span class="absolute -bottom-2 left-0 right-0 h-px bg-gradient-to-r from-sky-blue via-royal-blue to-transparent"></span>
+          </span>
+        </h1>
+        <p class="mt-7 text-ice-gray/85 text-lg md:text-xl max-w-2xl leading-relaxed">
+          Stone Coating &amp; Resinous provides professional flooring renovation across Oklahoma, including epoxy coatings, resinous flooring, polished concrete, concrete sealing, stone finishes, garage floors, patios, driveways, and concrete repair.
         </p>
-      </div>
-      <h1 class="font-heading font-semibold text-4xl md:text-6xl lg:text-7xl text-off-white max-w-5xl leading-[1.02] tracking-tight">
-        Premium Flooring Renovation Across Oklahoma
-      </h1>
-      <p class="mt-7 text-concrete-gray text-lg md:text-xl max-w-2xl leading-relaxed">
-        Stone Coating &amp; Resinous delivers professional flooring systems for residential, commercial, and industrial spaces — engineered for durability, appearance, and long-term performance.
-      </p>
-      <div class="mt-10 flex flex-col sm:flex-row gap-4">
-        <Button href="/contact">Request a Quote</Button>
-        <Button href="/services" variant="secondary">Explore Services</Button>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+          <Button href="/contact">Request a Quote</Button>
+          <Button href="/services" variant="secondary">Explore Services</Button>
+        </div>
+
+        <!-- Trust strip with glassmorphism -->
+        <ul class="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {heroTrustPoints.map((point) => (
+            <li class="relative overflow-hidden rounded-xl border border-sky-blue/30 bg-white/[0.04] backdrop-blur-md px-4 py-4">
+              <span class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-blue/60 to-transparent"></span>
+              <span class="block text-sky-blue text-[10px] font-semibold uppercase tracking-[0.28em] mb-2">&#8212;</span>
+              <span class="block text-off-white text-sm font-heading font-medium leading-snug">{point}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <ul class="mt-20 grid grid-cols-2 lg:grid-cols-4 border-t border-off-white/10">
-        {heroTrustPoints.map((point) => (
-          <li class="border-b border-off-white/10 lg:border-b-0 lg:border-r last:border-r-0 first:lg:border-l-0 border-off-white/10 py-5 lg:py-6 lg:px-6 first:pr-6 lg:first:pl-0">
-            <span class="block text-bronze text-[10px] font-semibold uppercase tracking-[0.28em] mb-2">&#8212;</span>
-            <span class="block text-off-white text-sm md:text-base font-heading font-medium leading-snug">{point}</span>
-          </li>
-        ))}
-      </ul>
+      <!-- Right: glossy floor image -->
+      <div class="lg:col-span-6 xl:col-span-5" data-reveal>
+        <div class="relative aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-gloss-glow shine-sweep">
+          {heroImage && (
+            <img
+              src={heroImage}
+              alt="Premium polished resinous flooring"
+              class="absolute inset-0 w-full h-full object-cover"
+              loading="eager"
+              decoding="sync"
+            />
+          )}
+          <!-- Blue tint overlay -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-navy/65 via-royal-blue/15 to-transparent"></div>
+          <!-- Reflective gloss -->
+          <div class="absolute inset-0 bg-card-shine pointer-events-none"></div>
+          <!-- Frame highlight -->
+          <div class="absolute inset-0 ring-1 ring-inset ring-white/15 rounded-2xl pointer-events-none"></div>
+          <!-- Bottom badge -->
+          <div class="absolute left-4 right-4 bottom-4 flex items-center gap-3 rounded-xl border border-white/20 bg-navy/55 backdrop-blur-md px-4 py-3">
+            <span class="block w-2 h-2 rounded-full bg-sky-blue shadow-[0_0_12px_rgba(77,184,255,0.8)]"></span>
+            <span class="text-off-white text-[11px] font-semibold uppercase tracking-[0.24em]">Resin Shine &middot; Commercial-Ready</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- What We Do -->
-  <section class="py-20 md:py-28 bg-charcoal">
+  <!-- What We Do — White / ice gray -->
+  <section class="py-20 md:py-28 bg-ice-gray">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <SectionHeading
+        tone="light"
         eyebrow="What We Do"
         title="Flooring Systems Built for Performance and Appearance"
         description="We renovate and upgrade concrete surfaces with professional-grade coatings and finishing systems. Every project is evaluated for surface condition, traffic, exposure, appearance, and long-term maintenance — then matched to the right system for the space."
       />
 
-      <ul class="mt-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-deep-gray border border-deep-gray">
+      <ul class="mt-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-silver border border-silver rounded-2xl overflow-hidden shadow-gloss-card">
         {services.slice(0, 10).map((s) => (
-          <li class="bg-charcoal p-6 text-off-white text-sm md:text-base font-heading font-medium hover:bg-deep-gray transition-colors">
-            <a href={`/services#${s.slug}`} class="block">{s.title}</a>
+          <li class="relative bg-white p-6 transition-all duration-300 hover:bg-ice-gray group">
+            <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            <a href={`/services#${s.slug}`} class="block text-navy text-sm md:text-base font-heading font-medium group-hover:text-royal-blue transition-colors">
+              {s.title}
+            </a>
           </li>
         ))}
       </ul>
     </div>
   </section>
 
-  <!-- What Makes Us Different -->
-  <section class="py-20 md:py-28 bg-deep-gray">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
+  <!-- What Makes Us Different — Deep navy -->
+  <section class="relative py-20 md:py-28 bg-navy overflow-hidden">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      aria-hidden="true"
+      style="background: radial-gradient(ellipse at 100% 0%, rgba(77,184,255,0.18), transparent 50%);"
+    ></div>
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
       <div class="lg:col-span-5">
         <SectionHeading
           eyebrow="Our Approach"
@@ -101,41 +138,45 @@ import {
           description="Flooring renovation requires more than applying a coating. Every project must be evaluated for surface condition, durability requirements, moisture exposure, foot traffic, safety, appearance, and long-term maintenance. We approach every project with a professional process designed to deliver clean finishes, durable results, and clear communication from start to completion."
         />
       </div>
-      <div class="lg:col-span-7 grid sm:grid-cols-2 gap-px bg-charcoal/40 border border-charcoal/40">
+      <div class="lg:col-span-7 grid sm:grid-cols-2 gap-5">
         {differentiators.map((d) => (
-          <div class="bg-deep-gray p-7">
+          <div class="relative overflow-hidden rounded-2xl border border-sky-blue/25 bg-deep-blue/40 backdrop-blur-sm p-7 hover:border-sky-blue/60 hover:shadow-gloss-card-dark transition-all duration-300">
+            <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
             <h3 class="font-heading font-semibold text-off-white text-lg leading-snug">{d.title}</h3>
-            <p class="mt-3 text-concrete-gray text-sm leading-relaxed">{d.description}</p>
+            <p class="mt-3 text-ice-gray/80 text-sm leading-relaxed">{d.description}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Who We Serve -->
-  <section class="py-20 md:py-28 bg-charcoal">
+  <!-- Who We Serve — White -->
+  <section class="py-20 md:py-28 bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <SectionHeading
+        tone="light"
         eyebrow="Who We Serve"
         title="Flooring Solutions for Every Type of Property"
         description="From single-car garages to multi-thousand-square-foot industrial facilities, we deliver flooring systems matched to the demands of each environment."
       />
-      <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-deep-gray border border-deep-gray">
+      <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {customers.map((c) => (
-          <article class="bg-charcoal p-7 hover:bg-deep-gray/60 transition-colors">
-            <h3 class="font-heading font-semibold text-off-white text-base leading-snug">{c.title}</h3>
-            <p class="mt-3 text-concrete-gray text-sm leading-relaxed">{c.description}</p>
+          <article class="group relative overflow-hidden rounded-2xl border border-silver bg-white p-7 shadow-gloss-card hover:-translate-y-1 hover:shadow-gloss-glow transition-all duration-300">
+            <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
+            <h3 class="font-heading font-semibold text-navy text-base leading-snug">{c.title}</h3>
+            <p class="mt-3 text-charcoal/75 text-sm leading-relaxed">{c.description}</p>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Services Preview -->
-  <section class="py-20 md:py-28 bg-deep-gray">
+  <!-- Services Preview — Ice gray -->
+  <section class="py-20 md:py-28 bg-ice-gray">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <SectionHeading
+          tone="light"
           eyebrow="Services"
           title="Our Flooring Renovation Services"
           description="Professional-grade systems for residential, commercial, and industrial properties across Oklahoma."
@@ -151,31 +192,38 @@ import {
     </div>
   </section>
 
-  <!-- Process -->
-  <section class="py-20 md:py-28 bg-charcoal">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+  <!-- Process — Deep navy / blue glossy -->
+  <section class="relative py-20 md:py-28 bg-hero-gradient overflow-hidden">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      aria-hidden="true"
+      style="background: radial-gradient(ellipse at 50% 100%, rgba(77,184,255,0.22), transparent 55%);"
+    ></div>
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
       <SectionHeading
         eyebrow="Process"
         title="Our Flooring Renovation Process"
         description="A structured, step-by-step approach from consultation through final review."
       />
-      <ol class="mt-16 grid md:grid-cols-2 lg:grid-cols-5 gap-px bg-deep-gray border border-deep-gray">
+      <ol class="mt-16 grid md:grid-cols-2 lg:grid-cols-5 gap-5">
         {processSteps.map((step) => (
-          <li class="bg-charcoal p-7 flex flex-col">
-            <span class="font-heading font-bold text-bronze text-3xl tracking-tight">{step.num}</span>
+          <li class="relative overflow-hidden rounded-2xl border border-sky-blue/25 bg-deep-blue/40 backdrop-blur-sm p-7 flex flex-col hover:border-sky-blue/60 hover:shadow-gloss-card-dark transition-all duration-300">
+            <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
+            <span class="font-heading font-bold text-3xl tracking-tight bg-gradient-to-r from-sky-blue to-royal-blue bg-clip-text text-transparent">{step.num}</span>
             <h3 class="mt-5 font-heading font-semibold text-off-white text-lg leading-snug">{step.title}</h3>
-            <p class="mt-3 text-concrete-gray text-sm leading-relaxed">{step.description}</p>
+            <p class="mt-3 text-ice-gray/80 text-sm leading-relaxed">{step.description}</p>
           </li>
         ))}
       </ol>
     </div>
   </section>
 
-  <!-- Featured Projects -->
-  <section class="py-20 md:py-28 bg-deep-gray">
+  <!-- Featured Projects — White -->
+  <section class="py-20 md:py-28 bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <SectionHeading
+          tone="light"
           eyebrow="Project Gallery"
           title="Recent Flooring Projects"
           description="Real project photos and videos coming soon. Below is a preview of the type of work we deliver."
@@ -185,7 +233,7 @@ import {
 
       <ul class="mt-10 flex flex-wrap gap-2">
         {projectCategories.slice(0, 7).map((c) => (
-          <li class="px-4 py-2 border border-deep-gray text-xs uppercase tracking-[0.18em] text-concrete-gray">
+          <li class="px-4 py-2 rounded-full border border-silver text-xs uppercase tracking-[0.18em] text-navy/70 bg-ice-gray">
             {c}
           </li>
         ))}
@@ -193,8 +241,9 @@ import {
 
       <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {projectPlaceholders.slice(0, 6).map((p) => (
-          <article class="group bg-charcoal border border-deep-gray hover:border-bronze/60 transition-colors duration-300">
-            <div class="relative aspect-[4/3] overflow-hidden bg-deep-gray">
+          <article class="group relative overflow-hidden rounded-2xl border border-silver bg-white shadow-gloss-card hover:-translate-y-1 hover:shadow-gloss-glow transition-all duration-300">
+            <span class="absolute top-0 left-0 right-0 h-[3px] bg-gloss-accent z-10"></span>
+            <div class="relative aspect-[4/3] overflow-hidden bg-deep-blue">
               {p.image ? (
                 <img
                   src={p.image}
@@ -204,39 +253,42 @@ import {
                   decoding="async"
                 />
               ) : (
-                <div class="absolute inset-0 bg-gradient-to-br from-charcoal via-deep-gray to-charcoal flex items-end p-5">
-                  <span class="text-bronze/40 font-heading text-[10px] tracking-[0.28em] uppercase">Photo Coming Soon</span>
+                <div class="absolute inset-0 bg-dark-card flex items-end p-5">
+                  <span class="text-sky-blue/60 font-heading text-[10px] tracking-[0.28em] uppercase">Photo Coming Soon</span>
                 </div>
               )}
-              <div class="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/0 to-charcoal/0"></div>
+              <!-- Blue hover overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/10 to-transparent group-hover:from-royal-blue/65 group-hover:via-royal-blue/15 transition-all duration-500"></div>
+              <div class="absolute inset-0 bg-card-shine opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
             <div class="p-6">
-              <p class="text-bronze text-[10px] font-semibold uppercase tracking-[0.28em]">{p.type}</p>
-              <h3 class="mt-3 font-heading font-semibold text-off-white text-lg leading-snug">{p.title}</h3>
-              <p class="mt-2 text-concrete-gray text-sm">{p.service} &middot; {p.location}</p>
+              <p class="text-royal-blue text-[10px] font-semibold uppercase tracking-[0.28em]">{p.type}</p>
+              <h3 class="mt-3 font-heading font-semibold text-navy text-lg leading-snug">{p.title}</h3>
+              <p class="mt-2 text-charcoal/70 text-sm">{p.service} &middot; {p.location}</p>
             </div>
           </article>
         ))}
       </div>
 
-      <p class="mt-10 text-concrete-gray text-sm italic">Real project photos and videos coming soon.</p>
+      <p class="mt-10 text-charcoal/60 text-sm italic">Real project photos and videos coming soon.</p>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="py-20 md:py-28 bg-charcoal">
+  <!-- FAQ — Ice gray -->
+  <section class="py-20 md:py-28 bg-ice-gray">
     <div class="max-w-4xl mx-auto px-6 lg:px-10">
       <SectionHeading
+        tone="light"
         eyebrow="FAQ"
         title="Frequently Asked Questions"
         description="Common questions about our flooring renovation services."
       />
       <div class="mt-12">
-        <FAQ />
+        <FAQ tone="light" />
       </div>
     </div>
   </section>
 
-  <!-- Final CTA -->
+  <!-- Final CTA — Blue gradient (provided by CTASection) -->
   <CTASection />
 </BaseLayout>
