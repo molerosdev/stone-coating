@@ -8,21 +8,21 @@ interface Props {
   tone?: 'light' | 'dark';
 }
 
-const { slug, title, short, image, href, tone = 'light' } = Astro.props;
+const { slug, title, short, image, href, tone = 'dark' } = Astro.props;
 const target = href ?? `/services#${slug}`;
 
 const cardBase =
   tone === 'dark'
-    ? 'bg-dark-card border border-sky-blue/35 shadow-gloss-card-dark'
+    ? 'bg-deep-blue/40 backdrop-blur-sm border border-sky-blue/25 shadow-gloss-card-dark hover:border-sky-blue/60'
     : 'bg-white/95 border border-silver shadow-gloss-card';
 
-const titleColor = tone === 'dark' ? 'text-off-white' : 'text-navy';
+const titleColor = tone === 'dark' ? 'text-sky-blue' : 'text-navy';
 const bodyColor = tone === 'dark' ? 'text-ice-gray/85' : 'text-charcoal/75';
 ---
 
 <article
   class:list={[
-    'group relative overflow-hidden rounded-2xl backdrop-blur-sm transition-all duration-500 flex flex-col h-full',
+    'group relative overflow-hidden rounded-2xl transition-all duration-500 flex flex-col h-full',
     'hover:-translate-y-1 hover:shadow-gloss-glow',
     cardBase,
   ]}
@@ -67,7 +67,7 @@ const bodyColor = tone === 'dark' ? 'text-ice-gray/85' : 'text-charcoal/75';
     <p class:list={['mt-3 text-sm leading-relaxed flex-1', bodyColor]}>{short}</p>
     <a
       href={target}
-      class="mt-6 inline-flex items-center text-royal-blue text-[11px] font-semibold uppercase tracking-[0.24em] hover:text-sky-blue transition-colors"
+      class="mt-6 inline-flex items-center text-sky-blue text-[11px] font-semibold uppercase tracking-[0.24em] hover:text-off-white transition-colors"
     >
       Request This Service
       <span class="ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>

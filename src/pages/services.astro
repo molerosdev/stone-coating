@@ -16,15 +16,15 @@ import { services } from '../data/site';
     subtitle="From epoxy flooring and resinous systems to polished concrete, sealing, stone coating, and concrete repair, we provide complete surface solutions for residential, commercial, and industrial properties."
   />
 
-  <!-- Service jump-nav -->
-  <section class="py-10 bg-ice-gray border-b border-silver">
+  <!-- Service jump-nav — Navy -->
+  <section class="py-10 bg-navy border-b border-sky-blue/15">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <ul class="flex flex-wrap gap-2">
         {services.map((s) => (
           <li>
             <a
               href={`#${s.slug}`}
-              class="inline-flex px-4 py-2 rounded-full border border-silver text-xs uppercase tracking-[0.18em] text-navy/75 bg-white hover:text-royal-blue hover:border-royal-blue/50 hover:shadow-[0_6px_16px_rgba(20,92,255,0.12)] transition-all duration-300"
+              class="inline-flex px-4 py-2 rounded-full border border-sky-blue/25 text-xs uppercase tracking-[0.18em] text-sky-blue bg-deep-blue/40 backdrop-blur-sm hover:text-off-white hover:border-sky-blue/60 hover:shadow-gloss-card-dark transition-all duration-300"
             >
               {s.title}
             </a>
@@ -34,76 +34,63 @@ import { services } from '../data/site';
     </div>
   </section>
 
-  <!-- Service sections — alternating white / navy -->
+  <!-- Service sections — Navy with subtle alternating glow -->
   <div>
     {
       services.map((service, idx) => {
-        const dark = idx % 2 === 1;
+        const altGlow = idx % 2 === 1;
         return (
           <section
             id={service.slug}
-            class:list={[
-              'relative py-20 md:py-24 scroll-mt-24 overflow-hidden',
-              dark ? 'bg-navy' : 'bg-white',
-            ]}
+            class="relative py-20 md:py-24 scroll-mt-24 overflow-hidden bg-navy"
           >
-            {dark && (
-              <div
-                class="absolute inset-0 pointer-events-none"
-                aria-hidden="true"
-                style="background: radial-gradient(ellipse at 100% 0%, rgba(77,184,255,0.16), transparent 55%);"
-              ></div>
-            )}
+            <div
+              class="absolute inset-0 pointer-events-none"
+              aria-hidden="true"
+              style={altGlow
+                ? "background: radial-gradient(ellipse at 100% 0%, rgba(77,184,255,0.16), transparent 55%);"
+                : "background: radial-gradient(ellipse at 0% 100%, rgba(20,92,255,0.16), transparent 55%);"}
+            ></div>
             <div class="relative max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
               <div class="lg:col-span-5">
                 <div class="flex items-center gap-3 mb-5">
-                  <span class={`block w-10 h-px ${dark ? 'bg-gradient-to-r from-sky-blue to-royal-blue' : 'bg-gradient-to-r from-royal-blue to-sky-blue'}`}></span>
-                  <p class={`text-xs font-semibold uppercase tracking-[0.3em] ${dark ? 'text-sky-blue' : 'text-royal-blue'}`}>
+                  <span class="block w-10 h-px bg-gradient-to-r from-sky-blue to-royal-blue"></span>
+                  <p class="text-sky-blue text-xs font-semibold uppercase tracking-[0.3em]">
                     {String(idx + 1).padStart(2, '0')} &nbsp;/&nbsp; Service
                   </p>
                 </div>
-                <h2 class={`font-heading font-semibold text-3xl md:text-4xl leading-tight tracking-tight ${dark ? 'text-off-white' : 'text-navy'}`}>
+                <h2 class="font-heading font-semibold text-3xl md:text-4xl text-off-white leading-tight tracking-tight">
                   {service.title}
                 </h2>
-                <p class={`mt-5 text-lg leading-relaxed ${dark ? 'text-ice-gray/85' : 'text-charcoal/75'}`}>{service.short}</p>
+                <p class="mt-5 text-ice-gray/85 text-lg leading-relaxed">{service.short}</p>
                 <Button href={`/contact?service=${encodeURIComponent(service.title)}`} class="mt-8">
                   Request This Service
                 </Button>
               </div>
               <div class="lg:col-span-7 grid sm:grid-cols-2 gap-6">
-                <div class:list={[
-                  'relative overflow-hidden rounded-2xl p-7',
-                  dark
-                    ? 'border border-sky-blue/25 bg-deep-blue/40 backdrop-blur-sm'
-                    : 'border border-silver bg-white shadow-gloss-card',
-                ]}>
+                <div class="relative overflow-hidden rounded-2xl p-7 border border-sky-blue/25 bg-deep-blue/40 backdrop-blur-sm hover:border-sky-blue/60 hover:shadow-gloss-card-dark transition-all duration-300">
                   <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
-                  <h3 class={`font-heading text-sm uppercase tracking-[0.22em] font-semibold ${dark ? 'text-off-white' : 'text-navy'}`}>
+                  <h3 class="font-heading text-sky-blue text-sm uppercase tracking-[0.22em] font-semibold">
                     Best Use Cases
                   </h3>
                   <ul class="mt-5 space-y-3">
                     {service.useCases.map((useCase) => (
-                      <li class={`flex items-start gap-3 text-sm leading-relaxed ${dark ? 'text-ice-gray/85' : 'text-charcoal/80'}`}>
-                        <span class={`mt-2 w-1.5 h-1.5 rounded-full shrink-0 ${dark ? 'bg-sky-blue' : 'bg-royal-blue'}`} aria-hidden="true" />
+                      <li class="flex items-start gap-3 text-ice-gray/85 text-sm leading-relaxed">
+                        <span class="mt-2 w-1.5 h-1.5 rounded-full shrink-0 bg-sky-blue" aria-hidden="true" />
                         <span>{useCase}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div class:list={[
-                  'relative overflow-hidden rounded-2xl p-7',
-                  dark
-                    ? 'border border-sky-blue/25 bg-deep-blue/40 backdrop-blur-sm'
-                    : 'border border-silver bg-white shadow-gloss-card',
-                ]}>
+                <div class="relative overflow-hidden rounded-2xl p-7 border border-sky-blue/25 bg-deep-blue/40 backdrop-blur-sm hover:border-sky-blue/60 hover:shadow-gloss-card-dark transition-all duration-300">
                   <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
-                  <h3 class={`font-heading text-sm uppercase tracking-[0.22em] font-semibold ${dark ? 'text-off-white' : 'text-navy'}`}>
+                  <h3 class="font-heading text-sky-blue text-sm uppercase tracking-[0.22em] font-semibold">
                     Benefits
                   </h3>
                   <ul class="mt-5 space-y-3">
                     {service.benefits.map((benefit) => (
-                      <li class={`flex items-start gap-3 text-sm leading-relaxed ${dark ? 'text-ice-gray/85' : 'text-charcoal/80'}`}>
-                        <span class={`mt-2 w-1.5 h-1.5 rounded-full shrink-0 ${dark ? 'bg-sky-blue' : 'bg-royal-blue'}`} aria-hidden="true" />
+                      <li class="flex items-start gap-3 text-ice-gray/85 text-sm leading-relaxed">
+                        <span class="mt-2 w-1.5 h-1.5 rounded-full shrink-0 bg-sky-blue" aria-hidden="true" />
                         <span>{benefit}</span>
                       </li>
                     ))}
