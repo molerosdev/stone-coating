@@ -8,7 +8,7 @@ export default {
         'deep-gray': '#141414',
         'concrete-gray': '#9CA3AF',
         'off-white': '#FFFFFF',
-        bronze: 'rgb(255 204 7 / <alpha-value>)',
+        bronze: 'rgb(255 210 53 / <alpha-value>)',
         'stone-beige': '#FFE066',
       },
       fontFamily: {
