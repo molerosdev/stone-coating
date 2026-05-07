@@ -57,7 +57,18 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
 
     <style is:global>
       html { scroll-behavior: smooth; }
-      ::selection { background-color: #B68A4C; color: #111111; }
+      ::selection { background-color: rgb(255 204 7 / 0.83); color: #111111; }
+
+      /* Unmodified bronze utility classes render at 83% alpha by default.
+         Opacity-modified classes like .bg-bronze\/40 keep their explicit alpha. */
+      .bg-bronze { background-color: rgb(255 204 7 / 0.83); }
+      .text-bronze { color: rgb(255 204 7 / 0.83); }
+      .border-bronze { border-color: rgb(255 204 7 / 0.83); }
+      .hover\:bg-bronze:hover { background-color: rgb(255 204 7 / 0.83); }
+      .hover\:text-bronze:hover { color: rgb(255 204 7 / 0.83); }
+      .hover\:border-bronze:hover { border-color: rgb(255 204 7 / 0.83); }
+      .file\:bg-bronze::file-selector-button { background-color: rgb(255 204 7 / 0.83); }
+
       [data-reveal] {
         opacity: 0;
         transform: translateY(24px);
