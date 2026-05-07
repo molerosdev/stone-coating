@@ -4,12 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        charcoal: '#111111',
-        'deep-gray': '#2B2B2B',
-        'concrete-gray': '#8A8A8A',
-        'off-white': '#F5F3EF',
-        bronze: 'rgb(255 204 7 / <alpha-value>)',
-        'stone-beige': '#D8C7A3',
+        charcoal: '#000000',
+        'deep-gray': '#141414',
+        'concrete-gray': '#9CA3AF',
+        'off-white': '#FFFFFF',
+        bronze: 'rgb(230 0 19 / <alpha-value>)',
+        'stone-beige': '#FF4D55',
       },
       fontFamily: {
         heading: ['Montserrat', 'system-ui', 'sans-serif'],
