@@ -8,8 +8,8 @@ export default {
         'deep-gray': '#141414',
         'concrete-gray': '#9CA3AF',
         'off-white': '#FFFFFF',
-        bronze: 'rgb(230 0 19 / <alpha-value>)',
-        'stone-beige': '#FF4D55',
+        bronze: 'rgb(255 204 7 / <alpha-value>)',
+        'stone-beige': '#FFE066',
       },
       fontFamily: {
         heading: ['Montserrat', 'system-ui', 'sans-serif'],
