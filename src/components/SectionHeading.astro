@@ -4,32 +4,20 @@ interface Props {
   title: string;
   description?: string;
   align?: 'left' | 'center';
-  tone?: 'dark' | 'light';
 }
 
-const { eyebrow, title, description, align = 'left', tone = 'dark' } = Astro.props;
+const { eyebrow, title, description, align = 'left' } = Astro.props;
 const alignClass = align === 'center' ? 'text-center mx-auto' : 'text-left';
-
-const titleColor = tone === 'dark' ? 'text-off-white' : 'text-navy';
-const descColor = tone === 'dark' ? 'text-ice-gray/85' : 'text-charcoal/75';
-const eyebrowColor = tone === 'dark' ? 'text-sky-blue' : 'text-royal-blue';
-const lineGradient =
-  tone === 'dark'
-    ? 'bg-gradient-to-r from-sky-blue via-royal-blue to-transparent'
-    : 'bg-gradient-to-r from-royal-blue via-sky-blue to-transparent';
 ---
 
 <div class:list={['max-w-3xl', alignClass]} data-reveal>
   {eyebrow && (
-    <div class:list={['flex items-center gap-3 mb-4', align === 'center' ? 'justify-center' : '']}>
-      <span class:list={['block w-10 h-px', lineGradient]}></span>
-      <p class:list={['text-xs font-semibold uppercase tracking-[0.3em]', eyebrowColor]}>{eyebrow}</p>
-    </div>
+    <p class="text-bronze text-xs font-semibold uppercase tracking-[0.3em] mb-4">{eyebrow}</p>
   )}
-  <h2 class:list={['font-heading font-semibold text-3xl md:text-4xl lg:text-5xl leading-tight tracking-tight', titleColor]}>
+  <h2 class="font-heading font-semibold text-3xl md:text-4xl lg:text-5xl text-off-white leading-tight">
     {title}
   </h2>
   {description && (
-    <p class:list={['mt-5 text-lg leading-relaxed', descColor]}>{description}</p>
+    <p class="mt-5 text-concrete-gray text-lg leading-relaxed">{description}</p>
   )}
 </div>

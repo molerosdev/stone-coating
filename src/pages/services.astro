@@ -16,15 +16,15 @@ import { services } from '../data/site';
     subtitle="From epoxy flooring and resinous systems to polished concrete, sealing, stone coating, and concrete repair, we provide complete surface solutions for residential, commercial, and industrial properties."
   />
 
-  <!-- Service jump-nav — Navy -->
-  <section class="py-10 bg-navy border-b border-sky-blue/15">
+  <!-- Service jump-nav -->
+  <section class="py-10 bg-deep-gray border-b border-charcoal/40">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <ul class="flex flex-wrap gap-2">
         {services.map((s) => (
           <li>
             <a
               href={`#${s.slug}`}
-              class="inline-flex px-4 py-2 rounded-full border border-sky-blue/25 text-xs uppercase tracking-[0.18em] text-sky-blue bg-deep-blue/40 backdrop-blur-sm hover:text-off-white hover:border-sky-blue/60 hover:shadow-gloss-card-dark transition-all duration-300"
+              class="inline-flex px-4 py-2 border border-charcoal/40 text-xs uppercase tracking-[0.18em] text-concrete-gray hover:text-bronze hover:border-bronze/60 transition-colors"
             >
               {s.title}
             </a>
@@ -34,73 +34,61 @@ import { services } from '../data/site';
     </div>
   </section>
 
-  <!-- Service sections — Navy with subtle alternating glow -->
-  <div>
+  <!-- Service sections -->
+  <div class="bg-charcoal">
     {
-      services.map((service, idx) => {
-        const altGlow = idx % 2 === 1;
-        return (
-          <section
-            id={service.slug}
-            class="relative py-20 md:py-24 scroll-mt-24 overflow-hidden bg-navy"
-          >
-            <div
-              class="absolute inset-0 pointer-events-none"
-              aria-hidden="true"
-              style={altGlow
-                ? "background: radial-gradient(ellipse at 100% 0%, rgba(77,184,255,0.16), transparent 55%);"
-                : "background: radial-gradient(ellipse at 0% 100%, rgba(20,92,255,0.16), transparent 55%);"}
-            ></div>
-            <div class="relative max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
-              <div class="lg:col-span-5">
-                <div class="flex items-center gap-3 mb-5">
-                  <span class="block w-10 h-px bg-gradient-to-r from-sky-blue to-royal-blue"></span>
-                  <p class="text-sky-blue text-xs font-semibold uppercase tracking-[0.3em]">
-                    {String(idx + 1).padStart(2, '0')} &nbsp;/&nbsp; Service
-                  </p>
-                </div>
-                <h2 class="font-heading font-semibold text-3xl md:text-4xl text-off-white leading-tight tracking-tight">
-                  {service.title}
-                </h2>
-                <p class="mt-5 text-ice-gray/85 text-lg leading-relaxed">{service.short}</p>
-                <Button href={`/contact?service=${encodeURIComponent(service.title)}`} class="mt-8">
-                  Request This Service
-                </Button>
+      services.map((service, idx) => (
+        <section
+          id={service.slug}
+          class:list={[
+            'py-20 md:py-24 scroll-mt-24',
+            idx % 2 === 0 ? 'bg-charcoal' : 'bg-deep-gray',
+          ]}
+        >
+          <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
+            <div class="lg:col-span-5">
+              <p class="text-bronze text-xs font-semibold uppercase tracking-[0.3em] mb-5">
+                {String(idx + 1).padStart(2, '0')} &nbsp;/&nbsp; Service
+              </p>
+              <h2 class="font-heading font-semibold text-3xl md:text-4xl text-off-white leading-tight">
+                {service.title}
+              </h2>
+              <p class="mt-5 text-concrete-gray text-lg leading-relaxed">{service.short}</p>
+              <Button href={`/contact?service=${encodeURIComponent(service.title)}`} class="mt-8">
+                Request This Service
+              </Button>
+            </div>
+            <div class="lg:col-span-7 grid sm:grid-cols-2 gap-6">
+              <div class="border border-bronze/20 p-7">
+                <h3 class="font-heading text-off-white text-sm uppercase tracking-[0.22em] font-semibold">
+                  Best Use Cases
+                </h3>
+                <ul class="mt-5 space-y-3">
+                  {service.useCases.map((useCase) => (
+                    <li class="flex items-start gap-3 text-concrete-gray text-sm leading-relaxed">
+                      <span class="mt-2 w-1 h-1 bg-bronze shrink-0" aria-hidden="true" />
+                      <span>{useCase}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div class="lg:col-span-7 grid sm:grid-cols-2 gap-6">
-                <div class="relative overflow-hidden rounded-2xl p-7 border border-sky-blue/25 bg-deep-blue/40 backdrop-blur-sm hover:border-sky-blue/60 hover:shadow-gloss-card-dark transition-all duration-300">
-                  <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
-                  <h3 class="font-heading text-sky-blue text-sm uppercase tracking-[0.22em] font-semibold">
-                    Best Use Cases
-                  </h3>
-                  <ul class="mt-5 space-y-3">
-                    {service.useCases.map((useCase) => (
-                      <li class="flex items-start gap-3 text-ice-gray/85 text-sm leading-relaxed">
-                        <span class="mt-2 w-1.5 h-1.5 rounded-full shrink-0 bg-sky-blue" aria-hidden="true" />
-                        <span>{useCase}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div class="relative overflow-hidden rounded-2xl p-7 border border-sky-blue/25 bg-deep-blue/40 backdrop-blur-sm hover:border-sky-blue/60 hover:shadow-gloss-card-dark transition-all duration-300">
-                  <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
-                  <h3 class="font-heading text-sky-blue text-sm uppercase tracking-[0.22em] font-semibold">
-                    Benefits
-                  </h3>
-                  <ul class="mt-5 space-y-3">
-                    {service.benefits.map((benefit) => (
-                      <li class="flex items-start gap-3 text-ice-gray/85 text-sm leading-relaxed">
-                        <span class="mt-2 w-1.5 h-1.5 rounded-full shrink-0 bg-sky-blue" aria-hidden="true" />
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div class="border border-bronze/20 p-7">
+                <h3 class="font-heading text-off-white text-sm uppercase tracking-[0.22em] font-semibold">
+                  Benefits
+                </h3>
+                <ul class="mt-5 space-y-3">
+                  {service.benefits.map((benefit) => (
+                    <li class="flex items-start gap-3 text-concrete-gray text-sm leading-relaxed">
+                      <span class="mt-2 w-1 h-1 bg-bronze shrink-0" aria-hidden="true" />
+                      <span>{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-          </section>
-        );
-      })
+          </div>
+        </section>
+      ))
     }
   </div>
 
