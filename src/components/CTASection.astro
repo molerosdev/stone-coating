@@ -12,16 +12,20 @@ const {
 } = Astro.props;
 ---
 
-<section class="relative py-20 md:py-28 bg-deep-gray border-y border-charcoal/40">
+<section class="relative py-20 md:py-28 bg-hero-gradient overflow-hidden">
   <div
-    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(182,138,76,0.08),transparent_60%)]"
+    class="absolute inset-0 pointer-events-none"
     aria-hidden="true"
+    style="background: radial-gradient(ellipse at 50% 0%, rgba(77,184,255,0.35), transparent 55%), radial-gradient(ellipse at 80% 100%, rgba(20,92,255,0.4), transparent 55%);"
   ></div>
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-blue/60 to-transparent" aria-hidden="true"></div>
+  <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-sky-blue/40 to-transparent" aria-hidden="true"></div>
+
   <div class="relative max-w-4xl mx-auto px-6 text-center">
-    <h2 class="font-heading font-semibold text-3xl md:text-4xl lg:text-5xl text-off-white leading-tight">
+    <h2 class="font-heading font-semibold text-3xl md:text-4xl lg:text-5xl text-white leading-tight tracking-tight">
       {title}
     </h2>
-    <p class="mt-5 text-concrete-gray text-lg leading-relaxed max-w-2xl mx-auto">{description}</p>
+    <p class="mt-5 text-ice-gray/85 text-lg leading-relaxed max-w-2xl mx-auto">{description}</p>
     <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
       <Button href="/contact">Request a Quote</Button>
       <Button href="/services" variant="secondary">View Services</Button>

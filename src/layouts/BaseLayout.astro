@@ -35,7 +35,7 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#0B1F3A" />
     <link rel="icon" type="image/png" sizes="any" href="/logo-white-scr.png" />
     <link rel="apple-touch-icon" href="/logo-white-scr.png" />
     <meta property="og:image" content={new URL('/logo3.jpg', site.url).toString()} />
@@ -44,11 +44,11 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700;800&family=Poppins:wght@500;600;700&display=swap"
     />
     <title>{title}</title>
   </head>
-  <body class="bg-charcoal text-off-white font-body antialiased min-h-screen flex flex-col">
+  <body class="bg-white text-ink font-body antialiased min-h-screen flex flex-col">
     {!hideHeader && <Header />}
     <main class="flex-1">
       <slot />
@@ -56,29 +56,60 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     {!hideFooter && <Footer />}
 
     <style is:global>
-      html { scroll-behavior: smooth; }
-      ::selection { background-color: #FFD235; color: #000000; }
+      :root {
+        --color-navy: #0B1F3A;
+        --color-deep-blue: #123C69;
+        --color-royal-blue: #145CFF;
+        --color-sky-blue: #4DB8FF;
+        --color-silver: #D8E2EA;
+        --color-ice-gray: #F3F8FC;
+        --color-concrete-gray: #B7C0C8;
+        --color-ink: #101820;
+        --color-white: #FFFFFF;
+      }
 
-      /* Unmodified bronze utility classes render the #FFD235 brand gold at full vibrance.
-         Opacity-modified classes like .bg-bronze\/40 keep their explicit alpha. */
-      .bg-bronze { background-color: #FFD235; }
-      .text-bronze { color: #FFD235; }
-      .border-bronze { border-color: #FFD235; }
-      .hover\:bg-bronze:hover { background-color: #FFD235; }
-      .hover\:text-bronze:hover { color: #FFD235; }
-      .hover\:border-bronze:hover { border-color: #FFD235; }
-      .file\:bg-bronze::file-selector-button { background-color: #FFD235; }
+      html { scroll-behavior: smooth; }
+      ::selection { background-color: #145CFF; color: #FFFFFF; }
 
       [data-reveal] {
         opacity: 0;
         transform: translateY(24px);
-        transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
         will-change: opacity, transform;
       }
       [data-reveal].is-visible { opacity: 1; transform: none; }
+
+      /* Subtle reflection sweep used on hero photography */
+      @keyframes shineSweep {
+        0%   { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+        25%  { opacity: 0.7; }
+        60%  { opacity: 0.7; }
+        100% { transform: translateX(220%) skewX(-18deg); opacity: 0; }
+      }
+      .shine-sweep::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(110deg,
+          transparent 35%,
+          rgba(255,255,255,0.18) 50%,
+          transparent 65%);
+        pointer-events: none;
+        animation: shineSweep 6.5s ease-in-out infinite;
+      }
+
+      /* Thin metallic divider */
+      .metallic-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, #4DB8FF 25%, #D8E2EA 50%, #4DB8FF 75%, transparent 100%);
+        opacity: 0.65;
+      }
+
       @media (prefers-reduced-motion: reduce) {
         html { scroll-behavior: auto; }
         [data-reveal] { opacity: 1; transform: none; transition: none; }
+        .shine-sweep::after { animation: none; opacity: 0; }
       }
     </style>
 
