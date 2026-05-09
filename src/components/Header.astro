@@ -10,7 +10,7 @@ const isActive = (href: string) =>
 
 <header
   id="site-header"
-  class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-transparent"
+  class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-gradient-to-b from-navy/80 via-navy/45 to-transparent backdrop-blur-[2px]"
   data-state="top"
 >
   <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 md:h-24 flex items-center justify-between gap-6">
@@ -109,14 +109,17 @@ const isActive = (href: string) =>
   const toggle = document.getElementById('mobile-menu-toggle');
   const menu = document.getElementById('mobile-menu');
 
+  const TOP_CLASSES = ['bg-gradient-to-b', 'from-navy/80', 'via-navy/45', 'to-transparent', 'backdrop-blur-[2px]'];
+  const SOLID_CLASSES = ['bg-navy/95', 'backdrop-blur-md', 'border-b', 'border-sky-blue/15', 'shadow-[0_10px_30px_rgba(11,31,58,0.35)]'];
+
   const setSolid = () => {
-    header?.classList.add('bg-navy/95', 'backdrop-blur-md', 'border-b', 'border-sky-blue/15', 'shadow-[0_10px_30px_rgba(11,31,58,0.35)]');
-    header?.classList.remove('bg-transparent');
+    header?.classList.add(...SOLID_CLASSES);
+    header?.classList.remove(...TOP_CLASSES);
     if (header) header.dataset.state = 'scrolled';
   };
   const setTransparent = () => {
-    header?.classList.remove('bg-navy/95', 'backdrop-blur-md', 'border-b', 'border-sky-blue/15', 'shadow-[0_10px_30px_rgba(11,31,58,0.35)]');
-    header?.classList.add('bg-transparent');
+    header?.classList.remove(...SOLID_CLASSES);
+    header?.classList.add(...TOP_CLASSES);
     if (header) header.dataset.state = 'top';
   };
 
