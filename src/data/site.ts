@@ -292,3 +292,212 @@ export const propertyTypeOptions = [
 ];
 
 export const contactMethodOptions = ['Phone Call', 'Text Message', 'Email'];
+
+// Detailed services for the /services page. Each entry maps a folder under
+// /public/images to a service from project_update.md, with 5–7 hand-picked
+// images. Filenames are encoded at render time so spaces in folder paths
+// resolve correctly on Cloudflare Pages.
+export type FlooringService = {
+  slug: string;
+  title: string;
+  blurb: string;
+  details?: string;
+  folder: string;
+  images: string[];
+  applications?: string[];
+  highlights?: string[];
+};
+
+export const flooringServices: FlooringService[] = [
+  {
+    slug: 'polished-concrete',
+    title: 'Polished Concrete',
+    blurb:
+      'Mechanically refined concrete polished with progressively finer diamond abrasives and densifiers — a durable, low-maintenance floor with excellent light reflectivity and a clean, modern appearance.',
+    details:
+      'Available in Level 1 matte, Level 2 satin, and Level 3 high-gloss finishes, with Class A cream, Class B salt-and-pepper, or Class C full aggregate exposure depending on the desired look.',
+    folder: 'Polished concrete',
+    images: ['1.jpeg', '2.jpeg', '3.jpeg', '4.jpeg', '5.jpeg', '6.jpeg'],
+    applications: ['Warehouses', 'Retail & showrooms', 'Offices', 'Institutional facilities'],
+    highlights: [
+      'Reduces dusting and ongoing maintenance',
+      'Improves ambient lighting through reflectivity',
+      'Long service life on existing slabs',
+    ],
+  },
+  {
+    slug: 'class-c-level-2-antislip',
+    title: 'Class C – Level 2 Polished Concrete with Anti-Slip',
+    blurb:
+      'Level 2 satin polish over a Class C full aggregate exposure with an anti-slip additive — a balanced semi-gloss appearance engineered for safer commercial environments.',
+    folder: 'Class C Level 2 polished concrete with antislip',
+    images: ['1.jpeg', '2.jpeg', '3.jpeg'],
+    applications: ['Schools', 'Healthcare corridors', 'Retail floors', 'Hospitality'],
+    highlights: [
+      'Decorative terrazzo-like aggregate finish',
+      'Anti-slip additive for traction in traffic areas',
+      'Moderate sheen that hides surface variation',
+    ],
+  },
+  {
+    slug: 'class-c-level-3',
+    title: 'Class C – Level 3 Polished Concrete',
+    blurb:
+      'A Level 3 high-gloss "wet look" with full Class C aggregate exposure — a premium reflective surface that showcases stone variation for showrooms, lobbies, and high-end retail.',
+    folder: 'Class C Level 3 polished concrete',
+    images: ['1.jpeg', '2.jpeg', '3.jpeg'],
+    applications: ['Showrooms', 'Lobbies', 'High-end retail', 'Hospitality'],
+    highlights: [
+      'Maximum reflectivity and depth of finish',
+      'Strong decorative aggregate variation',
+      'Resists wear in heavy foot-traffic zones',
+    ],
+  },
+  {
+    slug: 'flake-epoxy',
+    title: 'Epoxy Flake System Floor',
+    blurb:
+      'Decorative vinyl flakes broadcast into an epoxy base coat and sealed with a protective topcoat — a seamless, slip-resistant, chemical-resistant resinous floor with texture and color variation.',
+    details:
+      'Available with an integrated cove base that extends 4–6 inches up the wall to eliminate seams and protect against moisture, dirt, and bacteria.',
+    folder: 'Flake epoxy',
+    images: ['1.jpeg', '2.jpeg', '3.jpeg', '4.jpeg', '5.jpeg', '6.jpeg'],
+    applications: ['Commercial garages', 'Locker rooms', 'Healthcare', 'Kitchens', 'Veterinary clinics'],
+    highlights: [
+      'Slip-resistant decorative finish',
+      'Chemical and abrasion resistance',
+      'Easy to clean and sanitize',
+    ],
+  },
+  {
+    slug: 'double-broadcast-epoxy',
+    title: 'Double Broadcast Epoxy',
+    blurb:
+      'A heavy-duty double-broadcast flake build delivering extra thickness and texture for impact-prone commercial and industrial environments.',
+    folder: 'Doubleb broadcast epoxy',
+    images: ['1.jpeg', '2.jpeg', '3.jpeg', '4.jpeg'],
+    applications: ['Manufacturing floors', 'Service bays', 'Workshops', 'Industrial garages'],
+    highlights: [
+      'Maximum build for impact resistance',
+      'Aggressive texture for slip safety',
+      'Long service life under heavy use',
+    ],
+  },
+  {
+    slug: 'flake-and-quartz',
+    title: 'Epoxy Flake & Quartz',
+    blurb:
+      'Colored quartz aggregate combined with epoxy flake systems in multiple resin layers — a highly durable, textured surface with decorative variation and excellent slip resistance.',
+    details:
+      'Pairs well with an integrated cove base for hygienic wall-to-floor transitions in sanitary environments.',
+    folder: 'Epoxy flake and Quartz',
+    images: ['1.jpeg', '4.jpeg', '8.jpeg', '13.jpeg', '17.jpeg', '21.jpeg'],
+    applications: ['Hospitals', 'Laboratories', 'Food processing', 'Restrooms', 'Pharma facilities'],
+    highlights: [
+      'Extreme durability under heavy traffic',
+      'Chemical and impact resistance',
+      'Decorative multi-color finish',
+    ],
+  },
+  {
+    slug: 'single-color-epoxy',
+    title: 'Single-Color Epoxy',
+    blurb:
+      'Solid-color resin coatings over prepared concrete for a smooth, seamless, hygienic finish — available in gloss, satin, or matte sheen depending on operational needs.',
+    folder: 'Single coating epoxy',
+    images: ['1.jpeg', '2.jpeg', '3.jpeg'],
+    applications: ['Warehouses', 'Mechanical rooms', 'Manufacturing', 'Storage areas'],
+    highlights: [
+      'Seamless and easy to clean',
+      'Chemical-resistant surface',
+      'Cost-effective industrial finish',
+    ],
+  },
+  {
+    slug: 'metallic-epoxy',
+    title: 'Metallic Epoxy Finishes',
+    blurb:
+      'Decorative metallic-pigmented epoxy systems that create depth, movement, and a high-end reflective finish — a striking option for spaces that need a designer-grade floor.',
+    folder: 'metalicos',
+    images: ['1.jpeg', '2.jpeg', '6.jpeg', '10.jpeg', '15.jpeg', '20.jpeg'],
+    applications: ['Showrooms', 'Retail', 'Restaurants', 'Residential interiors', 'Commercial lobbies'],
+    highlights: [
+      'Unique, fluid metallic patterning',
+      'High-gloss reflective surface',
+      'Seamless, easy-clean finish',
+    ],
+  },
+  {
+    slug: 'terrazzo-restoration',
+    title: 'Terrazzo Restoration',
+    blurb:
+      'Repair, refinish, and polish existing terrazzo floors — diamond grinding, crack and chip repair, honing, and sealing to restore the original appearance and extend service life.',
+    folder: 'Terrazo restoration',
+    images: ['1.jpeg', '2.jpeg', '3.jpeg'],
+    applications: ['Schools', 'Historic buildings', 'Civic facilities', 'Commercial lobbies'],
+    highlights: [
+      'Restores original character of the floor',
+      'Lower cost than replacement',
+      'Sustainable renovation approach',
+    ],
+  },
+  {
+    slug: 'stone-coating',
+    title: 'Stone Coating',
+    blurb:
+      'Decorative stone-textured finishes for patios, walkways, and commercial entrances — premium stone appearance combined with a durable, weather-resistant coating system.',
+    folder: 'Stone coating',
+    images: [
+      'IMG_1287.jpeg',
+      'IMG_1315.jpeg',
+      'IMG_1322.jpeg',
+      'IMG_1434.jpeg',
+      'IMG_1502.jpeg',
+      'IMG_6922.jpeg',
+    ],
+    applications: ['Patios', 'Walkways', 'Pool decks', 'Commercial entrances'],
+    highlights: [
+      'Premium decorative stone appearance',
+      'Outdoor-durable surface protection',
+      'Improves curb appeal on existing concrete',
+    ],
+  },
+  {
+    slug: 'decorative-stone',
+    title: 'Decorative Stone Surfaces',
+    blurb:
+      'Natural and engineered stone surface installations for premium architectural applications — a refined finish that complements high-end residential and commercial spaces.',
+    folder: 'Stone',
+    images: [
+      'IMG_7195.jpeg',
+      'IMG_7202.jpeg',
+      'IMG_7203.jpeg',
+      'IMG_7205.jpeg',
+      'IMG_7207.jpeg',
+      'IMG_7510.jpeg',
+    ],
+    applications: ['Architectural feature walls', 'Entryways', 'Hospitality spaces', 'Custom installations'],
+    highlights: [
+      'Natural stone character',
+      'Durable, long-life surface',
+      'Pairs with polished concrete and resinous systems',
+    ],
+  },
+  {
+    slug: 'carpet-tile-wood',
+    title: 'Carpet, Tile & Wood',
+    blurb:
+      'Modular carpet tile, ceramic tile, and hardwood / engineered hardwood systems for offices, retail, hospitality, multifamily, and institutional environments.',
+    details:
+      'Includes carpet tile and walk-off systems, ceramic and porcelain tile, solid and engineered hardwood, LVT, VCT, and sheet vinyl — matched to traffic, hygiene, and design requirements.',
+    folder: 'Carpet, Tile and wood',
+    images: [],
+    applications: ['Offices', 'Retail', 'Hospitality', 'Multifamily', 'Healthcare'],
+    highlights: [
+      'Full range of soft and hard surface options',
+      'Acoustic and sanitary specifications met',
+      'Design-flexible commercial selections',
+    ],
+  },
+];
+
