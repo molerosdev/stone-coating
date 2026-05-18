@@ -73,20 +73,6 @@ const galleryData = Object.fromEntries(
             <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
               <div class="grid lg:grid-cols-12 gap-10 lg:gap-12">
                 <div class="lg:col-span-5">
-                  <div class="flex items-center gap-3 mb-5">
-                    <span class:list={[
-                      'block w-10 h-px',
-                      dark
-                        ? 'bg-gradient-to-r from-sky-blue to-royal-blue'
-                        : 'bg-gradient-to-r from-royal-blue to-sky-blue',
-                    ]}></span>
-                    <p class:list={[
-                      'text-xs font-semibold uppercase tracking-[0.3em]',
-                      dark ? 'text-sky-blue' : 'text-royal-blue',
-                    ]}>
-                      {String(idx + 1).padStart(2, '0')} &nbsp;/&nbsp; Service
-                    </p>
-                  </div>
                   <h2 class:list={[
                     'font-heading font-semibold text-3xl md:text-4xl leading-tight tracking-tight',
                     dark ? 'text-white' : 'text-navy',
