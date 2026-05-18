@@ -3,37 +3,90 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import CTASection from '../components/CTASection.astro';
-import { values, whyChooseUs } from '../data/site';
+import {
+  capabilities,
+  industriesServed,
+  site,
+  team,
+  values,
+  whyChooseUs,
+} from '../data/site';
 ---
 
 <BaseLayout
-  title="About Stone Coating & Resinous | Oklahoma Flooring Specialists"
-  description="Stone Coating & Resinous delivers professional flooring renovation systems for residential, commercial, and industrial spaces across Oklahoma. Learn about our company, mission, and approach."
+  title="About Stone Coating & Resinous | Oklahoma Commercial Flooring Specialists"
+  description={`With over ${site.yearsExperience} years in commercial flooring, Stone Coating & Resinous delivers polished concrete, epoxy, resinous, tile, wood, vinyl, and rubber flooring systems for healthcare, manufacturing, retail, schools, warehouses, fitness centers, and corporate spaces across Oklahoma.`}
 >
   <PageHero
     eyebrow="About"
-    title="About Stone Coating & Resinous"
-    subtitle="Professional flooring renovation solutions for residential, commercial, and industrial spaces across Oklahoma."
+    title={`${site.yearsExperience}+ years of commercial flooring expertise across Oklahoma`}
+    subtitle="Stone Coating & Resinous specializes in commercial, industrial, and specialty flooring systems engineered for durability, performance, and long-term value."
   />
 
   <!-- Story — White -->
   <section class="py-20 md:py-28 bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12 items-start">
       <div class="lg:col-span-5">
-        <SectionHeading tone="light" eyebrow="Our Story" title="Built on Preparation, Performance, and Premium Finish" />
+        <SectionHeading
+          tone="light"
+          eyebrow="Our Story"
+          title="Built on Preparation, Performance, and Premium Finish"
+        />
+        <div class="mt-8 grid grid-cols-2 gap-4">
+          <div class="relative overflow-hidden rounded-lg border border-silver bg-ice-gray p-5">
+            <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
+            <p class="font-heading font-bold text-3xl md:text-4xl bg-gradient-to-r from-royal-blue to-sky-blue bg-clip-text text-transparent">
+              {site.yearsExperience}+
+            </p>
+            <p class="mt-2 text-xs uppercase tracking-[0.22em] font-semibold text-navy">
+              Years of experience
+            </p>
+          </div>
+          <div class="relative overflow-hidden rounded-lg border border-silver bg-ice-gray p-5">
+            <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
+            <p class="font-heading font-bold text-3xl md:text-4xl bg-gradient-to-r from-royal-blue to-sky-blue bg-clip-text text-transparent">
+              {industriesServed.length}
+            </p>
+            <p class="mt-2 text-xs uppercase tracking-[0.22em] font-semibold text-navy">
+              Industries served
+            </p>
+          </div>
+        </div>
       </div>
       <div class="lg:col-span-7 text-ink/80 text-lg leading-relaxed space-y-5">
         <p>
-          Stone Coating &amp; Resinous was created to provide property owners, contractors, and businesses with durable, professional flooring systems that improve both appearance and performance.
+          With over {site.yearsExperience} years of experience in the commercial flooring industry, Stone Coating &amp; Resinous has built a reputation for delivering high-quality flooring solutions designed for durability, performance, and long-term value. Our team specializes in commercial, industrial, and specialty flooring systems tailored to meet the demands of healthcare facilities, manufacturing plants, retail environments, schools, warehouses, fitness centers, and corporate spaces.
         </p>
         <p>
-          Our work focuses on proper preparation, high-quality materials, clean installation, and long-term value. Every project is matched to its environment — residential garage, commercial showroom, industrial warehouse — and built to hold up to the way that space is actually used.
+          We take pride in combining industry expertise, professional craftsmanship, and high-performance materials to provide flooring systems that not only perform under heavy use but also enhance the appearance and functionality of every facility we work in.
+        </p>
+        <p>
+          We are committed to professionalism, clear communication, and building long-term relationships with our clients by consistently delivering projects on time and with attention to detail.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Mission — Deep navy -->
+  <!-- Industries we serve — Ice gray strip -->
+  <section class="py-16 md:py-20 bg-ice-gray">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <SectionHeading
+        tone="light"
+        align="center"
+        eyebrow="Industries We Serve"
+        title="Commercial flooring tailored to the demands of each environment"
+      />
+      <ul class="mt-12 flex flex-wrap justify-center gap-3">
+        {industriesServed.map((industry) => (
+          <li class="inline-flex px-5 py-2 rounded-full border border-silver bg-white text-sm text-navy/85 font-heading font-medium shadow-[0_4px_14px_rgba(11,31,58,0.06)]">
+            {industry}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Mission + Preparation-first — Deep navy -->
   <section class="relative py-20 md:py-28 bg-navy overflow-hidden">
     <div
       class="absolute inset-0 pointer-events-none"
@@ -42,24 +95,99 @@ import { values, whyChooseUs } from '../data/site';
     ></div>
     <div class="relative max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
       <div class="lg:col-span-5">
-        <SectionHeading eyebrow="Mission" title="Surfaces Built for Performance and Long-Term Value" />
+        <SectionHeading
+          eyebrow="Preparation First"
+          title="Every project begins with the right substrate"
+        />
       </div>
-      <div class="lg:col-span-7 text-ice-gray/85 text-lg leading-relaxed">
+      <div class="lg:col-span-7 text-ice-gray/85 text-lg leading-relaxed space-y-5">
         <p>
-          To deliver professional flooring renovation systems that protect, enhance, and transform concrete surfaces for homes, businesses, and industrial spaces.
+          At Stone Coating &amp; Resinous, we understand that every project begins with proper preparation. That's why we emphasize concrete preparation, moisture testing, substrate correction, and installation standards that ensure long-lasting flooring performance.
+        </p>
+        <p>
+          From decorative commercial finishes to heavy-duty industrial systems, our goal is to deliver dependable solutions that meet the highest standards of quality, safety, and craftsmanship.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Values — Ice gray (light) -->
+  <!-- Capabilities — White, two-column list -->
+  <section class="py-20 md:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <SectionHeading
+        tone="light"
+        eyebrow="Capabilities"
+        title="A complete range of commercial flooring systems"
+        description="Our experience covers a wide range of flooring applications and surface preparation services."
+      />
+      <ul class="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {capabilities.map((c) => (
+          <li class="relative flex items-start gap-3 rounded-lg border border-silver bg-ice-gray px-5 py-4 hover:border-sky-blue/50 hover:bg-white hover:shadow-gloss-card transition-all duration-300">
+            <span class="mt-2 w-1.5 h-1.5 rounded-full bg-royal-blue shrink-0" aria-hidden="true"></span>
+            <span class="text-navy text-sm leading-relaxed">{c}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Our Team — Hero gradient -->
+  <section class="relative py-20 md:py-28 bg-hero-gradient overflow-hidden">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      aria-hidden="true"
+      style="background: radial-gradient(ellipse at 50% 0%, rgba(77,184,255,0.22), transparent 55%);"
+    ></div>
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+      <SectionHeading
+        eyebrow="Our Team"
+        title="The people behind every quote and install"
+        description="Talk to us directly about your project. Each estimator can walk you through system selection, prep requirements, and timing."
+      />
+      <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {team.map((member) => (
+          <article class="group relative overflow-hidden rounded-lg border border-sky-blue/25 bg-deep-blue/40 backdrop-blur-sm p-7 hover:border-sky-blue/60 hover:shadow-gloss-card-dark transition-all duration-300">
+            <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
+            <p class="text-sky-blue text-[11px] font-semibold uppercase tracking-[0.22em]">{member.role}</p>
+            <h3 class="mt-2 font-heading font-semibold text-white text-xl leading-snug">{member.name}</h3>
+            <dl class="mt-6 space-y-3 text-sm">
+              <div>
+                <dt class="text-sky-blue/80 text-[11px] uppercase tracking-[0.22em] font-semibold">Mobile</dt>
+                <dd class="mt-1">
+                  <a
+                    href={`tel:${member.phone.replace(/[^0-9+]/g, '')}`}
+                    class="text-white hover:text-sky-blue transition-colors break-all"
+                  >
+                    {member.phone}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt class="text-sky-blue/80 text-[11px] uppercase tracking-[0.22em] font-semibold">Email</dt>
+                <dd class="mt-1">
+                  <a
+                    href={`mailto:${member.email}`}
+                    class="text-white hover:text-sky-blue transition-colors break-all"
+                  >
+                    {member.email}
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Values — Ice gray -->
   <section class="py-20 md:py-28 bg-ice-gray">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <SectionHeading
         tone="light"
         eyebrow="Values"
         title="What Guides Every Project"
-        description="The standards we apply to every flooring renovation, from a residential garage to an industrial facility."
+        description="The standards we apply to every flooring renovation, from a single tenant build-out to a multi-facility industrial program."
       />
       <ul class="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {values.map((value, idx) => (

@@ -7,10 +7,11 @@ export const site = {
   serviceArea: 'Oklahoma',
   url: 'https://stonecoatingresinous.com',
   contact: {
-    phone: 'To be provided',
-    email: 'To be provided',
-    hours: 'To be provided',
+    phone: '405-200-3145',
+    email: 'Pedro@stonecoatingresinous.com',
+    hours: 'Mon–Fri, 8am–5pm (CT)',
   },
+  yearsExperience: 21,
 };
 
 export const nav = [
@@ -292,6 +293,74 @@ export const propertyTypeOptions = [
 ];
 
 export const contactMethodOptions = ['Phone Call', 'Text Message', 'Email'];
+
+// Full capabilities list shown on the About page. Sourced from the
+// project_update.md "About Us" section provided by the client.
+export const capabilities = [
+  'Polished concrete finishes with multiple sheen levels and aggregate exposure classes',
+  'Sealed and stained concrete systems',
+  'Decorative and restorative concrete overlays',
+  'Epoxy flake flooring systems with integrated cove base',
+  'Epoxy quartz flooring systems with integrated cove base',
+  'Urethane cement and heavy-duty resinous flooring systems',
+  'Single-color epoxy coatings',
+  'Terrazzo restoration and refinishing',
+  'Ceramic tile installation',
+  'Solid hardwood and engineered hardwood flooring',
+  'Luxury Vinyl Tile (LVT)',
+  'Vinyl Composition Tile (VCT)',
+  'Sheet vinyl flooring systems',
+  'Carpet tile and walk-off carpet systems',
+  'Rubber stair tread and landing systems',
+  'Rubber gym and athletic flooring',
+  'Self-leveling underlayments',
+  'Moisture mitigation and concrete remediation systems',
+];
+
+// Industries we serve, used in the About narrative.
+export const industriesServed = [
+  'Healthcare facilities',
+  'Manufacturing plants',
+  'Retail environments',
+  'Schools',
+  'Warehouses',
+  'Fitness centers',
+  'Corporate spaces',
+];
+
+export type TeamMember = {
+  name: string;
+  role: string;
+  phone: string;
+  email: string;
+};
+
+export const team: TeamMember[] = [
+  {
+    name: 'Pedro Carrillo',
+    role: 'Owner',
+    phone: '405-200-3145',
+    email: 'Pedro@stonecoatingresinous.com',
+  },
+  {
+    name: 'Angel Gonzalez',
+    role: 'Estimator',
+    phone: '405-596-0739',
+    email: 'Agonzalez@stonecoatingresinous.com',
+  },
+  {
+    name: 'Pedro Arturo Carrillo',
+    role: 'Estimator',
+    phone: '572-235-3717',
+    email: 'arturo@stonecoatingresinous.com',
+  },
+  {
+    name: 'Victor Carrillo',
+    role: 'Estimator',
+    phone: '405-394-4540',
+    email: 'Victor@stonecoatingresinous.com',
+  },
+];
 
 // Detailed services for the /services page. Each entry maps a folder under
 // /public/images to a service from project_update.md, with 5–7 hand-picked
