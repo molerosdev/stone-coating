@@ -39,22 +39,31 @@ export type Service = {
 };
 
 // Hero background image (full-bleed). Replace with a real Stone Coating photo when available.
-export const heroImage: string | undefined = '/images/hero.avif';
+// Homepage hero — designer commercial space with reflective polished concrete.
+export const heroImage: string | undefined = '/images/Polished%20concrete/16.jpeg';
 
-// Pool of stock flooring photos (currently temporary stand-ins until real Stone Coating photos arrive).
-// To rearrange which photo appears under which service or project, reorder the entries below
-// or change the index used in the `services` / `projectPlaceholders` arrays.
-const stock = [
-  '/images/photo-1559252092-7a9cc9ef1933.avif',
-  '/images/photo-1603143996993-8168264f15b8.avif',
-  '/images/photo-1646618697079-3de96be2af49.avif',
-  '/images/photo-1724477271249-6bf04c50c74c.avif',
-  '/images/photo-1754073169000-7669259b9b52.avif',
-  '/images/photo-1771678040129-477a44bd37ea.avif',
-  '/images/photo-1772305336606-989a457ffbae.avif',
-  '/images/photo-1772306814076-ff65f53ac438.avif',
-  '/images/premium_photo-1678447713711-b21041bc4447.avif',
-];
+// Customer photos used on the homepage (services preview + projects gallery).
+// Picks deliberately avoid every file already shown on the /services page,
+// so the home page surfaces fresh work. Folder names with spaces are
+// URL-encoded so they resolve on Cloudflare Pages.
+const homepageMedia = {
+  polishedWarehouse:     '/images/Polished%20concrete/7.jpeg',
+  polishedWarehouseAlt:  '/images/Polished%20concrete/8.jpeg',
+  polishedTanReflective: '/images/Polished%20concrete/10.jpeg',
+  polishedAggregate:     '/images/Polished%20concrete/12.jpeg',
+  polishedPatio:         '/images/Polished%20concrete/14.jpeg',
+  metallicFlow:          '/images/metalicos/3.jpeg',
+  metallicShop:          '/images/metalicos/4.jpeg',
+  metallicGarageBlue:    '/images/metalicos/9.jpeg',
+  metallicShowroom:      '/images/metalicos/16.jpeg',
+  stoneCoatingKitchen:   '/images/Stone%20coating/IMG_6941.jpeg',
+  stoneCoatingInlay:     '/images/Stone%20coating/IMG_9370.jpeg',
+  garageEpoxyBlue:       '/images/Stone/IMG_7208.jpeg',
+  hardwoodEntry:         '/images/Stone/IMG_7209.jpeg',
+  commercialCorridor:    '/images/Stone/IMG_7211.jpeg',
+  quartzHallway:         '/images/Epoxy%20flake%20and%20Quartz/5.jpeg',
+  brandedCommercial:     '/images/Epoxy%20flake%20and%20Quartz/14.jpeg',
+};
 
 export const services: Service[] = [
   {
@@ -63,7 +72,7 @@ export const services: Service[] = [
     short: 'High-performance epoxy systems engineered for durability, easy maintenance, and a clean professional finish.',
     useCases: ['Garages', 'Warehouses', 'Commercial spaces', 'Retail spaces', 'Industrial floors'],
     benefits: ['Durable', 'Easy to clean', 'Professional finish', 'Stain resistant', 'High-performance surface'],
-    image: stock[0],
+    image: homepageMedia.metallicGarageBlue,
   },
   {
     slug: 'stone-coating',
@@ -71,7 +80,7 @@ export const services: Service[] = [
     short: 'Decorative stone-textured finishes that transform patios, walkways, and entrances with premium appearance.',
     useCases: ['Patios', 'Decorative concrete', 'Walkways', 'Outdoor living spaces', 'Commercial entrances'],
     benefits: ['Decorative finish', 'Premium stone appearance', 'Durable surface', 'Improved curb appeal'],
-    image: stock[1],
+    image: homepageMedia.stoneCoatingKitchen,
   },
   {
     slug: 'resinous-flooring',
@@ -79,7 +88,7 @@ export const services: Service[] = [
     short: 'Seamless resinous systems built for chemical resistance, longevity, and easy maintenance in demanding environments.',
     useCases: ['Commercial buildings', 'Industrial spaces', 'Medical offices', 'Kitchens', 'High-traffic areas'],
     benefits: ['Seamless finish', 'Strong surface protection', 'Chemical resistance depending on system', 'Easy maintenance'],
-    image: stock[2],
+    image: homepageMedia.quartzHallway,
   },
   {
     slug: 'polished-concrete',
@@ -87,7 +96,7 @@ export const services: Service[] = [
     short: 'Refined polished concrete for a modern, low-maintenance surface that reads corporate and clean.',
     useCases: ['Retail stores', 'Offices', 'Warehouses', 'Showrooms', 'Modern residential interiors'],
     benefits: ['Modern appearance', 'Long-lasting', 'Low maintenance', 'Clean corporate look'],
-    image: stock[3],
+    image: homepageMedia.polishedWarehouse,
   },
   {
     slug: 'concrete-sealing',
@@ -95,7 +104,7 @@ export const services: Service[] = [
     short: 'Protective sealing that shields concrete from staining, weather, and wear while enhancing appearance.',
     useCases: ['Driveways', 'Patios', 'Walkways', 'Commercial concrete', 'Exterior concrete surfaces'],
     benefits: ['Surface protection', 'Helps reduce staining', 'Helps extend surface life', 'Enhances appearance'],
-    image: stock[4],
+    image: homepageMedia.polishedWarehouseAlt,
   },
   {
     slug: 'garage-floor-coating',
@@ -103,7 +112,7 @@ export const services: Service[] = [
     short: 'Garage floor coatings that resist stains, hold up to daily use, and deliver a clean professional finish.',
     useCases: ['Residential garages', 'Workshop spaces', 'Storage areas'],
     benefits: ['Cleaner look', 'Easier maintenance', 'Better resistance to stains', 'Professional finish'],
-    image: stock[5],
+    image: homepageMedia.garageEpoxyBlue,
   },
   {
     slug: 'commercial-flooring',
@@ -111,7 +120,7 @@ export const services: Service[] = [
     short: 'Flooring systems specified for business environments — built for traffic, appearance, and longevity.',
     useCases: ['Offices', 'Retail', 'Restaurants', 'Salons', 'Medical spaces', 'Warehouses'],
     benefits: ['Durable', 'Professional appearance', 'Designed for traffic', 'Custom system options'],
-    image: stock[6],
+    image: homepageMedia.brandedCommercial,
   },
   {
     slug: 'patio-pool-deck-coating',
@@ -119,7 +128,7 @@ export const services: Service[] = [
     short: 'Decorative outdoor coatings that protect concrete and elevate the appearance of patios and pool decks.',
     useCases: ['Outdoor patios', 'Pool decks', 'Entertainment areas', 'Walkways'],
     benefits: ['Decorative finish', 'Surface protection', 'Outdoor durability', 'Improved appearance'],
-    image: stock[7],
+    image: homepageMedia.polishedPatio,
   },
   {
     slug: 'driveway-coating',
@@ -127,7 +136,7 @@ export const services: Service[] = [
     short: 'Driveway coatings engineered for curb appeal and long-term protection of exterior concrete surfaces.',
     useCases: ['Residential driveways', 'Commercial entrances', 'Exterior concrete'],
     benefits: ['Improved curb appeal', 'Added surface protection', 'Cleaner finish', 'Longer-lasting appearance'],
-    image: stock[8],
+    image: homepageMedia.polishedTanReflective,
   },
   {
     slug: 'concrete-repair',
@@ -135,7 +144,7 @@ export const services: Service[] = [
     short: 'Concrete repair that restores damaged surfaces and prepares them for a coating, sealing, or finishing system.',
     useCases: ['Cracks', 'Surface damage', 'Spalling', 'Uneven or worn concrete'],
     benefits: ['Prepares surface for coating', 'Improves safety', 'Restores appearance', 'Helps extend flooring system life'],
-    image: stock[0],
+    image: homepageMedia.metallicShowroom,
   },
 ];
 
@@ -258,15 +267,15 @@ export type Project = {
 };
 
 export const projectPlaceholders: Project[] = [
-  { title: 'Garage Floor Renovation', category: 'Garage Floors', service: 'Epoxy Flooring', location: 'Oklahoma', type: 'Residential', image: stock[5] },
-  { title: 'Warehouse Flooring System', category: 'Industrial', service: 'Resinous Flooring', location: 'Oklahoma', type: 'Industrial', image: stock[2] },
-  { title: 'Showroom Polished Concrete', category: 'Polished Concrete', service: 'Polished Concrete', location: 'Oklahoma', type: 'Commercial', image: stock[3] },
-  { title: 'Backyard Patio Finish', category: 'Patio / Pool Deck', service: 'Stone Coating', location: 'Oklahoma', type: 'Residential', image: stock[1] },
-  { title: 'Pool Deck Resurfacing', category: 'Patio / Pool Deck', service: 'Patio & Pool Deck Coating', location: 'Oklahoma', type: 'Residential', image: stock[7] },
-  { title: 'Retail Floor Refinish', category: 'Commercial', service: 'Commercial Flooring', location: 'Oklahoma', type: 'Commercial', image: stock[6] },
-  { title: 'Driveway Coating Project', category: 'Driveway', service: 'Driveway Coating', location: 'Oklahoma', type: 'Residential', image: stock[8] },
-  { title: 'Concrete Crack Repair', category: 'Concrete Repair', service: 'Concrete Repair', location: 'Oklahoma', type: 'Commercial', image: stock[0] },
-  { title: 'Commercial Entrance Stone Coating', category: 'Stone Coating', service: 'Stone Coating', location: 'Oklahoma', type: 'Commercial', image: stock[4] },
+  { title: 'Decorative Garage Floor', category: 'Garage Floors', service: 'Epoxy Flooring', location: 'Oklahoma', type: 'Residential', image: homepageMedia.metallicFlow },
+  { title: 'Commercial Corridor Renovation', category: 'Industrial', service: 'Carpet Tile', location: 'Oklahoma', type: 'Commercial', image: homepageMedia.commercialCorridor },
+  { title: 'Showroom Polished Concrete', category: 'Polished Concrete', service: 'Polished Concrete', location: 'Oklahoma', type: 'Commercial', image: homepageMedia.polishedAggregate },
+  { title: 'Decorative Stone Inlay Floor', category: 'Stone Coating', service: 'Stone Coating', location: 'Oklahoma', type: 'Commercial', image: homepageMedia.stoneCoatingInlay },
+  { title: 'Hardwood Residential Entry', category: 'Residential', service: 'Hardwood', location: 'Oklahoma', type: 'Residential', image: homepageMedia.hardwoodEntry },
+  { title: 'Tattoo Studio Metallic Epoxy', category: 'Commercial', service: 'Metallic Epoxy', location: 'Oklahoma', type: 'Commercial', image: homepageMedia.metallicShop },
+  { title: 'Branded Commercial Floor', category: 'Commercial', service: 'Epoxy Coating', location: 'Oklahoma', type: 'Commercial', image: homepageMedia.brandedCommercial },
+  { title: 'Premium Polished Patio', category: 'Patio / Pool Deck', service: 'Polished Concrete', location: 'Oklahoma', type: 'Residential', image: homepageMedia.polishedPatio },
+  { title: 'Premium Showroom Lobby', category: 'Commercial', service: 'Polished Concrete', location: 'Oklahoma', type: 'Commercial', image: homepageMedia.polishedWarehouseAlt },
 ];
 
 export const serviceWantedOptions = [
