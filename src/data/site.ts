@@ -487,11 +487,19 @@ export const flooringServices: FlooringService[] = [
     slug: 'carpet-tile-wood',
     title: 'Carpet, Tile & Wood',
     blurb:
-      'Modular carpet tile, ceramic tile, and hardwood / engineered hardwood systems for offices, retail, hospitality, multifamily, and institutional environments.',
+      'Modular carpet tile, ceramic and porcelain tile, and hardwood / engineered hardwood systems for offices, retail, hospitality, multifamily, and institutional environments.',
     details:
       'Includes carpet tile and walk-off systems, ceramic and porcelain tile, solid and engineered hardwood, LVT, VCT, and sheet vinyl — matched to traffic, hygiene, and design requirements.',
     folder: 'Carpet, Tile and wood',
-    images: [],
+    images: [
+      'WhatsApp Image 2026-05-13 at 3.39.49 PM (13).jpeg',
+      'WhatsApp Image 2026-05-13 at 3.39.50 PM (1).jpeg',
+      'WhatsApp Image 2026-05-13 at 3.39.49 PM (5).jpeg',
+      'WhatsApp Image 2026-05-13 at 3.39.49 PM (4).jpeg',
+      'WhatsApp Image 2026-05-13 at 3.39.47 PM.jpeg',
+      'WhatsApp Image 2026-05-13 at 3.39.49 PM.jpeg',
+      'WhatsApp Image 2026-05-13 at 3.39.50 PM (9).jpeg',
+    ],
     applications: ['Offices', 'Retail', 'Hospitality', 'Multifamily', 'Healthcare'],
     highlights: [
       'Full range of soft and hard surface options',

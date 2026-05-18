@@ -7,6 +7,18 @@ import { flooringServices } from '../data/site';
 
 const imageUrl = (folder: string, file: string) =>
   `/images/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
+
+// Map service slug -> ordered list of full image URLs. Injected as JSON so
+// the client-side lightbox can navigate within a single service's gallery.
+const galleryData = Object.fromEntries(
+  flooringServices.map((s) => [
+    s.slug,
+    {
+      title: s.title,
+      images: s.images.map((file) => imageUrl(s.folder, file)),
+    },
+  ]),
+);
 ---
 
 <BaseLayout
@@ -162,18 +174,18 @@ const imageUrl = (folder: string, file: string) =>
                   {service.images.length > 0 ? (
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                       {service.images.map((file, i) => (
-                        <a
-                          href={imageUrl(service.folder, file)}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          type="button"
+                          data-gallery={service.slug}
+                          data-index={i}
                           class:list={[
-                            'group relative overflow-hidden rounded-lg block',
-                            'border',
+                            'gallery-thumb group relative overflow-hidden rounded-lg block text-left cursor-zoom-in',
+                            'border focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-blue',
                             dark ? 'border-sky-blue/25' : 'border-silver',
                             // First image spans 2 cols on small/sm grids for a hero tile.
                             i === 0 ? 'col-span-2 row-span-2 aspect-[4/3]' : 'aspect-square',
                           ]}
-                          aria-label={`Open ${service.title} photo ${i + 1}`}
+                          aria-label={`Open ${service.title} photo ${i + 1} of ${service.images.length}`}
                         >
                           <img
                             src={imageUrl(service.folder, file)}
@@ -185,7 +197,7 @@ const imageUrl = (folder: string, file: string) =>
                           <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                           <span class="absolute inset-0 bg-gradient-to-t from-navy/55 via-navy/0 to-transparent opacity-90 group-hover:from-royal-blue/55 transition-all duration-500"></span>
                           <span class="absolute inset-0 bg-card-shine opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true"></span>
-                        </a>
+                        </button>
                       ))}
                     </div>
                   ) : (
@@ -212,4 +224,172 @@ const imageUrl = (folder: string, file: string) =>
   </div>
 
   <CTASection />
+
+  <!-- Lightbox modal — shared across all service galleries -->
+  <div
+    id="gallery-modal"
+    class="fixed inset-0 z-[70] hidden items-center justify-center bg-navy/95 backdrop-blur-md p-4 md:p-8"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="gallery-modal-title"
+  >
+    <!-- Top bar -->
+    <div class="absolute inset-x-0 top-0 flex items-center justify-between gap-4 px-4 md:px-8 py-4 md:py-6 text-white">
+      <div class="min-w-0">
+        <p id="gallery-modal-title" class="font-heading font-semibold text-base md:text-lg truncate"></p>
+        <p id="gallery-modal-count" class="text-sky-blue text-xs md:text-sm uppercase tracking-[0.22em] font-semibold mt-1"></p>
+      </div>
+      <button
+        id="gallery-modal-close"
+        type="button"
+        class="shrink-0 inline-flex items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 transition-colors"
+        aria-label="Close gallery"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M6 6l12 12M18 6l-12 12" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Prev / Next buttons -->
+    <button
+      id="gallery-prev"
+      type="button"
+      class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+      aria-label="Previous photo"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+    <button
+      id="gallery-next"
+      type="button"
+      class="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+      aria-label="Next photo"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+
+    <!-- Image -->
+    <figure class="relative max-w-6xl w-full max-h-[80vh] flex items-center justify-center">
+      <img
+        id="gallery-modal-image"
+        src=""
+        alt=""
+        class="max-h-[80vh] w-auto max-w-full object-contain rounded-lg shadow-gloss-glow"
+      />
+    </figure>
+  </div>
+
+  <!-- Gallery data injected for the lightbox JS -->
+  <script id="gallery-data" type="application/json" set:html={JSON.stringify(galleryData)}></script>
 </BaseLayout>
+
+<script>
+  type GalleryEntry = { title: string; images: string[] };
+
+  const dataEl = document.getElementById('gallery-data');
+  const data: Record<string, GalleryEntry> = dataEl?.textContent ? JSON.parse(dataEl.textContent) : {};
+
+  const modal = document.getElementById('gallery-modal');
+  const image = document.getElementById('gallery-modal-image') as HTMLImageElement | null;
+  const titleEl = document.getElementById('gallery-modal-title');
+  const countEl = document.getElementById('gallery-modal-count');
+  const closeBtn = document.getElementById('gallery-modal-close');
+  const prevBtn = document.getElementById('gallery-prev') as HTMLButtonElement | null;
+  const nextBtn = document.getElementById('gallery-next') as HTMLButtonElement | null;
+
+  let currentSlug: string | null = null;
+  let currentIndex = 0;
+
+  const render = () => {
+    if (!currentSlug) return;
+    const entry = data[currentSlug];
+    if (!entry || entry.images.length === 0) return;
+    const total = entry.images.length;
+    // Wrap-around so prev/next always advance.
+    currentIndex = ((currentIndex % total) + total) % total;
+    if (image) {
+      image.src = entry.images[currentIndex];
+      image.alt = `${entry.title} – project ${currentIndex + 1}`;
+    }
+    if (titleEl) titleEl.textContent = entry.title;
+    if (countEl) countEl.textContent = `${currentIndex + 1} / ${total}`;
+  };
+
+  const open = (slug: string, index: number) => {
+    if (!modal || !data[slug]) return;
+    currentSlug = slug;
+    currentIndex = index;
+    render();
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const close = () => {
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    currentSlug = null;
+    if (image) image.src = '';
+  };
+
+  const prev = () => {
+    if (!currentSlug) return;
+    currentIndex -= 1;
+    render();
+  };
+  const next = () => {
+    if (!currentSlug) return;
+    currentIndex += 1;
+    render();
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('.gallery-thumb').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const slug = btn.dataset.gallery;
+      const idx = Number(btn.dataset.index ?? '0');
+      if (slug) open(slug, idx);
+    });
+  });
+
+  closeBtn?.addEventListener('click', close);
+  prevBtn?.addEventListener('click', prev);
+  nextBtn?.addEventListener('click', next);
+
+  // Click background to close, but ignore clicks on the controls / image.
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) close();
+  });
+
+  // Keyboard: Esc to close, arrows to navigate.
+  document.addEventListener('keydown', (e) => {
+    if (!currentSlug) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') prev();
+    else if (e.key === 'ArrowRight') next();
+  });
+
+  // Touch swipe navigation on the modal image.
+  let touchStartX = 0;
+  let touchStartY = 0;
+  modal?.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+  }, { passive: true });
+  modal?.addEventListener('touchend', (e) => {
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) next();
+      else prev();
+    }
+  });
+</script>
