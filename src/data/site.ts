@@ -39,8 +39,8 @@ export type Service = {
 };
 
 // Hero background image (full-bleed). Replace with a real Stone Coating photo when available.
-// Homepage hero — designer commercial space with reflective polished concrete.
-export const heroImage: string | undefined = '/images/Polished%20concrete/16.jpeg';
+// Homepage hero — the original stock flooring shot the client preferred.
+export const heroImage: string | undefined = '/images/hero.avif';
 
 // Customer photos used on the homepage (services preview + projects gallery).
 // Picks deliberately avoid every file already shown on the /services page,
