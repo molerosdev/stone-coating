@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FAQ from '../components/FAQ.astro';
 import {
   contactMethodOptions,
   propertyTypeOptions,
@@ -200,6 +202,21 @@ const labelClass =
           </ol>
         </div>
       </aside>
+    </div>
+  </section>
+
+  <!-- FAQ — White, sits at the bottom of the contact page -->
+  <section class="py-20 md:py-28 bg-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-10">
+      <SectionHeading
+        tone="light"
+        eyebrow="FAQ"
+        title="Frequently Asked Questions"
+        description="Common questions about our flooring renovation services."
+      />
+      <div class="mt-12">
+        <FAQ tone="light" />
+      </div>
     </div>
   </section>
 </BaseLayout>
