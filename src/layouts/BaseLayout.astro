@@ -71,6 +71,20 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
       html { scroll-behavior: smooth; }
       ::selection { background-color: #145CFF; color: #FFFFFF; }
 
+      /* Justify large body paragraphs site-wide. Targets paragraphs that
+         are themselves large (text-lg / text-xl) or live inside a container
+         with that size set, while leaving headings and small captions
+         flush left. Hyphenation cleans up the rivers on narrow columns. */
+      main p.text-lg,
+      main p.text-xl,
+      main .text-lg > p,
+      main .text-xl > p {
+        text-align: justify;
+        hyphens: auto;
+        -webkit-hyphens: auto;
+        text-justify: inter-word;
+      }
+
       [data-reveal] {
         opacity: 0;
         transform: translateY(24px);
