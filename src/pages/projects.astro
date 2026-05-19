@@ -2,145 +2,156 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import CTASection from '../components/CTASection.astro';
-import { projectCategories, projectPlaceholders } from '../data/site';
+import { projects } from '../data/site';
+
+// Serialise the project data so the modal controller can look up
+// details + carousel images by slug without crawling the DOM.
+const projectData = Object.fromEntries(projects.map((p) => [p.slug, p]));
 ---
 
 <BaseLayout
   title="Flooring Project Gallery | Stone Coating & Resinous Oklahoma"
-  description="Explore residential, commercial, and industrial flooring renovation projects completed by Stone Coating & Resinous across Oklahoma."
+  description="Explore eight recent flooring projects completed by Stone Coating & Resinous — polished concrete, epoxy flake, metallic epoxy, stone coating, terrazzo restoration, and more, across Oklahoma."
 >
   <PageHero
     eyebrow="Project Gallery"
     title="Flooring Projects Across Oklahoma"
-    subtitle="Explore residential, commercial, and industrial flooring renovation projects completed by Stone Coating & Resinous."
+    subtitle="A selection of recent commercial and industrial flooring projects. Click any project to see the full carousel and process details."
   />
 
-  <section class="py-16 md:py-24 bg-white">
+  <section class="relative py-16 md:py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <!-- Filters -->
-      <div class="rounded-lg border border-silver bg-ice-gray p-2 shadow-gloss-card">
-        <ul id="project-filters" class="flex flex-wrap gap-1" role="tablist">
-          {
-            projectCategories.map((cat, idx) => (
-              <li>
-                <button
-                  type="button"
-                  class:list={[
-                    'project-filter px-4 py-2 rounded-full text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300',
-                    idx === 0
-                      ? 'bg-button-gradient text-white shadow-gloss-button'
-                      : 'text-navy/70 hover:text-royal-blue hover:bg-white',
-                  ]}
-                  data-filter={cat}
-                  aria-pressed={idx === 0 ? 'true' : 'false'}
-                >
-                  {cat}
-                </button>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <!-- Grid -->
-      <div id="project-grid" class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- 8-card grid (4 col desktop / 2 col tablet / 1 col mobile) -->
+      <div
+        id="project-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
+      >
         {
-          projectPlaceholders.map((p) => (
-            <article
-              class="project-card group relative overflow-hidden rounded-lg border border-silver bg-white shadow-gloss-card hover:-translate-y-1 hover:shadow-gloss-glow hover:border-sky-blue/50 transition-all duration-300 flex flex-col cursor-pointer"
-              data-category={p.category}
-              data-type={p.type}
-              data-title={p.title}
-              data-service={p.service}
-              data-location={p.location}
-              data-image={p.image ?? ''}
+          projects.map((p) => (
+            <button
+              type="button"
+              data-slug={p.slug}
+              class="project-card group relative overflow-hidden rounded-lg border border-silver bg-white shadow-gloss-card hover:-translate-y-1 hover:shadow-gloss-glow hover:border-sky-blue/50 transition-all duration-300 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-blue cursor-pointer"
+              aria-label={`Open project details: ${p.title}`}
             >
-              <span class="absolute top-0 left-0 right-0 h-[3px] bg-gloss-accent z-10"></span>
-              <div class="relative aspect-[4/3] overflow-hidden bg-deep-blue">
-                {p.image ? (
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : (
-                  <div class="absolute inset-0 bg-dark-card flex items-end p-5">
-                    <span class="text-sky-blue/60 font-heading text-[10px] tracking-[0.28em] uppercase">Photo Coming Soon</span>
-                  </div>
-                )}
-                <div class="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/10 to-transparent group-hover:from-royal-blue/55 group-hover:via-royal-blue/10 transition-all duration-500"></div>
-                <div class="absolute inset-0 bg-card-shine opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <span class="absolute top-0 left-0 right-0 h-[3px] bg-gloss-accent z-10" aria-hidden="true"></span>
+              <div class="relative aspect-square overflow-hidden bg-deep-blue">
+                <img
+                  src={p.coverImage}
+                  alt={p.title}
+                  loading="lazy"
+                  decoding="async"
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                />
+                <!-- Blue hover overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/30 to-transparent group-hover:from-royal-blue/75 group-hover:via-royal-blue/25 transition-all duration-500"></div>
+                <div class="absolute inset-0 bg-card-shine opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true"></div>
+                <!-- Title overlay -->
+                <div class="absolute inset-x-0 bottom-0 p-5">
+                  <p class="text-sky-blue text-[10px] font-semibold uppercase tracking-[0.28em]">{p.serviceType}</p>
+                  <h3 class="mt-2 font-heading font-semibold text-white text-base md:text-lg leading-snug">
+                    {p.title}
+                  </h3>
+                </div>
               </div>
-              <div class="p-6 flex-1 flex flex-col">
-                <p class="text-royal-blue text-[10px] font-semibold uppercase tracking-[0.28em]">{p.type}</p>
-                <h3 class="mt-3 font-heading font-semibold text-navy text-lg leading-snug">{p.title}</h3>
-                <p class="mt-2 text-ink/70 text-sm flex-1">
-                  {p.service} &middot; {p.location}
-                </p>
-                <span class="mt-4 inline-flex items-center text-royal-blue text-[11px] font-semibold uppercase tracking-[0.24em]">
-                  View Details <span class="ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
-                </span>
-              </div>
-            </article>
+            </button>
           ))
         }
       </div>
-
-      <p
-        id="project-empty"
-        class="hidden mt-12 text-center text-ink/60 italic"
-      >
-        No projects in this category yet. Real project photos and videos will be added soon.
-      </p>
-
-      <p class="mt-16 text-ink/60 text-sm italic text-center max-w-2xl mx-auto">
-        Real project photos and videos coming soon. Below is a preview of the type of work we deliver.
-      </p>
     </div>
   </section>
 
-  <!-- Lightbox modal -->
+  <!-- Project modal — white background per DESIGN.md Option A -->
   <div
     id="project-modal"
-    class="fixed inset-0 z-[60] hidden items-center justify-center bg-navy/90 backdrop-blur-sm p-6"
+    class="fixed inset-0 z-[70] hidden items-center justify-center bg-navy/85 backdrop-blur-md p-4 md:p-8 opacity-0 transition-opacity duration-200"
     role="dialog"
     aria-modal="true"
-    aria-labelledby="project-modal-title"
+    aria-labelledby="modal-title"
+    aria-hidden="true"
   >
-    <button
-      id="project-modal-close"
-      type="button"
-      class="absolute top-6 right-6 w-10 h-10 inline-flex items-center justify-center text-white hover:text-sky-blue"
-      aria-label="Close"
+    <div
+      id="project-modal-card"
+      class="relative w-full max-w-6xl max-h-[92vh] overflow-hidden rounded-xl bg-white shadow-gloss-glow flex flex-col lg:flex-row scale-95 transition-transform duration-200"
     >
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M6 6l12 12M18 6l-12 12" stroke-linecap="square" />
-      </svg>
-    </button>
-    <div class="relative overflow-hidden rounded-lg bg-white border border-silver max-w-2xl w-full p-8 md:p-10 shadow-gloss-glow">
-      <span class="absolute top-0 left-0 right-0 h-[3px] bg-gloss-accent"></span>
-      <p id="project-modal-eyebrow" class="text-royal-blue text-[11px] font-semibold uppercase tracking-[0.22em]"></p>
-      <h2 id="project-modal-title" class="mt-2 font-heading font-semibold text-navy text-2xl md:text-3xl leading-tight tracking-tight"></h2>
-      <p id="project-modal-meta" class="mt-3 text-ink/70 text-sm"></p>
-      <div id="project-modal-image" class="mt-8 relative aspect-video overflow-hidden rounded-md bg-deep-blue">
-        <div class="modal-empty absolute inset-0 bg-dark-card flex items-end p-5">
-          <span class="text-sky-blue/60 font-heading text-[10px] tracking-[0.28em] uppercase">Photo Coming Soon</span>
+      <!-- Close button (positioned over the carousel area on desktop) -->
+      <button
+        id="modal-close"
+        type="button"
+        class="absolute top-3 right-3 z-20 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/95 text-navy hover:bg-white hover:text-royal-blue shadow-gloss-card border border-silver transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-blue"
+        aria-label="Close project modal"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M6 6l12 12M18 6l-12 12" stroke-linecap="round" />
+        </svg>
+      </button>
+
+      <!-- LEFT: Project details (navy panel) -->
+      <div class="lg:w-2/5 bg-dark-card text-white p-7 md:p-9 overflow-y-auto">
+        <span class="block w-12 h-px bg-gloss-accent" aria-hidden="true"></span>
+        <p id="modal-service-type" class="mt-5 text-sky-blue text-xs font-semibold uppercase tracking-[0.3em]"></p>
+        <h2 id="modal-title" class="mt-3 font-heading font-semibold text-2xl md:text-3xl leading-tight tracking-tight"></h2>
+
+        <div class="mt-7">
+          <h3 class="text-sky-blue text-[11px] font-semibold uppercase tracking-[0.22em]">Project Overview</h3>
+          <p id="modal-description" class="mt-2 text-ice-gray/85 text-sm md:text-base leading-relaxed"></p>
         </div>
-        <img class="modal-photo hidden absolute inset-0 w-full h-full object-cover" alt="" />
-        <div class="absolute inset-0 bg-card-shine pointer-events-none"></div>
+
+        <div class="mt-7">
+          <h3 class="text-sky-blue text-[11px] font-semibold uppercase tracking-[0.22em]">Process Applied</h3>
+          <p id="modal-process" class="mt-2 text-ice-gray/85 text-sm md:text-base leading-relaxed"></p>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-sky-blue/20">
+          <a
+            href="/contact"
+            class="inline-flex items-center px-5 py-3 rounded-full bg-button-gradient text-white text-xs font-semibold uppercase tracking-[0.22em] border border-white/25 shadow-gloss-button hover:shadow-[0_18px_40px_rgba(20,92,255,0.42)] hover:-translate-y-0.5 transition-all duration-300"
+          >
+            Request a Similar Project
+          </a>
+        </div>
       </div>
-      <p class="mt-6 text-ink/75 text-sm leading-relaxed">
-        Detailed project photos, videos, and before-and-after views will be added soon. To inquire about a similar project for your space, request a quote.
-      </p>
-      <div class="mt-8">
-        <a
-          href="/contact"
-          class="inline-flex items-center px-6 py-3 rounded-full bg-button-gradient text-white text-xs font-semibold uppercase tracking-[0.2em] border border-white/25 shadow-gloss-button hover:shadow-[0_18px_40px_rgba(20,92,255,0.42)] hover:-translate-y-0.5 transition-all duration-300"
-        >
-          Request a Similar Project
-        </a>
+
+      <!-- RIGHT: Carousel -->
+      <div class="lg:w-3/5 bg-ice-gray relative flex flex-col">
+        <div class="relative flex-1 min-h-[260px] md:min-h-[420px] lg:min-h-[520px] overflow-hidden">
+          <img
+            id="modal-carousel-image"
+            src=""
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+          />
+          <!-- gloss sheen -->
+          <div class="absolute inset-0 bg-card-shine pointer-events-none" aria-hidden="true"></div>
+
+          <!-- prev / next -->
+          <button
+            id="carousel-prev"
+            type="button"
+            class="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/95 border border-silver text-navy hover:text-royal-blue hover:bg-white shadow-gloss-card transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-blue"
+            aria-label="Previous project image"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <button
+            id="carousel-next"
+            type="button"
+            class="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/95 border border-silver text-navy hover:text-royal-blue hover:bg-white shadow-gloss-card transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-blue"
+            aria-label="Next project image"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- dots + counter -->
+        <div class="flex items-center justify-between gap-4 px-5 md:px-7 py-4 bg-white border-t border-silver">
+          <p id="carousel-counter" class="text-navy text-xs uppercase tracking-[0.22em] font-semibold"></p>
+          <div id="carousel-dots" class="flex items-center gap-2" role="tablist" aria-label="Project images"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -148,86 +159,203 @@ import { projectCategories, projectPlaceholders } from '../data/site';
   <CTASection />
 </BaseLayout>
 
+<script id="projects-data" type="application/json" set:html={JSON.stringify(projectData)}></script>
+
 <script>
-  const filters = document.querySelectorAll<HTMLButtonElement>('.project-filter');
-  const cards = document.querySelectorAll<HTMLElement>('.project-card');
-  const empty = document.getElementById('project-empty');
-
-  const ACTIVE = ['bg-button-gradient', 'text-white', 'shadow-gloss-button'];
-  const INACTIVE = ['text-navy/70', 'hover:text-royal-blue', 'hover:bg-white'];
-
-  const applyFilter = (value: string) => {
-    let visible = 0;
-    cards.forEach((card) => {
-      const match = value === 'All' || card.dataset.category === value;
-      card.classList.toggle('hidden', !match);
-      if (match) visible++;
-    });
-    if (empty) empty.classList.toggle('hidden', visible !== 0);
+  type Project = {
+    id: number;
+    slug: string;
+    title: string;
+    coverImage: string;
+    description: string;
+    process: string;
+    serviceType: string;
+    images: string[];
   };
 
-  filters.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      filters.forEach((other) => {
-        other.classList.remove(...ACTIVE);
-        other.classList.add(...INACTIVE);
-        other.setAttribute('aria-pressed', 'false');
-      });
-      btn.classList.add(...ACTIVE);
-      btn.classList.remove(...INACTIVE);
-      btn.setAttribute('aria-pressed', 'true');
-      applyFilter(btn.dataset.filter ?? 'All');
-    });
-  });
+  const dataEl = document.getElementById('projects-data');
+  const data: Record<string, Project> = dataEl?.textContent ? JSON.parse(dataEl.textContent) : {};
 
-  // Lightbox
   const modal = document.getElementById('project-modal');
-  const modalClose = document.getElementById('project-modal-close');
-  const modalEyebrow = document.getElementById('project-modal-eyebrow');
-  const modalTitle = document.getElementById('project-modal-title');
-  const modalMeta = document.getElementById('project-modal-meta');
+  const card = document.getElementById('project-modal-card');
+  const closeBtn = document.getElementById('modal-close');
+  const titleEl = document.getElementById('modal-title');
+  const serviceTypeEl = document.getElementById('modal-service-type');
+  const descriptionEl = document.getElementById('modal-description');
+  const processEl = document.getElementById('modal-process');
+  const carouselImage = document.getElementById('modal-carousel-image') as HTMLImageElement | null;
+  const prevBtn = document.getElementById('carousel-prev');
+  const nextBtn = document.getElementById('carousel-next');
+  const counterEl = document.getElementById('carousel-counter');
+  const dotsEl = document.getElementById('carousel-dots');
 
-  const openModal = (card: HTMLElement) => {
-    if (!modal || !modalTitle || !modalMeta || !modalEyebrow) return;
-    modalEyebrow.textContent = card.dataset.type ?? '';
-    modalTitle.textContent = card.dataset.title ?? '';
-    modalMeta.textContent = `${card.dataset.service} · ${card.dataset.location}`;
-    const photo = modal.querySelector<HTMLImageElement>('.modal-photo');
-    const emptyEl = modal.querySelector<HTMLElement>('.modal-empty');
-    const src = card.dataset.image;
-    if (photo && emptyEl) {
-      if (src) {
-        photo.src = src;
-        photo.alt = card.dataset.title ?? '';
-        photo.classList.remove('hidden');
-        emptyEl.classList.add('hidden');
-      } else {
-        photo.removeAttribute('src');
-        photo.classList.add('hidden');
-        emptyEl.classList.remove('hidden');
-      }
+  let currentProject: Project | null = null;
+  let currentIndex = 0;
+  let lastFocusedTrigger: HTMLElement | null = null;
+
+  const focusableSelector = [
+    'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+    'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])',
+  ].join(',');
+
+  const renderDots = (count: number) => {
+    if (!dotsEl) return;
+    dotsEl.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.dataset.index = String(i);
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', `Go to image ${i + 1}`);
+      dot.className = [
+        'w-2.5 h-2.5 rounded-full transition-all duration-200',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-blue',
+      ].join(' ');
+      dot.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(dot);
     }
+  };
+
+  const renderImage = () => {
+    if (!currentProject || !carouselImage || !counterEl || !dotsEl) return;
+    const total = currentProject.images.length;
+    if (total === 0) return;
+    currentIndex = ((currentIndex % total) + total) % total;
+
+    carouselImage.style.opacity = '0';
+    requestAnimationFrame(() => {
+      carouselImage.src = currentProject!.images[currentIndex];
+      carouselImage.alt = `${currentProject!.title} – image ${currentIndex + 1}`;
+      requestAnimationFrame(() => { carouselImage.style.opacity = '1'; });
+    });
+
+    counterEl.textContent = `${currentIndex + 1} / ${total}`;
+    Array.from(dotsEl.children).forEach((dot, idx) => {
+      const isActive = idx === currentIndex;
+      (dot as HTMLElement).className = [
+        isActive ? 'w-6 h-2.5 rounded-full bg-royal-blue' : 'w-2.5 h-2.5 rounded-full bg-silver',
+        'transition-all duration-200',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-blue',
+      ].join(' ');
+      dot.setAttribute('aria-selected', String(isActive));
+    });
+
+    // Hide prev/next when only one image
+    [prevBtn, nextBtn].forEach((btn) => {
+      if (btn) btn.classList.toggle('hidden', total <= 1);
+    });
+  };
+
+  const goTo = (idx: number) => {
+    currentIndex = idx;
+    renderImage();
+  };
+  const prev = () => { currentIndex -= 1; renderImage(); };
+  const next = () => { currentIndex += 1; renderImage(); };
+
+  const open = (slug: string, trigger: HTMLElement | null) => {
+    const project = data[slug];
+    if (!project || !modal || !card) return;
+    currentProject = project;
+    currentIndex = 0;
+    lastFocusedTrigger = trigger;
+
+    if (titleEl) titleEl.textContent = project.title;
+    if (serviceTypeEl) serviceTypeEl.textContent = project.serviceType;
+    if (descriptionEl) descriptionEl.textContent = project.description;
+    if (processEl) processEl.textContent = project.process;
+    renderDots(project.images.length);
+    renderImage();
+
     modal.classList.remove('hidden');
     modal.classList.add('flex');
+    modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    // animate in
+    requestAnimationFrame(() => {
+      modal.style.opacity = '1';
+      card.style.transform = 'scale(1)';
+    });
+
+    // Move focus into the modal for accessibility.
+    setTimeout(() => closeBtn?.focus(), 50);
   };
 
-  const closeModal = () => {
-    if (!modal) return;
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    document.body.style.overflow = '';
+  const close = () => {
+    if (!modal || !card) return;
+    modal.style.opacity = '0';
+    card.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      currentProject = null;
+      currentIndex = 0;
+      if (carouselImage) carouselImage.src = '';
+      lastFocusedTrigger?.focus();
+    }, 180);
   };
 
-  cards.forEach((card) => {
-    card.addEventListener('click', () => openModal(card));
+  // Wire up triggers
+  document.querySelectorAll<HTMLButtonElement>('.project-card').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const slug = btn.dataset.slug;
+      if (slug) open(slug, btn);
+    });
   });
 
-  modalClose?.addEventListener('click', closeModal);
+  closeBtn?.addEventListener('click', close);
+  prevBtn?.addEventListener('click', prev);
+  nextBtn?.addEventListener('click', next);
+
+  // Click backdrop to close (ignore clicks inside the modal card).
   modal?.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
+    if (e.target === modal) close();
   });
+
+  // Keyboard support + simple focus trap.
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+    if (!currentProject) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      close();
+    } else if (e.key === 'ArrowLeft') {
+      prev();
+    } else if (e.key === 'ArrowRight') {
+      next();
+    } else if (e.key === 'Tab' && card) {
+      const focusables = card.querySelectorAll<HTMLElement>(focusableSelector);
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  // Touch-swipe inside the carousel area.
+  let touchStartX = 0;
+  let touchStartY = 0;
+  card?.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+  }, { passive: true });
+  card?.addEventListener('touchend', (e) => {
+    if (!currentProject) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) next();
+      else prev();
+    }
   });
 </script>

@@ -255,6 +255,171 @@ export const projectCategories = [
   'Concrete Repair',
 ];
 
+// Folder helper so paths with spaces render correctly on Cloudflare Pages.
+const projectImage = (folder: string, file: string) =>
+  `/images/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
+
+// Interactive project showcase shown on /projects. Each entry has a single
+// cover image and up to 6 carousel images. Data structure per the new PRD
+// in project_update.md.
+export type ProjectShowcase = {
+  id: number;
+  slug: string;
+  title: string;
+  coverImage: string;
+  description: string;
+  process: string;
+  serviceType: string;
+  images: string[];
+};
+
+export const projects: ProjectShowcase[] = [
+  {
+    id: 1,
+    slug: 'polished-concrete-warehouse',
+    title: 'Polished Concrete Warehouse Floor',
+    serviceType: 'Polished Concrete',
+    coverImage: projectImage('Polished concrete', '7.jpeg'),
+    description:
+      'An existing concrete slab refined with progressive diamond polishing to create a durable, low-maintenance surface with excellent light reflectivity for a high-traffic facility.',
+    process:
+      'Mechanical concrete preparation, joint repair, multi-step diamond grind, chemical densifier, and Level 2 polishing for a refined, light-reflective surface.',
+    images: [
+      projectImage('Polished concrete', '7.jpeg'),
+      projectImage('Polished concrete', '8.jpeg'),
+      projectImage('Polished concrete', '10.jpeg'),
+      projectImage('Polished concrete', '11.jpeg'),
+      projectImage('Polished concrete', '12.jpeg'),
+      projectImage('Polished concrete', '16.jpeg'),
+    ],
+  },
+  {
+    id: 2,
+    slug: 'class-c-level-3-polished-concrete',
+    title: 'Class C – Level 3 High-Gloss Polished Concrete',
+    serviceType: 'Polished Concrete',
+    coverImage: projectImage('Class C Level 3 polished concrete', '1.jpeg'),
+    description:
+      'A Level 3 high-gloss "wet look" polish with full Class C aggregate exposure — a premium reflective surface that highlights stone variation for a showroom-grade space.',
+    process:
+      'Aggressive diamond grinding to fully expose the aggregate, chemical densifier, then progressive polishing steps to a Level 3 high-gloss finish.',
+    images: [
+      projectImage('Class C Level 3 polished concrete', '1.jpeg'),
+      projectImage('Class C Level 3 polished concrete', '2.jpeg'),
+      projectImage('Class C Level 3 polished concrete', '3.jpeg'),
+    ],
+  },
+  {
+    id: 3,
+    slug: 'class-c-level-2-antislip',
+    title: 'Class C – Level 2 Polished Concrete with Anti-Slip',
+    serviceType: 'Polished Concrete',
+    coverImage: projectImage('Class C Level 2 polished concrete with antislip', '2.jpeg'),
+    description:
+      'A Level 2 satin polish over Class C aggregate exposure, finished with an anti-slip additive to maintain traction in a busy commercial environment.',
+    process:
+      'Surface prep, Class C aggregate exposure through diamond grinding, densifier, Level 2 polish, and an anti-slip clear topcoat.',
+    images: [
+      projectImage('Class C Level 2 polished concrete with antislip', '1.jpeg'),
+      projectImage('Class C Level 2 polished concrete with antislip', '2.jpeg'),
+      projectImage('Class C Level 2 polished concrete with antislip', '3.jpeg'),
+    ],
+  },
+  {
+    id: 4,
+    slug: 'epoxy-flake-system',
+    title: 'Epoxy Flake System Floor',
+    serviceType: 'Resinous Flooring',
+    coverImage: projectImage('Flake epoxy', '1.jpeg'),
+    description:
+      'A decorative epoxy flake system installed over a prepared concrete slab. The vinyl flakes provide color variation, slip resistance, and a seamless, easy-to-clean surface.',
+    process:
+      'Concrete prep, epoxy primer, broadcast of decorative vinyl flakes into the base coat, scrape and vacuum, and a protective high-build topcoat.',
+    images: [
+      projectImage('Flake epoxy', '1.jpeg'),
+      projectImage('Flake epoxy', '2.jpeg'),
+      projectImage('Flake epoxy', '3.jpeg'),
+      projectImage('Flake epoxy', '4.jpeg'),
+      projectImage('Flake epoxy', '5.jpeg'),
+      projectImage('Flake epoxy', '6.jpeg'),
+    ],
+  },
+  {
+    id: 5,
+    slug: 'double-broadcast-epoxy',
+    title: 'Heavy-Duty Double Broadcast Epoxy',
+    serviceType: 'Resinous Flooring',
+    coverImage: projectImage('Doubleb broadcast epoxy', '1.jpeg'),
+    description:
+      'A double-broadcast flake system engineered for high-impact commercial and industrial environments. Extra build and aggressive texture deliver long service life under heavy traffic.',
+    process:
+      'Substrate prep, primer, two successive flake broadcasts with intermediate scrape and vacuum, then a high-build clear topcoat.',
+    images: [
+      projectImage('Doubleb broadcast epoxy', '1.jpeg'),
+      projectImage('Doubleb broadcast epoxy', '2.jpeg'),
+      projectImage('Doubleb broadcast epoxy', '3.jpeg'),
+      projectImage('Doubleb broadcast epoxy', '4.jpeg'),
+    ],
+  },
+  {
+    id: 6,
+    slug: 'decorative-metallic-epoxy',
+    title: 'Decorative Metallic Epoxy',
+    serviceType: 'Metallic Epoxy',
+    coverImage: projectImage('metalicos', '3.jpeg'),
+    description:
+      'A metallic-pigmented epoxy installation creating depth, movement, and a high-gloss reflective finish — a designer-grade decorative floor for retail and residential interiors.',
+    process:
+      'Surface prep, epoxy base coat, metallic pigment application with manipulation for flow and depth, and a high-gloss clear topcoat.',
+    images: [
+      projectImage('metalicos', '3.jpeg'),
+      projectImage('metalicos', '9.jpeg'),
+      projectImage('metalicos', '11.jpeg'),
+      projectImage('metalicos', '14.jpeg'),
+      projectImage('metalicos', '16.jpeg'),
+      projectImage('metalicos', '19.jpeg'),
+    ],
+  },
+  {
+    id: 7,
+    slug: 'decorative-stone-coating',
+    title: 'Decorative Stone Coating',
+    serviceType: 'Stone Coating',
+    coverImage: projectImage('Stone coating', 'IMG_6941.jpeg'),
+    description:
+      'A decorative stone-coating finish that transforms an interior space with a premium textured appearance combined with a durable, easy-to-maintain surface.',
+    process:
+      'Substrate prep, primer, stone-coating broadcast and trowel for texture, and a clear sealer for protection and sheen.',
+    images: [
+      projectImage('Stone coating', 'IMG_6941.jpeg'),
+      projectImage('Stone coating', 'IMG_9370.jpeg'),
+      projectImage('Stone coating', 'IMG_1287.jpeg'),
+      projectImage('Stone coating', 'IMG_1322.jpeg'),
+      projectImage('Stone coating', 'IMG_1434.jpeg'),
+      projectImage('Stone coating', 'IMG_1502.jpeg'),
+    ],
+  },
+  {
+    id: 8,
+    slug: 'carpet-tile-wood-commercial',
+    title: 'Carpet, Tile & Wood Commercial Install',
+    serviceType: 'Carpet, Tile & Wood',
+    coverImage: projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM (13).jpeg'),
+    description:
+      'A multi-material commercial build-out combining ceramic and porcelain tile, carpet tile, and resilient flooring — each system matched to the demands of its area.',
+    process:
+      'Substrate prep, layout, set / install with the appropriate adhesive or grout system, transition trim, and final clean for a turn-key commercial finish.',
+    images: [
+      projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM (13).jpeg'),
+      projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.50 PM (1).jpeg'),
+      projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM (5).jpeg'),
+      projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM (4).jpeg'),
+      projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.47 PM.jpeg'),
+      projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM.jpeg'),
+    ],
+  },
+];
+
 export type ProjectCategory = (typeof projectCategories)[number];
 
 export type Project = {
@@ -347,7 +512,7 @@ export type TeamMember = {
 export const team: TeamMember[] = [
   {
     name: 'Pedro Carrillo',
-    role: 'Owner',
+    role: 'Founder',
     phone: '405-200-3145',
     email: 'Pedro@stonecoatingresinous.com',
   },

@@ -11,8 +11,7 @@ import {
   heroImage,
   heroTrustPoints,
   processSteps,
-  projectCategories,
-  projectPlaceholders,
+  projects,
   services,
 } from '../data/site';
 ---
@@ -143,7 +142,7 @@ import {
           <article class="group relative overflow-hidden rounded-lg border border-silver bg-white p-7 shadow-gloss-card hover:-translate-y-1 hover:shadow-gloss-glow hover:border-sky-blue/50 transition-all duration-300">
             <span class="absolute top-0 left-0 right-0 h-[2px] bg-gloss-accent"></span>
             <h3 class="font-heading font-semibold text-navy text-base leading-snug">{c.title}</h3>
-            <p class="mt-3 text-ink/75 text-sm leading-relaxed">{c.description}</p>
+            <p class="mt-3 text-ink/75 text-sm leading-relaxed text-justify hyphens-auto">{c.description}</p>
           </article>
         ))}
       </div>
@@ -210,45 +209,31 @@ import {
         <Button href="/projects" variant="secondary" class="self-start">View Gallery</Button>
       </div>
 
-      <ul class="mt-10 flex flex-wrap gap-2">
-        {projectCategories.slice(0, 7).map((c) => (
-          <li class="px-4 py-2 rounded-full border border-silver text-xs uppercase tracking-[0.18em] text-navy/70 bg-ice-gray">
-            {c}
-          </li>
-        ))}
-      </ul>
-
       <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projectPlaceholders.slice(0, 6).map((p) => (
-          <article class="group relative overflow-hidden rounded-lg border border-silver bg-white shadow-gloss-card hover:-translate-y-1 hover:shadow-gloss-glow hover:border-sky-blue/50 transition-all duration-300">
+        {projects.slice(0, 6).map((p) => (
+          <a
+            href={`/projects#${p.slug}`}
+            class="group relative overflow-hidden rounded-lg border border-silver bg-white shadow-gloss-card hover:-translate-y-1 hover:shadow-gloss-glow hover:border-sky-blue/50 transition-all duration-300 block"
+          >
             <span class="absolute top-0 left-0 right-0 h-[3px] bg-gloss-accent z-10"></span>
             <div class="relative aspect-[4/3] overflow-hidden bg-deep-blue">
-              {p.image ? (
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                  decoding="async"
-                />
-              ) : (
-                <div class="absolute inset-0 bg-dark-card flex items-end p-5">
-                  <span class="text-sky-blue/60 font-heading text-[10px] tracking-[0.28em] uppercase">Photo Coming Soon</span>
-                </div>
-              )}
-              <div class="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/10 to-transparent group-hover:from-royal-blue/55 group-hover:via-royal-blue/10 transition-all duration-500"></div>
+              <img
+                src={p.coverImage}
+                alt={p.title}
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/15 to-transparent group-hover:from-royal-blue/65 group-hover:via-royal-blue/15 transition-all duration-500"></div>
               <div class="absolute inset-0 bg-card-shine opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
             <div class="p-6">
-              <p class="text-royal-blue text-[10px] font-semibold uppercase tracking-[0.28em]">{p.type}</p>
+              <p class="text-royal-blue text-[10px] font-semibold uppercase tracking-[0.28em]">{p.serviceType}</p>
               <h3 class="mt-3 font-heading font-semibold text-navy text-lg leading-snug">{p.title}</h3>
-              <p class="mt-2 text-ink/70 text-sm">{p.service} &middot; {p.location}</p>
             </div>
-          </article>
+          </a>
         ))}
       </div>
-
-      <p class="mt-10 text-ink/60 text-sm italic">Real project photos and videos coming soon.</p>
     </div>
   </section>
 
