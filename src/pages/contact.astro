@@ -48,7 +48,6 @@ const labelClass =
             id="contact-form"
             action="https://api.web3forms.com/submit"
             method="POST"
-            enctype="multipart/form-data"
             class="space-y-6"
             novalidate
           >
@@ -98,19 +97,6 @@ const labelClass =
               </select>
             </label>
 
-            <label class="block">
-              <span class={labelClass}>Project Photos (up to 3, optional)</span>
-              <input
-                id="photos-input"
-                type="file"
-                name="attachments"
-                accept="image/jpeg,image/png,image/webp"
-                multiple
-                class="block w-full text-sm text-ink/70 file:mr-4 file:py-3 file:px-5 file:border-0 file:rounded-full file:bg-button-gradient file:text-white file:font-semibold file:uppercase file:text-xs file:tracking-[0.18em] file:shadow-gloss-button hover:file:opacity-90 cursor-pointer"
-              />
-              <span class="block mt-2 text-xs text-ink/60">JPG, PNG, or WEBP. Max 3 files, 5MB each.</span>
-              <span id="photos-error" class="hidden mt-2 text-xs text-red-600"></span>
-            </label>
 
             <label class="block">
               <span class={labelClass}>Message *</span>
@@ -190,7 +176,7 @@ const labelClass =
           <ol class="mt-5 space-y-4 text-sm text-ink/75 leading-relaxed">
             <li class="flex gap-4">
               <span class="font-heading font-bold text-sm tracking-widest bg-gradient-to-r from-royal-blue to-sky-blue bg-clip-text text-transparent">01</span>
-              <span>We review your request and any photos provided.</span>
+              <span>We review the details of your project request.</span>
             </li>
             <li class="flex gap-4">
               <span class="font-heading font-bold text-sm tracking-widest bg-gradient-to-r from-royal-blue to-sky-blue bg-clip-text text-transparent">02</span>
@@ -226,14 +212,9 @@ const labelClass =
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const success = document.getElementById('form-success');
   const error = document.getElementById('form-error');
-  const photosInput = document.getElementById('photos-input') as HTMLInputElement | null;
-  const photosError = document.getElementById('photos-error');
   const submitButton = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
   const submitLabel = submitButton?.querySelector('.submit-label');
   const submitLoading = submitButton?.querySelector('.submit-loading');
-
-  const MAX_FILES = 3;
-  const MAX_BYTES = 5 * 1024 * 1024;
 
   // Pre-fill service from query string (?service=Epoxy+Flooring)
   const params = new URLSearchParams(window.location.search);
@@ -245,25 +226,6 @@ const labelClass =
       if (match) select.value = requestedService;
     }
   }
-
-  photosInput?.addEventListener('change', () => {
-    if (!photosInput.files || !photosError) return;
-    const files = Array.from(photosInput.files);
-    photosError.classList.add('hidden');
-    photosError.textContent = '';
-    if (files.length > MAX_FILES) {
-      photosError.textContent = `Please attach a maximum of ${MAX_FILES} photos.`;
-      photosError.classList.remove('hidden');
-      photosInput.value = '';
-      return;
-    }
-    const oversized = files.find((f) => f.size > MAX_BYTES);
-    if (oversized) {
-      photosError.textContent = `"${oversized.name}" exceeds the 5MB limit.`;
-      photosError.classList.remove('hidden');
-      photosInput.value = '';
-    }
-  });
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -280,10 +242,21 @@ const labelClass =
     if (errorDetail) errorDetail.textContent = '';
 
     try {
+      // Build a JSON payload — Web3Forms free tier does not accept file
+      // attachments, so send a clean key/value object instead of multipart.
       const formData = new FormData(form);
+      const payload: Record<string, string> = {};
+      formData.forEach((value, key) => {
+        if (typeof value === 'string') payload[key] = value;
+      });
+
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
 
       let json: any = null;
