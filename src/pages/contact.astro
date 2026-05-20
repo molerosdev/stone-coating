@@ -10,15 +10,12 @@ import {
   site,
 } from '../data/site';
 
-// Basin (usebasin.com) handles delivery + file attachments. The form id
-// is the hashed slug from your Basin dashboard (e.g. "abc123xyz"). Stored
-// in a public env var so it can be swapped without code changes; the form
-// shows a "Setup pending" notice when the var is missing.
-const basinFormId = import.meta.env.PUBLIC_BASIN_FORM_ID ?? '';
-const isConfigured = Boolean(basinFormId);
-const formAction = isConfigured
-  ? `https://usebasin.com/f/${basinFormId}`
-  : '';
+// Form submissions post to our own Cloudflare Pages Function
+// (functions/api/contact.ts), which composes a branded HTML email with
+// the project photos embedded inline and sends it via Resend. The
+// Resend credentials live server-side (RESEND_API_KEY, CONTACT_TO_EMAIL,
+// CONTACT_FROM_EMAIL) so nothing is exposed in the client bundle.
+const formAction = '/api/contact';
 
 const inputClass =
   'w-full bg-white border border-silver rounded-md focus:border-royal-blue focus:ring-2 focus:ring-royal-blue/20 focus:outline-none px-4 py-3 text-navy placeholder-ink/40 transition-all duration-200';
@@ -40,15 +37,6 @@ const labelClass =
     <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
       <!-- Form -->
       <div class="lg:col-span-7">
-        {!isConfigured && (
-          <div class="mb-8 rounded-md border border-royal-blue/30 bg-white p-5 text-sm text-navy shadow-gloss-card">
-            <p class="font-heading uppercase tracking-[0.22em] text-xs text-royal-blue">Setup pending</p>
-            <p class="mt-2 leading-relaxed">
-              Form submissions are not yet wired to Basin. Set the <code>PUBLIC_BASIN_FORM_ID</code> environment variable in Cloudflare Pages (and locally in <code>.env</code>) to your Basin form id, then redeploy.
-            </p>
-          </div>
-        )}
-
         <div class="relative overflow-hidden rounded-lg border border-silver bg-white p-7 md:p-10 shadow-gloss-card">
           <span class="absolute top-0 left-0 right-0 h-[3px] bg-gloss-accent"></span>
           <form
@@ -59,7 +47,7 @@ const labelClass =
             class="space-y-6"
             novalidate
           >
-            <!-- Basin honeypot: must stay empty for the submission to pass -->
+            <!-- Honeypot: must stay empty for the submission to pass -->
             <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" />
 
             <div class="grid sm:grid-cols-2 gap-6">
@@ -131,8 +119,6 @@ const labelClass =
             <div class="flex flex-col sm:flex-row sm:items-center gap-4 pt-2">
               <button
                 type="submit"
-                disabled={!isConfigured}
-                aria-disabled={!isConfigured}
                 class="group relative inline-flex items-center justify-center px-7 py-3 rounded-full text-white text-xs font-semibold uppercase tracking-[0.22em] bg-button-gradient border border-white/25 shadow-gloss-button hover:shadow-[0_18px_40px_rgba(20,92,255,0.42)] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-gloss-button"
               >
                 <span class="submit-label">Request My Quote</span>
@@ -280,20 +266,6 @@ const labelClass =
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form) return;
-    // form.action auto-resolves an empty attribute to the page URL, so
-    // check the raw HTML attribute instead — if it's blank, Basin isn't
-    // wired and we must not POST to the contact page itself.
-    const rawAction = form.getAttribute('action')?.trim();
-    if (!rawAction) {
-      const errDetail = document.getElementById('form-error-detail');
-      if (errDetail) {
-        errDetail.textContent =
-          'PUBLIC_BASIN_FORM_ID is not set. Add it to the Cloudflare Pages environment variables (and locally to .env) and redeploy.';
-      }
-      error?.classList.remove('hidden');
-      error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
 
     success?.classList.add('hidden');
     error?.classList.add('hidden');
@@ -305,7 +277,10 @@ const labelClass =
     submitLoading?.classList.remove('hidden');
 
     try {
-      const res = await fetch(rawAction, {
+      // POST to our own Pages Function — it composes the branded email
+      // and forwards through Resend. Multipart so file attachments
+      // make the trip.
+      const res = await fetch(form.action, {
         method: 'POST',
         headers: { Accept: 'application/json' },
         body: new FormData(form),
@@ -320,7 +295,7 @@ const labelClass =
         // Non-JSON response — keep rawBody for diagnostics.
       }
 
-      if (res.ok) {
+      if (res.ok && parsed?.success) {
         form.reset();
         success?.classList.remove('hidden');
         success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -328,11 +303,10 @@ const labelClass =
         const detail =
           parsed?.error ??
           parsed?.message ??
-          (typeof parsed === 'object' ? JSON.stringify(parsed).slice(0, 240) : '') ??
           rawBody?.slice(0, 240) ??
           '';
         const composed = `HTTP ${res.status} ${res.statusText}${detail ? ' – ' + detail : ''}`;
-        console.error('Basin submission failed:', composed, parsed ?? rawBody);
+        console.error('Contact submission failed:', composed, parsed ?? rawBody);
         if (errorDetail) errorDetail.textContent = composed;
         throw new Error(composed);
       }
