@@ -131,7 +131,9 @@ const labelClass =
             <div class="flex flex-col sm:flex-row sm:items-center gap-4 pt-2">
               <button
                 type="submit"
-                class="group relative inline-flex items-center justify-center px-7 py-3 rounded-full text-white text-xs font-semibold uppercase tracking-[0.22em] bg-button-gradient border border-white/25 shadow-gloss-button hover:shadow-[0_18px_40px_rgba(20,92,255,0.42)] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                disabled={!isConfigured}
+                aria-disabled={!isConfigured}
+                class="group relative inline-flex items-center justify-center px-7 py-3 rounded-full text-white text-xs font-semibold uppercase tracking-[0.22em] bg-button-gradient border border-white/25 shadow-gloss-button hover:shadow-[0_18px_40px_rgba(20,92,255,0.42)] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-gloss-button"
               >
                 <span class="submit-label">Request My Quote</span>
                 <span class="submit-loading hidden">Sending...</span>
@@ -277,7 +279,21 @@ const labelClass =
   // HTML redirect so we can show the inline success / error panels.
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!form || !form.action) return;
+    if (!form) return;
+    // form.action auto-resolves an empty attribute to the page URL, so
+    // check the raw HTML attribute instead — if it's blank, Basin isn't
+    // wired and we must not POST to the contact page itself.
+    const rawAction = form.getAttribute('action')?.trim();
+    if (!rawAction) {
+      const errDetail = document.getElementById('form-error-detail');
+      if (errDetail) {
+        errDetail.textContent =
+          'PUBLIC_BASIN_FORM_ID is not set. Add it to the Cloudflare Pages environment variables (and locally to .env) and redeploy.';
+      }
+      error?.classList.remove('hidden');
+      error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
 
     success?.classList.add('hidden');
     error?.classList.add('hidden');
@@ -289,7 +305,7 @@ const labelClass =
     submitLoading?.classList.remove('hidden');
 
     try {
-      const res = await fetch(form.action, {
+      const res = await fetch(rawAction, {
         method: 'POST',
         headers: { Accept: 'application/json' },
         body: new FormData(form),
