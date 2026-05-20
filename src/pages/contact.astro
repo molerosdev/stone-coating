@@ -10,8 +10,10 @@ import {
   site,
 } from '../data/site';
 
-const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
-const isConfigured = Boolean(accessKey);
+// FormSubmit handles delivery + file attachments for free.
+// The bare-email endpoint can be swapped for a hashed alias from
+// formsubmit.co later to keep the destination out of page source.
+const formAction = `https://formsubmit.co/${site.contact.email}`;
 
 const inputClass =
   'w-full bg-white border border-silver rounded-md focus:border-royal-blue focus:ring-2 focus:ring-royal-blue/20 focus:outline-none px-4 py-3 text-navy placeholder-ink/40 transition-all duration-200';
@@ -33,28 +35,23 @@ const labelClass =
     <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
       <!-- Form -->
       <div class="lg:col-span-7">
-        {!isConfigured && (
-          <div class="mb-8 rounded-md border border-royal-blue/30 bg-white p-5 text-sm text-navy shadow-gloss-card">
-            <p class="font-heading uppercase tracking-[0.22em] text-xs text-royal-blue">Setup pending</p>
-            <p class="mt-2 leading-relaxed">
-              Form submissions are not yet wired to an inbox. The site owner needs to add a Web3Forms access key as the <code>PUBLIC_WEB3FORMS_KEY</code> environment variable in Cloudflare Pages.
-            </p>
-          </div>
-        )}
-
         <div class="relative overflow-hidden rounded-lg border border-silver bg-white p-7 md:p-10 shadow-gloss-card">
           <span class="absolute top-0 left-0 right-0 h-[3px] bg-gloss-accent"></span>
           <form
             id="contact-form"
-            action="https://api.web3forms.com/submit"
+            action={formAction}
             method="POST"
+            enctype="multipart/form-data"
             class="space-y-6"
             novalidate
           >
-            <input type="hidden" name="access_key" value={accessKey} />
-            <input type="hidden" name="subject" value="New flooring quote request" />
-            <input type="hidden" name="from_name" value={site.name} />
-            <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+            <!-- FormSubmit controls -->
+            <input type="hidden" name="_subject" value="New flooring quote request" />
+            <input type="hidden" id="form-next" name="_next" value="/contact?sent=1" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="table" />
+            <!-- Honeypot: must stay empty for the submission to be accepted -->
+            <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
 
             <div class="grid sm:grid-cols-2 gap-6">
               <label class="block">
@@ -97,6 +94,19 @@ const labelClass =
               </select>
             </label>
 
+            <label class="block">
+              <span class={labelClass}>Project Photos (up to 3, optional)</span>
+              <input
+                id="photos-input"
+                type="file"
+                name="attachments"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                class="block w-full text-sm text-ink/70 file:mr-4 file:py-3 file:px-5 file:border-0 file:rounded-full file:bg-button-gradient file:text-white file:font-semibold file:uppercase file:text-xs file:tracking-[0.18em] file:shadow-gloss-button hover:file:opacity-90 cursor-pointer"
+              />
+              <span class="block mt-2 text-xs text-ink/60">JPG, PNG, or WEBP. Max 3 files, 5MB each.</span>
+              <span id="photos-error" class="hidden mt-2 text-xs text-red-600"></span>
+            </label>
 
             <label class="block">
               <span class={labelClass}>Message *</span>
@@ -127,15 +137,6 @@ const labelClass =
             >
               <p class="font-heading uppercase tracking-[0.22em] text-xs text-royal-blue">Request received</p>
               <p class="mt-2 leading-relaxed">Thank you. We've received your project request and will follow up shortly using your preferred contact method.</p>
-            </div>
-            <div
-              id="form-error"
-              class="hidden rounded-md border border-red-500/40 bg-red-50 p-5 text-sm text-red-800"
-              role="alert"
-            >
-              <p class="font-heading uppercase tracking-[0.22em] text-xs text-red-600">Something went wrong</p>
-              <p class="mt-2 leading-relaxed">We couldn't send your request. Please try again or reach us directly using the contact information on this page.</p>
-              <p id="form-error-detail" class="mt-3 text-xs font-mono break-words text-red-700/80"></p>
             </div>
           </form>
         </div>
@@ -176,7 +177,7 @@ const labelClass =
           <ol class="mt-5 space-y-4 text-sm text-ink/75 leading-relaxed">
             <li class="flex gap-4">
               <span class="font-heading font-bold text-sm tracking-widest bg-gradient-to-r from-royal-blue to-sky-blue bg-clip-text text-transparent">01</span>
-              <span>We review the details of your project request.</span>
+              <span>We review your request and any photos provided.</span>
             </li>
             <li class="flex gap-4">
               <span class="font-heading font-bold text-sm tracking-widest bg-gradient-to-r from-royal-blue to-sky-blue bg-clip-text text-transparent">02</span>
@@ -211,13 +212,35 @@ const labelClass =
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const success = document.getElementById('form-success');
-  const error = document.getElementById('form-error');
+  const photosInput = document.getElementById('photos-input') as HTMLInputElement | null;
+  const photosError = document.getElementById('photos-error');
   const submitButton = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
   const submitLabel = submitButton?.querySelector('.submit-label');
   const submitLoading = submitButton?.querySelector('.submit-loading');
 
-  // Pre-fill service from query string (?service=Epoxy+Flooring)
+  const MAX_FILES = 3;
+  const MAX_BYTES = 5 * 1024 * 1024;
+
   const params = new URLSearchParams(window.location.search);
+
+  // FormSubmit redirects to the URL in `_next` after processing. Set it to
+  // the current origin so submissions on .pages.dev redirect back to
+  // .pages.dev (instead of jumping to the production domain).
+  const nextInput = document.getElementById('form-next') as HTMLInputElement | null;
+  if (nextInput) {
+    nextInput.value = `${window.location.origin}/contact?sent=1`;
+  }
+
+  // Show the success panel after FormSubmit redirects back with ?sent=1.
+  if (params.get('sent') === '1' && success) {
+    success.classList.remove('hidden');
+    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Strip the flag from the URL so a refresh doesn't keep the panel up.
+    const cleanUrl = window.location.pathname;
+    history.replaceState(null, '', cleanUrl);
+  }
+
+  // Pre-fill service from query string (?service=Epoxy+Flooring)
   const requestedService = params.get('service');
   if (requestedService) {
     const select = document.getElementById('service-select') as HTMLSelectElement | null;
@@ -227,72 +250,32 @@ const labelClass =
     }
   }
 
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!form) return;
+  // Client-side validation for the photo upload (count + size).
+  photosInput?.addEventListener('change', () => {
+    if (!photosInput.files || !photosError) return;
+    const files = Array.from(photosInput.files);
+    photosError.classList.add('hidden');
+    photosError.textContent = '';
+    if (files.length > MAX_FILES) {
+      photosError.textContent = `Please attach a maximum of ${MAX_FILES} photos.`;
+      photosError.classList.remove('hidden');
+      photosInput.value = '';
+      return;
+    }
+    const oversized = files.find((f) => f.size > MAX_BYTES);
+    if (oversized) {
+      photosError.textContent = `"${oversized.name}" exceeds the 5MB limit.`;
+      photosError.classList.remove('hidden');
+      photosInput.value = '';
+    }
+  });
 
-    success?.classList.add('hidden');
-    error?.classList.add('hidden');
-
+  // Native submit (no preventDefault) so FormSubmit can accept multipart
+  // file uploads and redirect on success. We only flip the button into a
+  // loading state to prevent double-clicks while the browser navigates.
+  form?.addEventListener('submit', () => {
     if (submitButton) submitButton.disabled = true;
     submitLabel?.classList.add('hidden');
     submitLoading?.classList.remove('hidden');
-
-    const errorDetail = document.getElementById('form-error-detail');
-    if (errorDetail) errorDetail.textContent = '';
-
-    try {
-      // Build a JSON payload — Web3Forms free tier does not accept file
-      // attachments, so send a clean key/value object instead of multipart.
-      const formData = new FormData(form);
-      const payload: Record<string, string> = {};
-      formData.forEach((value, key) => {
-        if (typeof value === 'string') payload[key] = value;
-      });
-
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      let json: any = null;
-      let rawBody = '';
-      try {
-        rawBody = await res.text();
-        json = rawBody ? JSON.parse(rawBody) : null;
-      } catch {
-        // Non-JSON response (e.g. HTML error page) — keep rawBody for diagnostics.
-      }
-
-      if (res.ok && json?.success) {
-        form.reset();
-        success?.classList.remove('hidden');
-        success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        const detail =
-          json?.message ??
-          rawBody?.slice(0, 240) ??
-          `HTTP ${res.status} ${res.statusText}`;
-        const composed = `HTTP ${res.status} ${res.statusText} – ${detail}`;
-        console.error('Web3Forms submission failed:', composed, json ?? rawBody);
-        if (errorDetail) errorDetail.textContent = composed;
-        throw new Error(composed);
-      }
-    } catch (err) {
-      console.error(err);
-      if (errorDetail && !errorDetail.textContent) {
-        errorDetail.textContent = err instanceof Error ? err.message : String(err);
-      }
-      error?.classList.remove('hidden');
-      error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } finally {
-      if (submitButton) submitButton.disabled = false;
-      submitLabel?.classList.remove('hidden');
-      submitLoading?.classList.add('hidden');
-    }
   });
 </script>

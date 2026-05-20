@@ -213,6 +213,11 @@ export const faqs = [
       'Yes. Garage floor coatings are one of our most requested services for both residential garages and workshop spaces.',
   },
   {
+    question: 'Can I submit pictures of my existing floor before scheduling?',
+    answer:
+      'Yes. The contact form accepts up to three photos so we can review the surface condition before responding to your quote request.',
+  },
+  {
     question: 'What areas in Oklahoma do you serve?',
     answer:
       'We provide flooring renovation services across Oklahoma. Reach out through the contact form with your project location and we will confirm availability.',
