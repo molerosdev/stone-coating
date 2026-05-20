@@ -8,7 +8,7 @@ export const site = {
   url: 'https://stonecoatingresinous.com',
   contact: {
     phone: '405-200-3145',
-    email: 'Pedro@stonecoatingresinous.com',
+    email: 'info@stonecoatingresinous.com',
     hours: 'Mon–Fri, 8am–5pm (CT)',
   },
   yearsExperience: 21,
