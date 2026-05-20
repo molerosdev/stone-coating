@@ -10,10 +10,15 @@ import {
   site,
 } from '../data/site';
 
-// FormSubmit handles delivery + file attachments for free.
-// The bare-email endpoint can be swapped for a hashed alias from
-// formsubmit.co later to keep the destination out of page source.
-const formAction = `https://formsubmit.co/${site.contact.email}`;
+// Basin (usebasin.com) handles delivery + file attachments. The form id
+// is the hashed slug from your Basin dashboard (e.g. "abc123xyz"). Stored
+// in a public env var so it can be swapped without code changes; the form
+// shows a "Setup pending" notice when the var is missing.
+const basinFormId = import.meta.env.PUBLIC_BASIN_FORM_ID ?? '';
+const isConfigured = Boolean(basinFormId);
+const formAction = isConfigured
+  ? `https://usebasin.com/f/${basinFormId}`
+  : '';
 
 const inputClass =
   'w-full bg-white border border-silver rounded-md focus:border-royal-blue focus:ring-2 focus:ring-royal-blue/20 focus:outline-none px-4 py-3 text-navy placeholder-ink/40 transition-all duration-200';
@@ -35,6 +40,15 @@ const labelClass =
     <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
       <!-- Form -->
       <div class="lg:col-span-7">
+        {!isConfigured && (
+          <div class="mb-8 rounded-md border border-royal-blue/30 bg-white p-5 text-sm text-navy shadow-gloss-card">
+            <p class="font-heading uppercase tracking-[0.22em] text-xs text-royal-blue">Setup pending</p>
+            <p class="mt-2 leading-relaxed">
+              Form submissions are not yet wired to Basin. Set the <code>PUBLIC_BASIN_FORM_ID</code> environment variable in Cloudflare Pages (and locally in <code>.env</code>) to your Basin form id, then redeploy.
+            </p>
+          </div>
+        )}
+
         <div class="relative overflow-hidden rounded-lg border border-silver bg-white p-7 md:p-10 shadow-gloss-card">
           <span class="absolute top-0 left-0 right-0 h-[3px] bg-gloss-accent"></span>
           <form
@@ -45,13 +59,8 @@ const labelClass =
             class="space-y-6"
             novalidate
           >
-            <!-- FormSubmit controls -->
-            <input type="hidden" name="_subject" value="New flooring quote request" />
-            <input type="hidden" id="form-next" name="_next" value="/contact?sent=1" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_template" value="table" />
-            <!-- Honeypot: must stay empty for the submission to be accepted -->
-            <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
+            <!-- Basin honeypot: must stay empty for the submission to pass -->
+            <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" />
 
             <div class="grid sm:grid-cols-2 gap-6">
               <label class="block">
@@ -138,6 +147,15 @@ const labelClass =
               <p class="font-heading uppercase tracking-[0.22em] text-xs text-royal-blue">Request received</p>
               <p class="mt-2 leading-relaxed">Thank you. We've received your project request and will follow up shortly using your preferred contact method.</p>
             </div>
+            <div
+              id="form-error"
+              class="hidden rounded-md border border-red-500/40 bg-red-50 p-5 text-sm text-red-800"
+              role="alert"
+            >
+              <p class="font-heading uppercase tracking-[0.22em] text-xs text-red-600">Something went wrong</p>
+              <p class="mt-2 leading-relaxed">We couldn't send your request. Please try again or reach us directly using the contact information on this page.</p>
+              <p id="form-error-detail" class="mt-3 text-xs font-mono break-words text-red-700/80"></p>
+            </div>
           </form>
         </div>
       </div>
@@ -212,6 +230,7 @@ const labelClass =
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const success = document.getElementById('form-success');
+  const error = document.getElementById('form-error');
   const photosInput = document.getElementById('photos-input') as HTMLInputElement | null;
   const photosError = document.getElementById('photos-error');
   const submitButton = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
@@ -222,23 +241,6 @@ const labelClass =
   const MAX_BYTES = 5 * 1024 * 1024;
 
   const params = new URLSearchParams(window.location.search);
-
-  // FormSubmit redirects to the URL in `_next` after processing. Set it to
-  // the current origin so submissions on .pages.dev redirect back to
-  // .pages.dev (instead of jumping to the production domain).
-  const nextInput = document.getElementById('form-next') as HTMLInputElement | null;
-  if (nextInput) {
-    nextInput.value = `${window.location.origin}/contact?sent=1`;
-  }
-
-  // Show the success panel after FormSubmit redirects back with ?sent=1.
-  if (params.get('sent') === '1' && success) {
-    success.classList.remove('hidden');
-    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    // Strip the flag from the URL so a refresh doesn't keep the panel up.
-    const cleanUrl = window.location.pathname;
-    history.replaceState(null, '', cleanUrl);
-  }
 
   // Pre-fill service from query string (?service=Epoxy+Flooring)
   const requestedService = params.get('service');
@@ -270,12 +272,65 @@ const labelClass =
     }
   });
 
-  // Native submit (no preventDefault) so FormSubmit can accept multipart
-  // file uploads and redirect on success. We only flip the button into a
-  // loading state to prevent double-clicks while the browser navigates.
-  form?.addEventListener('submit', () => {
+  // AJAX submit to Basin. Multipart FormData carries file attachments;
+  // Accept: application/json tells Basin to return JSON instead of an
+  // HTML redirect so we can show the inline success / error panels.
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form || !form.action) return;
+
+    success?.classList.add('hidden');
+    error?.classList.add('hidden');
+    const errorDetail = document.getElementById('form-error-detail');
+    if (errorDetail) errorDetail.textContent = '';
+
     if (submitButton) submitButton.disabled = true;
     submitLabel?.classList.add('hidden');
     submitLoading?.classList.remove('hidden');
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+
+      let rawBody = '';
+      let parsed: any = null;
+      try {
+        rawBody = await res.text();
+        parsed = rawBody ? JSON.parse(rawBody) : null;
+      } catch {
+        // Non-JSON response — keep rawBody for diagnostics.
+      }
+
+      if (res.ok) {
+        form.reset();
+        success?.classList.remove('hidden');
+        success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        const detail =
+          parsed?.error ??
+          parsed?.message ??
+          (typeof parsed === 'object' ? JSON.stringify(parsed).slice(0, 240) : '') ??
+          rawBody?.slice(0, 240) ??
+          '';
+        const composed = `HTTP ${res.status} ${res.statusText}${detail ? ' – ' + detail : ''}`;
+        console.error('Basin submission failed:', composed, parsed ?? rawBody);
+        if (errorDetail) errorDetail.textContent = composed;
+        throw new Error(composed);
+      }
+    } catch (err) {
+      console.error(err);
+      if (errorDetail && !errorDetail.textContent) {
+        errorDetail.textContent = err instanceof Error ? err.message : String(err);
+      }
+      error?.classList.remove('hidden');
+      error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+      submitLabel?.classList.remove('hidden');
+      submitLoading?.classList.add('hidden');
+    }
   });
 </script>
