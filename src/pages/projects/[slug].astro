@@ -1,0 +1,221 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { projects } from '../../data/site';
+
+export const getStaticPaths = () =>
+  projects.map((project, idx) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      prev: idx > 0 ? projects[idx - 1] : null,
+      next: idx < projects.length - 1 ? projects[idx + 1] : null,
+    },
+  }));
+
+const { project, prev, next } = Astro.props;
+
+// PRD caps the gallery at 5 images and places any video at the end.
+const galleryImages = project.images.slice(0, 5);
+const meta = `Stone Coating & Resinous — ${project.title}. ${project.description}`;
+---
+
+<BaseLayout title={`${project.title} | Stone Coating & Resinous`} description={meta}>
+  <!-- HEADER — title + category over a navy gradient -->
+  <section class="relative pt-36 md:pt-44 pb-12 md:pb-16 bg-hero-gradient overflow-hidden">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      aria-hidden="true"
+      style="background: radial-gradient(ellipse at 20% 0%, rgba(77,184,255,0.28), transparent 50%), radial-gradient(ellipse at 90% 100%, rgba(20,92,255,0.28), transparent 55%);"
+    ></div>
+    <div class="absolute inset-x-0 top-0 metallic-divider opacity-50" aria-hidden="true"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+      <a
+        href="/projects"
+        class="inline-flex items-center gap-2 text-sky-blue text-xs font-semibold uppercase tracking-[0.24em] hover:text-white transition-colors"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Back to Projects
+      </a>
+      <div class="mt-7 flex items-center gap-3">
+        <span class="block w-12 h-px bg-gradient-to-r from-sky-blue to-royal-blue"></span>
+        <p class="text-sky-blue text-xs font-semibold uppercase tracking-[0.32em]">{project.category}</p>
+      </div>
+      <h1 class="mt-4 font-heading font-semibold text-4xl md:text-5xl lg:text-6xl text-white max-w-4xl leading-[1.05] tracking-tight">
+        {project.title}
+      </h1>
+      {project.location && (
+        <p class="mt-5 text-ice-gray/85 text-sm md:text-base uppercase tracking-[0.22em] font-semibold">
+          <span class="text-sky-blue">Location ·</span> {project.location}
+        </p>
+      )}
+    </div>
+  </section>
+
+  <!-- HERO IMAGE — large main image -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-10 md:pt-14">
+      <div class="relative overflow-hidden rounded-xl border border-silver shadow-gloss-card">
+        <img
+          src={project.mainImage}
+          alt={project.title}
+          class="block w-full h-auto object-cover"
+          loading="eager"
+          decoding="sync"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW + PROCESS + CTA -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-14">
+      <div class="lg:col-span-7">
+        <h2 class="text-royal-blue text-xs font-semibold uppercase tracking-[0.3em]">Project Overview</h2>
+        <p class="mt-4 text-ink/80 text-lg leading-relaxed">{project.description}</p>
+
+        <h2 class="mt-12 text-royal-blue text-xs font-semibold uppercase tracking-[0.3em]">Process Applied</h2>
+        <p class="mt-4 text-ink/80 text-lg leading-relaxed">{project.processApplied}</p>
+      </div>
+
+      <aside class="lg:col-span-5">
+        <div class="relative overflow-hidden rounded-lg bg-dark-card text-white p-7 lg:p-9 shadow-gloss-card-dark">
+          <span class="absolute top-0 left-0 right-0 h-[3px] bg-gloss-accent"></span>
+          <p class="text-sky-blue text-[11px] font-semibold uppercase tracking-[0.28em]">Need something similar?</p>
+          <h3 class="mt-3 font-heading font-semibold text-2xl leading-snug">Talk to us about your space</h3>
+          <p class="mt-4 text-ice-gray/85 text-sm leading-relaxed">
+            We can match the system used on this project — or scope a different one — to the conditions, traffic, and finish you're aiming for.
+          </p>
+
+          <dl class="mt-7 space-y-4 text-sm">
+            <div>
+              <dt class="text-sky-blue/80 text-[11px] uppercase tracking-[0.22em] font-semibold">Service</dt>
+              <dd class="mt-1 text-white">{project.category}</dd>
+            </div>
+            {project.location && (
+              <div>
+                <dt class="text-sky-blue/80 text-[11px] uppercase tracking-[0.22em] font-semibold">Location</dt>
+                <dd class="mt-1 text-white">{project.location}</dd>
+              </div>
+            )}
+          </dl>
+
+          <a
+            href={`/contact?service=${encodeURIComponent(project.category)}`}
+            class="mt-8 inline-flex items-center px-6 py-3 rounded-full bg-button-gradient text-white text-xs font-semibold uppercase tracking-[0.2em] border border-white/25 shadow-gloss-button hover:shadow-[0_18px_40px_rgba(20,92,255,0.42)] hover:-translate-y-0.5 transition-all duration-300"
+          >
+            Request a Similar Project
+          </a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- GALLERY — editorial 2-up layout with the video last if present -->
+  {(galleryImages.length > 0 || project.video) && (
+    <section class="py-16 md:py-20 bg-ice-gray">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10">
+        <div class="flex items-end justify-between gap-6 mb-10">
+          <div>
+            <p class="text-royal-blue text-xs font-semibold uppercase tracking-[0.3em]">Gallery</p>
+            <h2 class="mt-3 font-heading font-semibold text-navy text-3xl md:text-4xl leading-tight tracking-tight">
+              Project photos
+            </h2>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
+          {
+            galleryImages.map((src, i) => (
+              <figure
+                class:list={[
+                  'relative overflow-hidden rounded-lg border border-silver bg-white shadow-gloss-card',
+                  // The fifth (odd-count tail) image spans both columns on sm+ so the
+                  // grid never leaves a hanging single column.
+                  galleryImages.length % 2 === 1 && i === galleryImages.length - 1 ? 'sm:col-span-2' : '',
+                ]}
+              >
+                <img
+                  src={src}
+                  alt={`${project.title} – image ${i + 1}`}
+                  loading="lazy"
+                  decoding="async"
+                  class="block w-full h-auto object-cover"
+                />
+              </figure>
+            ))
+          }
+          {project.video && (
+            <figure class="relative overflow-hidden rounded-lg border border-silver bg-deep-blue shadow-gloss-card sm:col-span-2">
+              <video
+                controls
+                preload="metadata"
+                playsinline
+                class="block w-full h-auto"
+              >
+                <source src={project.video} />
+                Your browser does not support embedded video.
+              </video>
+            </figure>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- PROJECT NAV — previous / next + back to projects -->
+  <section class="py-12 md:py-16 bg-white border-t border-silver">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="flex flex-col md:flex-row items-stretch md:items-center gap-4 md:justify-between">
+        {prev ? (
+          <a
+            href={`/projects/${prev.slug}/`}
+            class="group flex items-center gap-4 rounded-lg border border-silver bg-white px-5 py-4 shadow-gloss-card hover:-translate-y-0.5 hover:shadow-gloss-glow hover:border-sky-blue/50 transition-all duration-300 md:max-w-sm"
+            rel="prev"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="text-royal-blue shrink-0" aria-hidden="true">
+              <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="min-w-0">
+              <p class="text-royal-blue text-[10px] font-semibold uppercase tracking-[0.28em]">Previous Project</p>
+              <p class="mt-1 font-heading font-semibold text-navy text-sm md:text-base leading-snug truncate group-hover:text-royal-blue transition-colors">
+                {prev.title}
+              </p>
+            </div>
+          </a>
+        ) : (
+          <div aria-hidden="true" class="hidden md:block md:max-w-sm md:flex-1"></div>
+        )}
+
+        <a
+          href="/projects"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-full border border-royal-blue/40 text-navy text-xs font-semibold uppercase tracking-[0.2em] hover:bg-ice-gray hover:border-royal-blue transition-all duration-300 shadow-[0_8px_22px_rgba(11,31,58,0.08)]"
+        >
+          Back to All Projects
+        </a>
+
+        {next ? (
+          <a
+            href={`/projects/${next.slug}/`}
+            class="group flex items-center gap-4 rounded-lg border border-silver bg-white px-5 py-4 shadow-gloss-card hover:-translate-y-0.5 hover:shadow-gloss-glow hover:border-sky-blue/50 transition-all duration-300 md:max-w-sm md:ml-auto md:flex-row-reverse md:text-right"
+            rel="next"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="text-royal-blue shrink-0" aria-hidden="true">
+              <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="min-w-0">
+              <p class="text-royal-blue text-[10px] font-semibold uppercase tracking-[0.28em]">Next Project</p>
+              <p class="mt-1 font-heading font-semibold text-navy text-sm md:text-base leading-snug truncate group-hover:text-royal-blue transition-colors">
+                {next.title}
+              </p>
+            </div>
+          </a>
+        ) : (
+          <div aria-hidden="true" class="hidden md:block md:max-w-sm md:flex-1"></div>
+        )}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -259,18 +259,27 @@ export const projectCategories = [
 const projectImage = (folder: string, file: string) =>
   `/images/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
 
-// Interactive project showcase shown on /projects. Each entry has a single
-// cover image and up to 6 carousel images. Data structure per the new PRD
-// in project_update.md.
+// Project portfolio shown on /projects (grid) and /projects/[slug]
+// (detail pages). Schema follows the PRD addendum in project_update.md:
+//   - `category`     — service label shown under the title (e.g. "Polished Concrete")
+//   - `coverImage`   — the square thumbnail in the grid
+//   - `mainImage`    — large hero on the detail page; may equal coverImage
+//   - `processApplied` — short paragraph about prep + system applied
+//   - `location`     — optional region/client; renders only when present
+//   - `images`       — up to 5 detail-page gallery shots (cap enforced at render time)
+//   - `video`        — optional MP4 path; placed last in the gallery
 export type ProjectShowcase = {
   id: number;
   slug: string;
   title: string;
+  category: string;
   coverImage: string;
+  mainImage: string;
   description: string;
-  process: string;
-  serviceType: string;
+  processApplied: string;
+  location?: string;
   images: string[];
+  video?: string;
 };
 
 export const projects: ProjectShowcase[] = [
@@ -278,17 +287,18 @@ export const projects: ProjectShowcase[] = [
     id: 1,
     slug: 'polished-concrete-warehouse',
     title: 'Polished Concrete Warehouse Floor',
-    serviceType: 'Polished Concrete',
+    category: 'Polished Concrete',
     coverImage: projectImage('Polished concrete', '7.jpeg'),
+    mainImage: projectImage('Polished concrete', '16.jpeg'),
     description:
       'An existing concrete slab refined with progressive diamond polishing to create a durable, low-maintenance surface with excellent light reflectivity for a high-traffic facility.',
-    process:
+    processApplied:
       'Mechanical concrete preparation, joint repair, multi-step diamond grind, chemical densifier, and Level 2 polishing for a refined, light-reflective surface.',
+    location: 'Oklahoma',
     images: [
       projectImage('Polished concrete', '7.jpeg'),
       projectImage('Polished concrete', '8.jpeg'),
       projectImage('Polished concrete', '10.jpeg'),
-      projectImage('Polished concrete', '11.jpeg'),
       projectImage('Polished concrete', '12.jpeg'),
       projectImage('Polished concrete', '16.jpeg'),
     ],
@@ -297,12 +307,14 @@ export const projects: ProjectShowcase[] = [
     id: 2,
     slug: 'class-c-level-3-polished-concrete',
     title: 'Class C – Level 3 High-Gloss Polished Concrete',
-    serviceType: 'Polished Concrete',
+    category: 'Polished Concrete',
     coverImage: projectImage('Class C Level 3 polished concrete', '1.jpeg'),
+    mainImage: projectImage('Class C Level 3 polished concrete', '1.jpeg'),
     description:
       'A Level 3 high-gloss "wet look" polish with full Class C aggregate exposure — a premium reflective surface that highlights stone variation for a showroom-grade space.',
-    process:
+    processApplied:
       'Aggressive diamond grinding to fully expose the aggregate, chemical densifier, then progressive polishing steps to a Level 3 high-gloss finish.',
+    location: 'Oklahoma',
     images: [
       projectImage('Class C Level 3 polished concrete', '1.jpeg'),
       projectImage('Class C Level 3 polished concrete', '2.jpeg'),
@@ -313,12 +325,14 @@ export const projects: ProjectShowcase[] = [
     id: 3,
     slug: 'class-c-level-2-antislip',
     title: 'Class C – Level 2 Polished Concrete with Anti-Slip',
-    serviceType: 'Polished Concrete',
+    category: 'Polished Concrete',
     coverImage: projectImage('Class C Level 2 polished concrete with antislip', '2.jpeg'),
+    mainImage: projectImage('Class C Level 2 polished concrete with antislip', '2.jpeg'),
     description:
       'A Level 2 satin polish over Class C aggregate exposure, finished with an anti-slip additive to maintain traction in a busy commercial environment.',
-    process:
+    processApplied:
       'Surface prep, Class C aggregate exposure through diamond grinding, densifier, Level 2 polish, and an anti-slip clear topcoat.',
+    location: 'Oklahoma',
     images: [
       projectImage('Class C Level 2 polished concrete with antislip', '1.jpeg'),
       projectImage('Class C Level 2 polished concrete with antislip', '2.jpeg'),
@@ -329,31 +343,34 @@ export const projects: ProjectShowcase[] = [
     id: 4,
     slug: 'epoxy-flake-system',
     title: 'Epoxy Flake System Floor',
-    serviceType: 'Resinous Flooring',
+    category: 'Resinous Flooring',
     coverImage: projectImage('Flake epoxy', '1.jpeg'),
+    mainImage: projectImage('Flake epoxy', '1.jpeg'),
     description:
       'A decorative epoxy flake system installed over a prepared concrete slab. The vinyl flakes provide color variation, slip resistance, and a seamless, easy-to-clean surface.',
-    process:
+    processApplied:
       'Concrete prep, epoxy primer, broadcast of decorative vinyl flakes into the base coat, scrape and vacuum, and a protective high-build topcoat.',
+    location: 'Oklahoma',
     images: [
       projectImage('Flake epoxy', '1.jpeg'),
       projectImage('Flake epoxy', '2.jpeg'),
       projectImage('Flake epoxy', '3.jpeg'),
       projectImage('Flake epoxy', '4.jpeg'),
       projectImage('Flake epoxy', '5.jpeg'),
-      projectImage('Flake epoxy', '6.jpeg'),
     ],
   },
   {
     id: 5,
     slug: 'double-broadcast-epoxy',
     title: 'Heavy-Duty Double Broadcast Epoxy',
-    serviceType: 'Resinous Flooring',
+    category: 'Resinous Flooring',
     coverImage: projectImage('Doubleb broadcast epoxy', '1.jpeg'),
+    mainImage: projectImage('Doubleb broadcast epoxy', '1.jpeg'),
     description:
       'A double-broadcast flake system engineered for high-impact commercial and industrial environments. Extra build and aggressive texture deliver long service life under heavy traffic.',
-    process:
+    processApplied:
       'Substrate prep, primer, two successive flake broadcasts with intermediate scrape and vacuum, then a high-build clear topcoat.',
+    location: 'Oklahoma',
     images: [
       projectImage('Doubleb broadcast epoxy', '1.jpeg'),
       projectImage('Doubleb broadcast epoxy', '2.jpeg'),
@@ -365,37 +382,39 @@ export const projects: ProjectShowcase[] = [
     id: 6,
     slug: 'decorative-metallic-epoxy',
     title: 'Decorative Metallic Epoxy',
-    serviceType: 'Metallic Epoxy',
+    category: 'Metallic Epoxy',
     coverImage: projectImage('metalicos', '3.jpeg'),
+    mainImage: projectImage('metalicos', '3.jpeg'),
     description:
       'A metallic-pigmented epoxy installation creating depth, movement, and a high-gloss reflective finish — a designer-grade decorative floor for retail and residential interiors.',
-    process:
+    processApplied:
       'Surface prep, epoxy base coat, metallic pigment application with manipulation for flow and depth, and a high-gloss clear topcoat.',
+    location: 'Oklahoma',
     images: [
       projectImage('metalicos', '3.jpeg'),
       projectImage('metalicos', '9.jpeg'),
       projectImage('metalicos', '11.jpeg'),
       projectImage('metalicos', '14.jpeg'),
       projectImage('metalicos', '16.jpeg'),
-      projectImage('metalicos', '19.jpeg'),
     ],
   },
   {
     id: 7,
     slug: 'decorative-stone-coating',
     title: 'Decorative Stone Coating',
-    serviceType: 'Stone Coating',
+    category: 'Stone Coating',
     coverImage: projectImage('Stone coating', 'IMG_6941.jpeg'),
+    mainImage: projectImage('Stone coating', 'IMG_6941.jpeg'),
     description:
       'A decorative stone-coating finish that transforms an interior space with a premium textured appearance combined with a durable, easy-to-maintain surface.',
-    process:
+    processApplied:
       'Substrate prep, primer, stone-coating broadcast and trowel for texture, and a clear sealer for protection and sheen.',
+    location: 'Oklahoma',
     images: [
       projectImage('Stone coating', 'IMG_6941.jpeg'),
       projectImage('Stone coating', 'IMG_9370.jpeg'),
       projectImage('Stone coating', 'IMG_1287.jpeg'),
       projectImage('Stone coating', 'IMG_1322.jpeg'),
-      projectImage('Stone coating', 'IMG_1434.jpeg'),
       projectImage('Stone coating', 'IMG_1502.jpeg'),
     ],
   },
@@ -403,19 +422,94 @@ export const projects: ProjectShowcase[] = [
     id: 8,
     slug: 'carpet-tile-wood-commercial',
     title: 'Carpet, Tile & Wood Commercial Install',
-    serviceType: 'Carpet, Tile & Wood',
+    category: 'Carpet, Tile & Wood',
     coverImage: projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM (13).jpeg'),
+    mainImage: projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM (13).jpeg'),
     description:
       'A multi-material commercial build-out combining ceramic and porcelain tile, carpet tile, and resilient flooring — each system matched to the demands of its area.',
-    process:
+    processApplied:
       'Substrate prep, layout, set / install with the appropriate adhesive or grout system, transition trim, and final clean for a turn-key commercial finish.',
+    location: 'Oklahoma',
     images: [
       projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM (13).jpeg'),
       projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.50 PM (1).jpeg'),
       projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM (5).jpeg'),
       projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM (4).jpeg'),
       projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.47 PM.jpeg'),
-      projectImage('Carpet, Tile and wood', 'WhatsApp Image 2026-05-13 at 3.39.49 PM.jpeg'),
+    ],
+  },
+  {
+    id: 9,
+    slug: 'jimmy-johns-class-a-polished-concrete',
+    title: "Jimmy John's — Class A Polished Concrete",
+    category: 'Polished Concrete',
+    coverImage: projectImage("Jimmy John's - Class A polished concrete", '1.jpeg'),
+    mainImage: projectImage("Jimmy John's - Class A polished concrete", '2.jpeg'),
+    description:
+      'A Class A cream-finish polished concrete floor installed for a national sandwich-shop chain. The polish reveals just enough surface character to read as premium retail concrete while preserving an even, consistent appearance across the dining area.',
+    processApplied:
+      'Mechanical concrete preparation with minimal aggregate exposure, chemical densifier, progressive resin polishing through a Class A cream finish, and a protective surface sealer.',
+    location: "Jimmy John's, Oklahoma",
+    images: [
+      projectImage("Jimmy John's - Class A polished concrete", '2.jpeg'),
+      projectImage("Jimmy John's - Class A polished concrete", '3.jpeg'),
+      projectImage("Jimmy John's - Class A polished concrete", '4.jpeg'),
+      projectImage("Jimmy John's - Class A polished concrete", '1.jpeg'),
+    ],
+  },
+  {
+    id: 10,
+    slug: 'moore-high-terrazzo-restoration',
+    title: 'Moore High School — Terrazzo Restoration',
+    category: 'Terrazzo Restoration',
+    coverImage: projectImage('Moore high - terrazo restoration', '3.jpeg'),
+    mainImage: projectImage('Moore high - terrazo restoration', '2.jpeg'),
+    description:
+      'A full restoration of the original terrazzo flooring at Moore High School. The work brought the existing aggregate back to a clean, light-reflective finish and extended the surface life by years — a sustainable alternative to full replacement.',
+    processApplied:
+      'Crack and chip repair, color-matched patching, multi-step diamond grinding, honing, chemical densifier, and progressive polishing to restore the original sheen.',
+    location: 'Moore, Oklahoma',
+    images: [
+      projectImage('Moore high - terrazo restoration', '2.jpeg'),
+      projectImage('Moore high - terrazo restoration', '1.jpeg'),
+      projectImage('Moore high - terrazo restoration', '4.jpeg'),
+      projectImage('Moore high - terrazo restoration', '5.jpeg'),
+      projectImage('Moore high - terrazo restoration', '3.jpeg'),
+    ],
+  },
+  {
+    id: 11,
+    slug: 'red-wing-shoes-class-c-polished-concrete',
+    title: 'Red Wing Shoes — Class C High-Aggregate Polished Concrete',
+    category: 'Polished Concrete',
+    coverImage: projectImage('Red Wing shoes - high aggregate class C polished concrete', '2.jpeg'),
+    mainImage: projectImage('Red Wing shoes - high aggregate class C polished concrete', '1.jpeg'),
+    description:
+      'A Class C polished concrete floor installed for a Red Wing Shoes retail showroom. Heavy aggregate exposure produces a decorative terrazzo-like surface that holds up to constant retail foot traffic while reading as a premium architectural finish.',
+    processApplied:
+      'Aggressive diamond grinding to expose full Class C aggregate, joint repair, densifier, progressive polishing, and a stain-resistant surface treatment.',
+    location: 'Red Wing Shoes, Oklahoma',
+    images: [
+      projectImage('Red Wing shoes - high aggregate class C polished concrete', '1.jpeg'),
+      projectImage('Red Wing shoes - high aggregate class C polished concrete', '2.jpeg'),
+    ],
+  },
+  {
+    id: 12,
+    slug: 'take-5-oil-epoxy-service-pits',
+    title: 'Take 5 Oil Change — Single-Color Epoxy in Service Pits',
+    category: 'Resinous Flooring',
+    coverImage: projectImage('Take 5 oil - wash and seal with single color epoxy in pits', '1.jpeg'),
+    mainImage: projectImage('Take 5 oil - wash and seal with single color epoxy in pits', '3.jpeg'),
+    description:
+      "A single-color epoxy coating applied to the service pits at a Take 5 Oil Change location. The system gives the lubrication bays a clean, chemical-resistant interior that's easy to wash down and stand up to daily oil exposure.",
+    processApplied:
+      'Pressure-wash and degrease, mechanical prep on the pit walls and floor, epoxy primer, single-color epoxy basecoat, and a chemical-resistant clear topcoat.',
+    location: 'Take 5 Oil Change, Oklahoma',
+    images: [
+      projectImage('Take 5 oil - wash and seal with single color epoxy in pits', '3.jpeg'),
+      projectImage('Take 5 oil - wash and seal with single color epoxy in pits', '2.jpeg'),
+      projectImage('Take 5 oil - wash and seal with single color epoxy in pits', '1.jpeg'),
     ],
   },
 ];
