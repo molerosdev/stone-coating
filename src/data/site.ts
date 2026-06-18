@@ -512,6 +512,31 @@ export const projects: ProjectShowcase[] = [
       projectImage('Take 5 oil - wash and seal with single color epoxy in pits', '1.jpeg'),
     ],
   },
+  {
+    id: 13,
+    slug: 'mps-child-development-center-vinyl-carpet-tile',
+    title: 'Moore Public Schools Child Development Center — Vinyl, Carpet & Tile',
+    category: 'Carpet, Tile & Wood',
+    coverImage: projectImage('MPS ChildCare  - vinyl, carpet and tile', '1.jpeg'),
+    mainImage: projectImage('MPS ChildCare  - vinyl, carpet and tile', '7.jpeg'),
+    description:
+      "A full multi-surface buildout for the Moore Public Schools Child Development Center. Resilient LVT planks carry the corridors and play spaces with playful color-block inlays that match the building's identity, sheet vinyl and tile cover the kitchen and restrooms for hygiene, and walk-off carpet entries handle the high-traffic vestibules. Every system was selected for durability under daily child-care use and easy maintenance.",
+    processApplied:
+      'Substrate prep and self-leveling underlayment, layout of the decorative LVT inlays, glue-down install of LVT, sheet vinyl, and ceramic tile, set with appropriate adhesive or thinset, plus walk-off carpet at the entries and a full transition trim package for a turnkey finish.',
+    location: 'Moore, Oklahoma',
+    images: [
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '1.jpeg'),
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '11.jpeg'),
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '7.jpeg'),
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '13.jpeg'),
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '9.jpeg'),
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '12.jpeg'),
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '3.jpeg'),
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '5.jpeg'),
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '10.jpeg'),
+      projectImage('MPS ChildCare  - vinyl, carpet and tile', '4.jpeg'),
+    ],
+  },
 ];
 
 export type ProjectCategory = (typeof projectCategories)[number];

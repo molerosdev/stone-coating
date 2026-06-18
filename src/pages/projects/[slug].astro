@@ -14,8 +14,10 @@ export const getStaticPaths = () =>
 
 const { project, prev, next } = Astro.props;
 
-// PRD caps the gallery at 5 images and places any video at the end.
-const galleryImages = project.images.slice(0, 5);
+// The PRD originally capped the gallery at 5; we render whatever the
+// project data carries (the data itself is the source of truth for how
+// many photos a project should show) and place any video last.
+const galleryImages = project.images;
 const meta = `Stone Coating & Resinous — ${project.title}. ${project.description}`;
 ---
 
