@@ -1,0 +1,46 @@
+name: Deploy to Cloudflare Pages
+
+# Cloudflare's GitHub integration on this project has been flaky (the
+# webhook drops auto-deploys after the account's GitHub auth churns), so
+# we deploy from GitHub Actions instead. wrangler-action uploads the
+# Astro static output in `dist/` plus the Pages Function at
+# `functions/api/contact.ts` to the `stone-coating` Pages project.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build + deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Astro site
+        run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=stone-coating --branch=main --commit-dirty=true
